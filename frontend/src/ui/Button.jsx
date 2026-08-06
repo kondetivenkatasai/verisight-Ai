@@ -82,7 +82,7 @@ export default function Button({
         <Icon size={size === 'sm' ? 14 : size === 'lg' ? 20 : 16} className="shrink-0 transition-transform group-hover:scale-105" />
       ) : null}
       <span>{children}</span>
-    </motion.button>
+    </Component>
   );
 }
 

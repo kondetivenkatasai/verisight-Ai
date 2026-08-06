@@ -56,7 +56,7 @@ export default function RadialGlowButton({
       ) : null}
 
       <span className="relative z-10">{children}</span>
-    </motion.button>
+    </Component>
   );
 }
 
