@@ -21,8 +21,10 @@ function AnimatedSphere() {
           attach="material"
           distort={0.35}
           speed={2}
-          roughness={0.2}
-          metalness={0.8}
+          roughness={0.3}
+          metalness={0.2}
+          emissive="#4338ca"
+          emissiveIntensity={0.15}
         />
       </Sphere>
     </Float>
@@ -91,10 +93,10 @@ export default function HeroScene() {
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
       >
-        <ambientLight intensity={0.3} />
-        <directionalLight position={[5, 5, 5]} intensity={0.8} color="#e0e7ff" />
-        <pointLight position={[-3, -3, 2]} intensity={0.5} color="#a78bfa" />
-        <pointLight position={[3, 2, -2]} intensity={0.4} color="#06b6d4" />
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" />
+        <pointLight position={[-3, -3, 2]} intensity={0.8} color="#a78bfa" />
+        <pointLight position={[3, 2, -2]} intensity={0.6} color="#06b6d4" />
         <AnimatedSphere />
         <FloatingRing position={[0, 0, 0]} rotation={[Math.PI / 3, 0, 0]} color="#818cf8" />
         <FloatingRing position={[0, 0, 0]} rotation={[0, Math.PI / 4, Math.PI / 6]} color="#a78bfa" />

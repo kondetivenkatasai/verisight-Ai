@@ -68,7 +68,7 @@ export default function VerisightLogo({ size = 28, showText = false, className =
       {showText && (
         <div className="flex flex-col leading-tight select-none">
           <div className="flex items-baseline">
-            <span className="text-xl font-extrabold text-white tracking-tight">Verisight</span>
+            <span className="text-xl font-extrabold text-surface-900 dark:text-white tracking-tight">Verisight</span>
             <span className="text-sm font-normal text-aegis-400 ml-1 tracking-wider">AI</span>
           </div>
           <span className="text-[10px] font-semibold text-surface-400 tracking-widest uppercase">

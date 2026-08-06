@@ -19,7 +19,7 @@ export default function CaseContextMenu({ position, onClose, onOpen, onRename, o
         exit={{ opacity: 0, scale: 0.95, y: -4 }}
         transition={{ duration: 0.12, ease: 'easeOut' }}
         style={{ top: position.y, left: position.x }}
-        className="fixed z-50 min-w-[190px] bg-surface-900 border border-surface-300 dark:border-white/10 rounded-2xl shadow-elevated-card p-1.5 backdrop-blur-xl text-xs font-medium"
+        className="fixed z-50 min-w-[190px] bg-brand-surface border border-surface-200 dark:border-white/10 rounded-2xl shadow-elevated-card p-1.5 backdrop-blur-xl text-xs font-medium"
         onClick={(e) => e.stopPropagation()}
       >
         <button

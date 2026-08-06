@@ -84,7 +84,7 @@ export default function Landing() {
         </div>
 
         {/* Gradient fade at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface-950 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-bg to-transparent pointer-events-none" />
       </section>
 
       {/* Features */}
@@ -102,7 +102,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 0.1}>
-                <div className="group rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-6 hover:border-aegis-500/40 transition-all duration-200 h-full shadow-subtle-card hover:shadow-elevated-card">
+                <div className="group rounded-2xl bg-brand-surface border border-surface-200 dark:border-white/[0.08] p-6 hover:border-aegis-500/40 transition-all duration-200 h-full shadow-subtle-card hover:shadow-elevated-card">
                   <div className="p-3 rounded-xl bg-aegis-500/10 border border-aegis-500/20 inline-flex mb-4 group-hover:bg-aegis-500/20 transition-colors">
                     <feature.icon size={22} className="text-aegis-600 dark:text-aegis-400" />
                   </div>
@@ -131,7 +131,7 @@ export default function Landing() {
           <div className="space-y-4">
             {steps.map((step, index) => (
               <ScrollReveal key={step.step} delay={index * 0.12}>
-                <div className="flex items-start gap-6 rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-6 shadow-subtle-card">
+                <div className="flex items-start gap-6 rounded-2xl bg-brand-surface border border-surface-200 dark:border-white/[0.08] p-6 shadow-subtle-card">
                   <div className="shrink-0 h-12 w-12 rounded-xl bg-aegis-500/10 border border-aegis-500/20 flex items-center justify-center text-aegis-600 dark:text-aegis-400 font-extrabold text-lg">
                     {step.step}
                   </div>

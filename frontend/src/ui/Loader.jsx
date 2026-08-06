@@ -39,7 +39,7 @@ export function SkeletonLine({ className = '' }) {
 
 export function SkeletonCard() {
   return (
-    <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+    <div className="rounded-2xl bg-brand-surface border border-surface-200 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
       <SkeletonLine className="w-3/4 h-5" />
       <SkeletonLine className="w-full" />
       <SkeletonLine className="w-1/2" />
