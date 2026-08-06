@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Search, Filter, ArrowUpDown } from 'lucide-react';
+import { FileText, Search, Filter, ArrowUpDown, X } from 'lucide-react';
 import ReportCard from '@/components/ReportCard';
 import DecisionIntelligenceReport from '@/components/DecisionIntelligenceReport';
 import Modal from '@/ui/Modal';
 import { PageLoader } from '@/ui/Loader';
 import { reportService } from '@/services/reportService';
+import { useSearch } from '@/context/SearchContext';
 import { pageTransition, staggerContainer, staggerItem } from '@/animations/variants';
 
 export default function Reports() {
@@ -14,7 +15,7 @@ export default function Reports() {
   const [selectedReport, setSelectedReport] = useState(null);
 
   // Search, Filter & Sort States
-  const [searchQuery, setSearchQuery] = useState('');
+  const { searchQuery, setSearchQuery } = useSearch();
   const [decisionFilter, setDecisionFilter] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
 
@@ -36,10 +37,22 @@ export default function Reports() {
   const processedReports = useMemo(() => {
     return reports
       .filter((r) => {
-        const query = searchQuery.toLowerCase();
-        const titleMatch = (r.cases?.title || r.summary || '').toLowerCase().includes(query);
-        const summaryMatch = (r.summary || '').toLowerCase().includes(query);
-        const matchesSearch = titleMatch || summaryMatch;
+        const query = searchQuery.trim().toLowerCase();
+        if (!query) {
+          const matchesDecision =
+            decisionFilter === 'all' || r.decision?.toLowerCase() === decisionFilter.toLowerCase();
+          return matchesDecision;
+        }
+
+        // Comprehensive multi-field text matching
+        const title = r.case_title || r.title || r.cases?.title || '';
+        const summary = r.summary || '';
+        const decision = r.decision || '';
+        const riskLevel = r.risk_level || '';
+        const findings = Array.isArray(r.key_findings) ? r.key_findings.join(' ') : (r.key_findings || '');
+
+        const combinedText = `${title} ${summary} ${decision} ${riskLevel} ${findings}`.toLowerCase();
+        const matchesSearch = combinedText.includes(query);
 
         const matchesDecision =
           decisionFilter === 'all' || r.decision?.toLowerCase() === decisionFilter.toLowerCase();
@@ -79,9 +92,19 @@ export default function Reports() {
             placeholder="Search reports by title, keywords, or summary..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-200 dark:border-[#1e2942] text-xs font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-[#5c6b8a] focus:outline-none focus:border-[#9a55ff] dark:focus:border-blue-500 transition-colors"
+            className="w-full pl-10 pr-9 py-2 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-200 dark:border-[#1e2942] text-xs font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-[#5c6b8a] focus:outline-none focus:border-[#9a55ff] dark:focus:border-blue-500 transition-colors"
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-[#5c6b8a] dark:hover:text-white cursor-pointer"
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
+
 
         <div className="flex items-center gap-3 flex-wrap">
           {/* Filter by Decision */}

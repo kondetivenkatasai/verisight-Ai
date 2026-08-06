@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, CheckCircle, Clock, AlertTriangle, Plus, GitBranch, FileText, BarChart3, ChevronRight, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { SkeletonCard } from '@/ui/Loader';
 import { useCase } from '@/hooks/useCase';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useTheme } from '@/context/ThemeContext';
+import { useSearch } from '@/context/SearchContext';
 import { staggerContainer, staggerItem, pageTransition } from '@/animations/variants';
 
 export default function Dashboard() {
@@ -15,12 +16,27 @@ export default function Dashboard() {
   const { cases, loading: casesLoading, fetchCases } = useCase();
   const { stats } = useAnalytics();
   const { theme } = useTheme();
+  const { searchQuery } = useSearch();
 
   const isDark = theme === 'dark';
 
   useEffect(() => {
     fetchCases();
   }, [fetchCases]);
+
+  const filteredCases = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return cases;
+    return cases.filter((c) => {
+      const title = c.title || '';
+      const desc = c.description || '';
+      const priority = c.priority || '';
+      const status = c.status || '';
+      const fullText = `${title} ${desc} ${priority} ${status}`.toLowerCase();
+      return fullText.includes(query);
+    });
+  }, [cases, searchQuery]);
+
 
   const statsCards = [
     { title: 'Total Cases', value: stats?.totalCases || cases.length || 0, icon: Briefcase, color: 'aegis' },
@@ -186,14 +202,14 @@ export default function Dashboard() {
               <SkeletonCard key={i} />
             ))}
           </div>
-        ) : cases.length > 0 ? (
+        ) : filteredCases.length > 0 ? (
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {cases.slice(0, 6).map((c) => (
+            {filteredCases.slice(0, 6).map((c) => (
               <motion.div key={c.id} variants={staggerItem}>
                 <CaseCard caseData={c} onUpdate={fetchCases} />
               </motion.div>
@@ -204,8 +220,13 @@ export default function Dashboard() {
             isDark ? 'bg-[#111726] border-[#1e2942]' : 'bg-white border-gray-150'
           }`}>
             <Briefcase size={40} className={`mx-auto mb-4 ${isDark ? 'text-[#3d4b68]' : 'text-gray-300'}`} />
-            <h3 className={`text-base font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-800'}`}>No active investigations</h3>
-            <p className={`text-xs mb-6 font-normal ${isDark ? 'text-[#7b89a6]' : 'text-gray-400'}`}>Create your first case to initiate multi-agent AI analysis</p>
+            <h3 className={`text-base font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              {searchQuery ? 'No matching cases found' : 'No active investigations'}
+            </h3>
+            <p className={`text-xs mb-6 font-normal ${isDark ? 'text-[#7b89a6]' : 'text-gray-400'}`}>
+              {searchQuery ? 'Try adjusting your search terms' : 'Create your first case to initiate multi-agent AI analysis'}
+            </p>
+
             <button
               onClick={() => navigate('/create-case')}
               className={`py-2.5 px-5 rounded-xl text-white font-semibold text-xs shadow-md transition-all inline-flex items-center gap-2 cursor-pointer ${

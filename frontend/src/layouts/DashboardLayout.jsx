@@ -3,18 +3,21 @@ import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
+import { useSearch } from '@/context/SearchContext';
 import { PageLoader } from '@/ui/Loader';
-import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut } from 'lucide-react';
+import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, logout, isAuthenticated, loading } = useAuth();
   const { theme } = useTheme();
+  const { searchQuery, setSearchQuery } = useSearch();
   const navigate = useNavigate();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const isDark = theme === 'dark';
+
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -70,14 +73,26 @@ export default function DashboardLayout() {
               </div>
               <input
                 type="text"
-                placeholder={isDark ? "Search..." : "Search projects..."}
-                className={`w-full pl-9 pr-4 py-2 rounded-xl text-xs transition-all ${
+                placeholder="Search cases, reports, findings..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={`w-full pl-9 pr-8 py-2 rounded-xl text-xs transition-all ${
                   isDark
                     ? 'bg-[#121929] border border-[#1e2942] text-white placeholder-[#5c6b8a] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     : 'bg-gray-50 border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#9a55ff] focus:ring-2 focus:ring-[#9a55ff]/15'
                 }`}
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className={`absolute inset-y-0 right-0 pr-2.5 flex items-center cursor-pointer ${isDark ? 'text-[#5c6b8a] hover:text-white' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                  <X size={13} />
+                </button>
+              )}
             </div>
+
 
             {/* History Icon */}
             {isDark && (
