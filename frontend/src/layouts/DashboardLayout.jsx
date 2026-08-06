@@ -1,15 +1,31 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { PageLoader } from '@/ui/Loader';
-import { Search, Bell, History, ChevronDown, Power } from 'lucide-react';
+import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, logout, isAuthenticated, loading } = useAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const isDark = theme === 'dark';
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   if (loading) {
     return (
@@ -38,7 +54,7 @@ export default function DashboardLayout() {
             ? 'bg-[#090d16]/90 border-[#182035] text-white'
             : 'bg-white/90 border-gray-150 text-gray-800 shadow-sm'
         }`}>
-          {/* Breadcrumb / Title or Search */}
+          {/* Title */}
           <div className="flex items-center gap-4">
             <h1 className={`text-lg font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
               Verisight AI Dashboard
@@ -63,13 +79,14 @@ export default function DashboardLayout() {
               />
             </div>
 
-            {/* Icons */}
+            {/* History Icon */}
             {isDark && (
               <button className="p-2 rounded-xl text-[#7b89a6] hover:text-white hover:bg-[#121929] border border-transparent hover:border-[#1e2942] transition-all">
                 <History size={17} />
               </button>
             )}
 
+            {/* Bell Icon */}
             <button className={`relative p-2 rounded-xl transition-colors ${
               isDark
                 ? 'text-[#7b89a6] hover:text-white hover:bg-[#121929]'
@@ -79,28 +96,103 @@ export default function DashboardLayout() {
               <span className={`absolute top-1.5 right-1.5 w-2 h-2 rounded-full ${isDark ? 'bg-blue-500' : 'bg-[#9a55ff]'}`} />
             </button>
 
-            {/* User Profile */}
-            <div className={`flex items-center gap-2.5 cursor-pointer ${isDark ? 'pl-2 border-l border-[#1d273f]' : ''}`}>
-              <div className={`h-8 w-8 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-sm ${
-                isDark ? 'bg-blue-600' : 'bg-gradient-to-tr from-[#9a55ff] to-[#da8cff]'
-              }`}>
-                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-              </div>
-              <div className="hidden sm:flex items-center gap-1">
-                <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>{user?.name || 'Verisight User'}</span>
-                <ChevronDown size={14} className={isDark ? 'text-[#5c6b8a]' : 'text-gray-400'} />
-              </div>
-            </div>
+            {/* Interactive User Profile Dropdown Menu */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen((prev) => !prev)}
+                className={`flex items-center gap-2.5 py-1 px-2 rounded-xl transition-all cursor-pointer ${
+                  isDark ? 'hover:bg-[#121929]' : 'hover:bg-gray-100'
+                }`}
+              >
+                <img
+                  src={user?.avatar || '/default_avatar.png'}
+                  alt={user?.name || 'User Profile'}
+                  className="h-8 w-8 rounded-full object-cover border border-blue-500/40 shadow-sm shrink-0"
+                />
+                <div className="hidden sm:flex items-center gap-1.5">
+                  <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                    {user?.name || 'User'}
+                  </span>
+                  <ChevronDown size={14} className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''} ${isDark ? 'text-[#5c6b8a]' : 'text-gray-400'}`} />
+                </div>
+              </button>
 
-            <button
-              onClick={logout}
-              title="Sign Out"
-              className={`p-2 rounded-xl transition-colors ${
-                isDark ? 'text-[#7b89a6] hover:text-rose-400' : 'text-gray-400 hover:text-rose-600 hover:bg-rose-50'
-              }`}
-            >
-              <Power size={17} />
-            </button>
+              {/* Dropdown Menu Popup */}
+              {dropdownOpen && (
+                <div className={`absolute right-0 mt-2 w-64 rounded-2xl p-2 shadow-2xl border backdrop-blur-xl z-50 transition-all ${
+                  isDark
+                    ? 'bg-[#111726] border-[#1e2942] text-white'
+                    : 'bg-white border-gray-200 text-gray-800'
+                }`}>
+                  {/* User Profile Summary */}
+                  <div className={`p-3 rounded-xl border mb-2 flex items-center gap-3 ${
+                    isDark ? 'bg-[#151c2e] border-[#1e2942]' : 'bg-purple-50/50 border-purple-100'
+                  }`}>
+                    <img
+                      src={user?.avatar || '/default_avatar.png'}
+                      alt={user?.name}
+                      className="h-10 w-10 rounded-full object-cover border border-blue-500/40 shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {user?.name || 'User'}
+                      </p>
+                      <p className={`text-[10px] truncate ${isDark ? 'text-[#7b89a6]' : 'text-gray-500'}`}>
+                        {user?.email || 'user@example.com'}
+                      </p>
+                      <span className={`text-[9px] font-bold uppercase tracking-wider block mt-0.5 ${isDark ? 'text-blue-400' : 'text-purple-600'}`}>
+                        Decision Workspace
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Menu Action Links */}
+                  <div className="space-y-1">
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        navigate('/settings');
+                      }}
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                        isDark ? 'text-[#8a99b5] hover:text-white hover:bg-[#1a243a]' : 'text-gray-600 hover:text-[#9a55ff] hover:bg-purple-50'
+                      }`}
+                    >
+                      <Settings size={15} />
+                      <span>Account Settings</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        navigate('/settings#password');
+                      }}
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                        isDark ? 'text-[#8a99b5] hover:text-white hover:bg-[#1a243a]' : 'text-gray-600 hover:text-[#9a55ff] hover:bg-purple-50'
+                      }`}
+                    >
+                      <Lock size={15} />
+                      <span>Change Password</span>
+                    </button>
+
+                    <div className={`my-1 border-t ${isDark ? 'border-[#1e2942]' : 'border-gray-100'}`} />
+
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        logout();
+                        navigate('/login');
+                      }}
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                        isDark ? 'text-rose-400 hover:bg-rose-500/10' : 'text-rose-600 hover:bg-rose-50'
+                      }`}
+                    >
+                      <LogOut size={15} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -112,6 +204,7 @@ export default function DashboardLayout() {
     </div>
   );
 }
+
 
 
 

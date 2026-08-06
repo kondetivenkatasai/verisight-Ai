@@ -11,6 +11,8 @@ export function AuthProvider({ children }) {
   const clearAuth = useCallback(() => {
     localStorage.removeItem('aegis_token');
     sessionStorage.removeItem('aegis_token');
+    localStorage.removeItem('aegis_user_avatar');
+    localStorage.removeItem('aegis_user_name');
     setToken(null);
     setUser(null);
   }, []);
@@ -24,7 +26,13 @@ export function AuthProvider({ children }) {
     try {
       const res = await authService.getMe();
       if (res.data?.user) {
-        setUser(res.data.user);
+        const storedAvatar = localStorage.getItem('aegis_user_avatar') || '/default_avatar.png';
+        const storedName = localStorage.getItem('aegis_user_name');
+        setUser({
+          ...res.data.user,
+          name: storedName || res.data.user.name,
+          avatar: storedAvatar,
+        });
       } else {
         clearAuth();
       }
@@ -43,18 +51,41 @@ export function AuthProvider({ children }) {
     const res = await authService.login({ email, password });
     const { token: newToken, user: userData } = res.data;
     localStorage.setItem('aegis_token', newToken);
+    const storedAvatar = localStorage.getItem('aegis_user_avatar') || '/default_avatar.png';
+    const storedName = localStorage.getItem('aegis_user_name');
+    const mergedUser = {
+      ...userData,
+      name: storedName || userData.name,
+      avatar: storedAvatar,
+    };
     setToken(newToken);
-    setUser(userData);
-    return userData;
+    setUser(mergedUser);
+    return mergedUser;
   };
 
   const signup = async (name, email, password) => {
     const res = await authService.signup({ name, email, password });
     const { token: newToken, user: userData } = res.data;
     localStorage.setItem('aegis_token', newToken);
+    const storedAvatar = localStorage.getItem('aegis_user_avatar') || '/default_avatar.png';
+    const mergedUser = {
+      ...userData,
+      name: name || userData.name,
+      avatar: storedAvatar,
+    };
     setToken(newToken);
-    setUser(userData);
-    return userData;
+    setUser(mergedUser);
+    return mergedUser;
+  };
+
+  const updateUser = (updatedFields) => {
+    if (updatedFields.name) {
+      localStorage.setItem('aegis_user_name', updatedFields.name);
+    }
+    if (updatedFields.avatar) {
+      localStorage.setItem('aegis_user_avatar', updatedFields.avatar);
+    }
+    setUser((prev) => (prev ? { ...prev, ...updatedFields } : prev));
   };
 
   const logout = () => {
@@ -67,6 +98,7 @@ export function AuthProvider({ children }) {
     loading,
     login,
     signup,
+    updateUser,
     logout,
     isAuthenticated: !!token && !!user,
   };
@@ -83,3 +115,4 @@ export function useAuthContext() {
 }
 
 export default AuthContext;
+

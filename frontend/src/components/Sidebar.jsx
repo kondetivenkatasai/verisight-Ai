@@ -77,11 +77,11 @@ export default function Sidebar() {
               ? 'bg-[#111728] border-[#1d263b] text-white'
               : 'bg-purple-50/50 border-purple-100/60 text-gray-900'
           }`}>
-            <div className={`h-9 w-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm ${
-              isDark ? 'bg-blue-600' : 'bg-gradient-to-tr from-[#9a55ff] to-[#da8cff]'
-            }`}>
-              {user?.name?.charAt(0)?.toUpperCase() || 'V'}
-            </div>
+            <img
+              src={user?.avatar || '/default_avatar.png'}
+              alt={user?.name || 'User Profile'}
+              className="h-10 w-10 rounded-full object-cover border border-blue-500/40 shrink-0 shadow-sm"
+            />
             <div className="min-w-0 flex-1">
               <p className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{user?.name || 'Verisight User'}</p>
               <span className={`text-[10px] font-semibold uppercase tracking-wider block ${isDark ? 'text-[#7b89a6]' : 'text-purple-600'}`}>
@@ -90,6 +90,7 @@ export default function Sidebar() {
             </div>
           </div>
         </div>
+
 
         {/* Navigation Links */}
         <nav className="space-y-1 overflow-y-auto custom-scrollbar px-3">
