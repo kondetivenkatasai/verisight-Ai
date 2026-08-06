@@ -101,17 +101,17 @@ export default function CaseCard({ caseData, onUpdate }) {
   return (
     <>
       <motion.div
-        whileHover={{ y: -3 }}
+        whileHover={{ y: -2 }}
         transition={{ duration: 0.2 }}
         onClick={handleOpen}
         onContextMenu={handleContextMenu}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="group relative rounded-2xl bg-[#111726] border border-[#1e2942] p-5 cursor-pointer
-          hover:border-blue-500/50 hover:bg-[#151c2e] hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 shadow-md"
+        className="group relative rounded-2xl bg-white border border-gray-150 p-5 cursor-pointer
+          hover:border-purple-200 hover:shadow-md transition-all duration-200 shadow-sm"
       >
         <div className="flex items-start justify-between mb-3">
-          <h3 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors pr-4 leading-snug">
+          <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#9a55ff] transition-colors pr-4 leading-snug">
             {truncate(caseData.title, 50)}
           </h3>
           <div className="flex items-center gap-2 shrink-0">
@@ -121,30 +121,30 @@ export default function CaseCard({ caseData, onUpdate }) {
                 e.stopPropagation();
                 setContextPos({ x: e.clientX, y: e.clientY });
               }}
-              className="p-1 text-[#5c6b8a] hover:text-white rounded-lg hover:bg-[#1c273e] transition-colors cursor-pointer"
+              className="p-1 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <MoreVertical size={16} />
             </button>
           </div>
         </div>
 
-        <p className="text-xs text-[#8a99b5] mb-4 line-clamp-2 leading-relaxed font-normal">
+        <p className="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed font-normal">
           {truncate(caseData.description, 120)}
         </p>
 
-        <div className="flex items-center justify-between pt-3 border-t border-[#1c273e]">
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div className="flex items-center gap-2">
             <Badge type="status" value={caseData.status} />
-            <span className="text-[11px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+            <span className="text-[11px] font-bold text-[#9a55ff] bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
               {caseData.status === 'completed' ? '96.5% Confidence' : '78.0% Ready'}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1 text-xs text-[#5c6b8a] font-semibold">
+            <span className="flex items-center gap-1 text-xs text-gray-400 font-semibold">
               <Clock size={12} />
               {formatRelativeTime(caseData.created_at)}
             </span>
-            <ArrowRight size={14} className="text-[#5c6b8a] group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+            <ArrowRight size={14} className="text-gray-400 group-hover:text-[#9a55ff] group-hover:translate-x-1 transition-all" />
           </div>
         </div>
       </motion.div>

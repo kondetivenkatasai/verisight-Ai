@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -9,8 +8,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  Sun,
-  Moon,
+  ChevronRight
 } from 'lucide-react';
 import VerisightLogo from '@/ui/VerisightLogo';
 import { sidebarVariants } from '@/animations/variants';
@@ -38,7 +36,6 @@ const navItems = [
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [isDark, setIsDark] = useState(true);
 
   const handleLogout = () => {
     logout();
@@ -50,19 +47,34 @@ export default function Sidebar() {
       variants={sidebarVariants}
       initial="hidden"
       animate="visible"
-      className="fixed left-0 top-0 bottom-0 w-64 bg-[#0a0f1d] border-r border-[#1a233a] z-40 flex flex-col justify-between"
+      className="fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-150 z-40 flex flex-col justify-between"
     >
       <div>
-        {/* Logo Header */}
+        {/* Brand Logo Header */}
         <div className="p-6">
           <div className="flex items-center gap-3">
             <VerisightLogo size={26} />
-            <span className="text-xl font-extrabold text-white tracking-tight">{APP_NAME}</span>
+            <span className="text-xl font-extrabold text-[#9a55ff] tracking-tight">{APP_NAME}</span>
           </div>
         </div>
 
-        {/* Navigation Menu */}
-        <nav className="px-3 space-y-1.5 overflow-y-auto custom-scrollbar">
+        {/* User Card right under logo (matching image) */}
+        <div className="px-5 mb-5">
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-purple-50/50 border border-purple-100/60">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-[#9a55ff] to-[#da8cff] flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm">
+              {user?.name?.charAt(0)?.toUpperCase() || 'V'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-gray-900 truncate">{user?.name || 'Verisight User'}</p>
+              <span className="text-[10px] font-semibold text-purple-600 uppercase tracking-wider block">
+                Decision Workspace
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="space-y-1 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => {
             const Icon = iconMap[item.icon];
             return (
@@ -70,24 +82,29 @@ export default function Sidebar() {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 group relative ${
+                  `flex items-center justify-between px-6 py-3 text-xs sm:text-sm font-semibold transition-all duration-200 group relative ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                      : 'text-[#7b89a6] hover:text-white hover:bg-[#131b2e]'
+                      ? 'bg-purple-50/80 text-[#9a55ff] border-l-4 border-[#9a55ff]'
+                      : 'text-gray-500 hover:text-[#9a55ff] hover:bg-purple-50/30 border-l-4 border-transparent'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    {Icon && (
-                      <Icon
-                        size={19}
-                        className={`shrink-0 transition-colors ${
-                          isActive ? 'text-white' : 'text-[#7b89a6] group-hover:text-white'
-                        }`}
-                      />
+                    <div className="flex items-center gap-3">
+                      {Icon && (
+                        <Icon
+                          size={18}
+                          className={`shrink-0 transition-colors ${
+                            isActive ? 'text-[#9a55ff]' : 'text-gray-400 group-hover:text-[#9a55ff]'
+                          }`}
+                        />
+                      )}
+                      <span>{item.label}</span>
+                    </div>
+                    {isActive && (
+                      <ChevronRight size={14} className="text-[#9a55ff]" />
                     )}
-                    <span>{item.label}</span>
                   </>
                 )}
               </NavLink>
@@ -96,58 +113,29 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Bottom Section: Theme Switcher & User Footer */}
-      <div className="p-4 space-y-3">
-        {/* Light | Dark Mode Toggle (matching bottom left of image) */}
-        <div className="p-1 rounded-xl bg-[#111728] border border-[#1d263b] flex items-center gap-1">
-          <button
-            onClick={() => setIsDark(false)}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
-              !isDark
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-[#7b89a6] hover:text-white'
-            }`}
-          >
-            <Sun size={13} />
-            <span>Light</span>
-          </button>
+      {/* Bottom CTA & Sign Out */}
+      <div className="p-5 space-y-3">
+        {/* "+ Add a project" / "+ New Investigation" Button */}
+        <button
+          onClick={() => navigate('/create-case')}
+          className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#da8cff] to-[#9a55ff] hover:from-[#c87be5] hover:to-[#8843ed] text-white font-semibold text-xs sm:text-sm shadow-md shadow-purple-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+        >
+          <Plus size={16} strokeWidth={2.5} />
+          <span>New Investigation</span>
+        </button>
 
-          <button
-            onClick={() => setIsDark(true)}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
-              isDark
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-[#7b89a6] hover:text-white'
-            }`}
-          >
-            <Moon size={13} />
-            <span>Dark</span>
-          </button>
-        </div>
-
-        {/* User Card & Logout */}
-        <div className="flex items-center justify-between p-2.5 rounded-xl border border-[#1d263b] bg-[#111728]">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
-              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-bold text-white truncate">{user?.name || 'User'}</p>
-              <p className="text-[10px] text-[#7b89a6] truncate">{user?.email || 'user@example.com'}</p>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            title="Sign Out"
-            className="p-1.5 text-[#7b89a6] hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
-          >
-            <LogOut size={16} />
-          </button>
-        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold text-gray-500 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+        >
+          <LogOut size={15} />
+          <span>Sign Out</span>
+        </button>
       </div>
     </motion.aside>
   );
 }
+
 
 
 
