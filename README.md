@@ -1,3 +1,34 @@
+## ✨ Features
+
+- 🤖 Multi-Agent Decision Intelligence powered by Google Gemini
+- 🧠 Autonomous AI Agent Pipeline (Planning → Research → Reasoning → Decision → Verification → Report)
+- 📊 Dynamic Risk Assessment with Confidence Scoring
+- 📄 Explainable AI Reports with Executive Summary and Actionable Recommendations
+- 📷 Image Upload & AI-Assisted Visual Analysis
+- 🔐 Secure JWT Authentication with bcrypt Password Hashing
+- 👥 Role-Based Dashboard with Investigation Management
+- 📂 Case Management with Search, Filtering, and History
+- 📈 Interactive Analytics Dashboard
+- 🗄️ Supabase PostgreSQL Database with Secure Storage
+- 📥 Export Reports as PDF and JSON
+- 🌙 Dark & Light Theme Support
+- 📱 Fully Responsive Enterprise-Grade User Interface
+- 🚀 Production-Ready Architecture with React, Express.js, and Supabase
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Verisight AI
 
 > See the Truth. Decide with Confidence.
