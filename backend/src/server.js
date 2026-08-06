@@ -91,6 +91,7 @@ app.post('/test', async (req, res) => {
 app.use('/api', apiLimiter);
 app.use('/uploads', express.static('src/uploads'));
 app.use('/api', routes);
+app.use('/', routes); // Fallback route support for /auth/login, /cases, etc.
 
 // ---------------------
 // Error Handling
