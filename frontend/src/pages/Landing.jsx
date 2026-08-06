@@ -73,7 +73,11 @@ export default function Landing() {
                 Start Free Trial
               </Button>
               <a href="#how-it-works">
-                <Button variant="secondary" size="lg">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="!bg-white/90 dark:!bg-white/10 hover:!bg-white dark:hover:!bg-white/20 !text-slate-900 dark:!text-white !border-slate-300 dark:!border-white/20 backdrop-blur-md shadow-md font-semibold"
+                >
                   See How It Works
                 </Button>
               </a>

@@ -151,6 +151,22 @@ export default function Signup() {
         {/* Right Panel - Signup Form Area */}
         <div className="w-full md:w-1/2 p-8 sm:p-12 bg-[#111827] flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/[0.06]">
           <div className="max-w-sm mx-auto w-full">
+            {/* Auth Mode Tabs */}
+            <div className="flex items-center gap-1 p-1 bg-[#0F172A] rounded-full border border-white/[0.08] mb-6">
+              <Link
+                to="/login"
+                className="flex-1 py-1.5 text-center text-xs font-semibold rounded-full text-[#94A3B8] hover:text-[#F8FAFC] transition-all"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="flex-1 py-1.5 text-center text-xs font-semibold rounded-full bg-[#2563EB] text-white shadow-sm transition-all"
+              >
+                Create Account
+              </Link>
+            </div>
+
             {/* Header */}
             <h2 className="text-2xl font-bold text-[#F8FAFC] tracking-tight mb-6">
               Create Account
