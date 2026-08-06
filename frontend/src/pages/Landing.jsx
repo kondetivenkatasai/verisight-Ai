@@ -150,21 +150,27 @@ export default function Landing() {
       </section>
 
       {/* CTA */}
-      <section id="about" className="py-24">
+      <section id="about" className="py-24 relative">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <ScrollReveal>
-            <div className="rounded-3xl bg-gradient-to-br from-aegis-600/10 via-surface-900 to-indigo-600/10 border border-aegis-500/20 p-12 shadow-elevated-card">
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-surface-900 dark:text-white mb-4">
-                Ready to Transform Your Analysis?
-              </h2>
-              <p className="text-surface-600 dark:text-surface-400 mb-8 max-w-xl mx-auto text-base">
-                Join teams already using {APP_NAME} to make faster, more confident decisions with multi-agent intelligence.
-              </p>
-              <Link to="/signup">
-                <Button size="xl" icon={ArrowRight}>
-                  Get Started Now
-                </Button>
-              </Link>
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 dark:from-[#0a0f1d] dark:via-[#0f172a] dark:to-[#1e1b4b] border border-indigo-500/30 p-10 sm:p-14 shadow-2xl">
+              {/* Background ambient lighting */}
+              <div className="absolute -top-24 -left-24 w-64 h-64 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative z-10">
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
+                  Ready to Transform Your <span className="gradient-text">Analysis?</span>
+                </h2>
+                <p className="text-slate-300 dark:text-slate-300 mb-8 max-w-xl mx-auto text-base sm:text-lg leading-relaxed font-normal">
+                  Join teams already using {APP_NAME} to make faster, more confident decisions with multi-agent intelligence.
+                </p>
+                <Link to="/signup">
+                  <Button size="xl" icon={ArrowRight}>
+                    Get Started Now
+                  </Button>
+                </Link>
+              </div>
             </div>
           </ScrollReveal>
         </div>
