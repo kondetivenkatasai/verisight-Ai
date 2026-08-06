@@ -33,7 +33,6 @@ app.use(morgan('dev'));
 // ---------------------
 app.post('/test', async (req, res) => {
   try {
-    // Get existing user or auto-create dummy user for user_id foreign key constraint
     let { data: user } = await supabase.from('users').select('id').limit(1).maybeSingle();
 
     if (!user) {
@@ -57,7 +56,6 @@ app.post('/test', async (req, res) => {
       user = newUser;
     }
 
-    // Insert sample row into Cases table
     const { error: insertError } = await supabase
       .from('cases')
       .insert({
@@ -109,11 +107,10 @@ async function startServer() {
   try {
     await testConnection();
 
-    app.listen(PORT, () => {
-      logger.info(`🚀 Verisight AI Server running on port ${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`🚀 Verisight AI Server running on 0.0.0.0:${PORT}`);
       logger.info(`📡 Environment: ${env.NODE_ENV}`);
-      logger.info(`🔗 API: http://localhost:${PORT}/api`);
-      logger.info(`🧪 Test Endpoint: POST http://localhost:${PORT}/test`);
+      logger.info(`🔗 API: http://0.0.0.0:${PORT}/api`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error.message);

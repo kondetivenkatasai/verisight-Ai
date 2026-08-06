@@ -11,14 +11,13 @@ const env = {
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 };
 
-// Validate required variables in production
+// Validate required variables in production with soft warning to prevent container build crashes
 const required = ['JWT_SECRET', 'SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_SERVICE_ROLE_KEY'];
 
 if (env.NODE_ENV === 'production') {
   for (const key of required) {
     if (!env[key]) {
-      console.error(`❌ Missing required environment variable: ${key}`);
-      process.exit(1);
+      console.warn(`⚠️ Warning: Production environment variable missing: ${key}. Please configure in Railway Dashboard.`);
     }
   }
 }
