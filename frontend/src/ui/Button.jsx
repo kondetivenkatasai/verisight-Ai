@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import RadialGlowButton from './RadialGlowButton';
 
 const variants = {
@@ -31,6 +32,7 @@ export default function Button({
   loading = false,
   icon: Icon,
   onClick,
+  to,
   type = 'button',
   ...props
 }) {
@@ -43,6 +45,7 @@ export default function Button({
         loading={loading}
         icon={Icon}
         onClick={onClick}
+        to={to}
         type={type}
         {...props}
       >
@@ -51,13 +54,14 @@ export default function Button({
     );
   }
 
+  const Component = to ? motion(Link) : motion.button;
+  const linkProps = to ? { to, onClick } : { type, onClick };
+
   return (
-    <motion.button
+    <Component
       whileHover={{ scale: disabled || loading ? 1 : 1.015, y: disabled || loading ? 0 : -1 }}
       whileTap={{ scale: disabled || loading ? 1 : 0.98, y: 0 }}
       transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-      type={type}
-      onClick={onClick}
       disabled={disabled || loading}
       className={`
         inline-flex items-center justify-center gap-2 rounded-xl
@@ -66,6 +70,7 @@ export default function Button({
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
         ${variants[variant]} ${sizes[size]} ${className}
       `}
+      {...linkProps}
       {...props}
     >
       {loading ? (

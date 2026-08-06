@@ -69,11 +69,9 @@ export default function Landing() {
               {APP_DESCRIPTION}
             </motion.p>
             <motion.div variants={staggerItem} className="flex items-center justify-center gap-4 flex-wrap">
-              <Link to="/signup">
-                <Button size="lg" icon={ArrowRight}>
-                  Start Free Trial
-                </Button>
-              </Link>
+              <Button to="/signup" size="lg" icon={ArrowRight}>
+                Start Free Trial
+              </Button>
               <a href="#how-it-works">
                 <Button variant="secondary" size="lg">
                   See How It Works
@@ -165,11 +163,9 @@ export default function Landing() {
                 <p className="text-slate-300 dark:text-slate-300 mb-8 max-w-xl mx-auto text-base sm:text-lg leading-relaxed font-normal">
                   Join teams already using {APP_NAME} to make faster, more confident decisions with multi-agent intelligence.
                 </p>
-                <Link to="/signup">
-                  <Button size="xl" icon={ArrowRight}>
-                    Get Started Now
-                  </Button>
-                </Link>
+                <Button to="/signup" size="xl" icon={ArrowRight}>
+                  Get Started Now
+                </Button>
               </div>
             </div>
           </ScrollReveal>

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const sizes = {
   sm: 'px-3.5 py-1.5 text-xs font-semibold',
@@ -15,16 +16,18 @@ export default function RadialGlowButton({
   loading = false,
   icon: Icon,
   onClick,
+  to,
   type = 'button',
   ...props
 }) {
+  const Component = to ? motion(Link) : motion.button;
+  const linkProps = to ? { to, onClick } : { type, onClick };
+
   return (
-    <motion.button
+    <Component
       whileHover={{ scale: disabled || loading ? 1 : 1.02, y: disabled || loading ? 0 : -1 }}
       whileTap={{ scale: disabled || loading ? 1 : 0.98, y: 0 }}
       transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-      type={type}
-      onClick={onClick}
       disabled={disabled || loading}
       className={`
         relative inline-flex items-center justify-center gap-2 rounded-xl text-white font-semibold
@@ -37,6 +40,7 @@ export default function RadialGlowButton({
         disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none
         ${sizes[size]} ${className}
       `}
+      {...linkProps}
       {...props}
     >
       {/* Background radial shimmer */}

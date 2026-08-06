@@ -55,15 +55,15 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
             {isAuthenticated ? (
-              <Button onClick={() => navigate('/dashboard')} size="sm">
+              <Button to="/dashboard" size="sm">
                 Dashboard
               </Button>
             ) : (
               <>
-                <Button variant="ghost" onClick={() => navigate('/login')} size="sm">
+                <Button variant="ghost" to="/login" size="sm">
                   Sign In
                 </Button>
-                <Button onClick={() => navigate('/signup')} size="sm">
+                <Button to="/signup" size="sm">
                   Get Started
                 </Button>
               </>
@@ -101,15 +101,15 @@ export default function Navbar() {
             ))}
             <div className="pt-3 border-t border-surface-200 dark:border-white/10 flex flex-col gap-2">
               {isAuthenticated ? (
-                <Button onClick={() => { navigate('/dashboard'); setMobileOpen(false); }} size="sm" className="w-full">
+                <Button to="/dashboard" onClick={() => setMobileOpen(false)} size="sm" className="w-full">
                   Dashboard
                 </Button>
               ) : (
                 <>
-                  <Button variant="ghost" onClick={() => { navigate('/login'); setMobileOpen(false); }} size="sm" className="w-full">
+                  <Button variant="ghost" to="/login" onClick={() => setMobileOpen(false)} size="sm" className="w-full">
                     Sign In
                   </Button>
-                  <Button onClick={() => { navigate('/signup'); setMobileOpen(false); }} size="sm" className="w-full">
+                  <Button to="/signup" onClick={() => setMobileOpen(false)} size="sm" className="w-full">
                     Get Started
                   </Button>
                 </>
