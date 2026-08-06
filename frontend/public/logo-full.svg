@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 320" width="100%" height="100%">
+  <defs>
+    <!-- Primary Brand Gradient -->
+    <linearGradient id="fullVPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+
+    <!-- Secondary Accent Gradient -->
+    <linearGradient id="fullVSecondary" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+
+    <!-- Glowing Iris Core -->
+    <radialGradient id="fullIrisGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="60%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </radialGradient>
+
+    <!-- Text Gradient for AI Accent -->
+    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="fullGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <style>
+    .brand-title {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 800;
+      font-size: 88px;
+      fill: #FFFFFF;
+      letter-spacing: -2px;
+    }
+    .brand-ai {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      font-size: 64px;
+      fill: url(#aiGradient);
+      letter-spacing: 1px;
+    }
+    .brand-tagline {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 500;
+      font-size: 26px;
+      fill: #94A3B8;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="1024" height="320" rx="32" fill="#0A0A0F"/>
+
+  <!-- Logo Mark (Icon) -->
+  <g transform="translate(40, -5) scale(0.62)">
+    <!-- Outer Shield Outline -->
+    <path d="M 128 140 C 190 120, 322 120, 384 140 C 384 250, 330 360, 256 424 C 182 360, 128 250, 128 140 Z"
+          fill="none" stroke="url(#fullVSecondary)" stroke-width="4" stroke-opacity="0.3"/>
+
+    <!-- Left Wing of Geometric V -->
+    <path d="M 148 152 L 256 400 L 256 320 L 192 168 Z"
+          fill="url(#fullVPrimary)" filter="url(#fullGlow)"/>
+
+    <!-- Right Wing of Geometric V -->
+    <path d="M 364 152 L 256 400 L 256 320 L 320 168 Z"
+          fill="url(#fullVSecondary)" filter="url(#fullGlow)"/>
+
+    <!-- Upper Shield Arch -->
+    <path d="M 148 152 Q 256 185 364 152 L 320 168 Q 256 198 192 168 Z"
+          fill="url(#fullVPrimary)" opacity="0.9"/>
+
+    <!-- Eye Aperture (Vision Negative Space) -->
+    <path d="M 176 220 Q 256 150 336 220 Q 256 290 176 220 Z"
+          fill="#0A0A0F" stroke="url(#fullVPrimary)" stroke-width="6"/>
+
+    <!-- Eye Lens -->
+    <circle cx="256" cy="220" r="26" fill="url(#fullIrisGlow)"/>
+    <circle cx="256" cy="220" r="12" fill="#FFFFFF"/>
+
+    <!-- Multi-Agent Node Points -->
+    <line x1="256" y1="120" x2="256" y2="168" stroke="#38BDF8" stroke-width="3" stroke-dasharray="4,4"/>
+    <circle cx="256" cy="120" r="6" fill="#38BDF8"/>
+    <circle cx="148" cy="152" r="6" fill="#06B6D4"/>
+    <circle cx="364" cy="152" r="6" fill="#7C3AED"/>
+    <circle cx="192" cy="220" r="5" fill="#3B82F6"/>
+    <circle cx="320" cy="220" r="5" fill="#3B82F6"/>
+    <circle cx="256" cy="400" r="7" fill="#38BDF8"/>
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(370, 145)">
+    <text class="brand-title">Verisight <tspan class="brand-ai">AI</tspan></text>
+    <text x="5" y="62" class="brand-tagline">See the Truth. Decide with Confidence.</text>
+  </g>
+</svg>

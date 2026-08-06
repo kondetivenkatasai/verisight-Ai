@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 320" width="100%" height="100%">
+  <style>
+    .mono-light-title {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 800;
+      font-size: 88px;
+      fill: #FFFFFF;
+      letter-spacing: -2px;
+    }
+    .mono-light-ai {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      font-size: 64px;
+      fill: #FFFFFF;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+    .mono-light-tagline {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 500;
+      font-size: 26px;
+      fill: #CBD5E1;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+  </style>
+
+  <!-- Logo Mark (Monochrome White) -->
+  <g transform="translate(40, -5) scale(0.62)" fill="#FFFFFF" stroke="#FFFFFF">
+    <!-- Outer Shield Outline -->
+    <path d="M 128 140 C 190 120, 322 120, 384 140 C 384 250, 330 360, 256 424 C 182 360, 128 250, 128 140 Z"
+          fill="none" stroke-width="4" stroke-opacity="0.3"/>
+
+    <!-- Left Wing of Geometric V -->
+    <path d="M 148 152 L 256 400 L 256 320 L 192 168 Z" stroke="none"/>
+
+    <!-- Right Wing of Geometric V -->
+    <path d="M 364 152 L 256 400 L 256 320 L 320 168 Z" stroke="none"/>
+
+    <!-- Upper Shield Arch -->
+    <path d="M 148 152 Q 256 185 364 152 L 320 168 Q 256 198 192 168 Z" stroke="none" opacity="0.8"/>
+
+    <!-- Eye Aperture (Vision Negative Space) -->
+    <path d="M 176 220 Q 256 150 336 220 Q 256 290 176 220 Z"
+          fill="#0A0A0F" stroke="#FFFFFF" stroke-width="6"/>
+
+    <!-- Eye Lens -->
+    <circle cx="256" cy="220" r="24" fill="#FFFFFF" stroke="none"/>
+    <circle cx="256" cy="220" r="10" fill="#0A0A0F" stroke="none"/>
+
+    <!-- Multi-Agent Nodes -->
+    <circle cx="256" cy="120" r="6" stroke="none"/>
+    <circle cx="148" cy="152" r="6" stroke="none"/>
+    <circle cx="364" cy="152" r="6" stroke="none"/>
+    <circle cx="256" cy="400" r="7" stroke="none"/>
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(370, 145)">
+    <text class="mono-light-title">Verisight <tspan class="mono-light-ai">AI</tspan></text>
+    <text x="5" y="62" class="mono-light-tagline">See the Truth. Decide with Confidence.</text>
+  </g>
+</svg>
