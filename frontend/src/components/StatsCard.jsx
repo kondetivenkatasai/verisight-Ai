@@ -1,49 +1,24 @@
 import { motion } from 'framer-motion';
 import { staggerItem } from '@/animations/variants';
+import { MoreHorizontal } from 'lucide-react';
 
 export default function StatsCard({ title, value, change, icon: Icon, color = 'aegis' }) {
   const colorMap = {
     aegis: {
-      icon: 'text-sky-400',
-      bg: 'bg-sky-500/10',
-      border: 'border-sky-500/20',
-      hoverBorder: 'hover:border-sky-500/60',
-      hoverShadow: 'hover:shadow-[0_0_25px_rgba(56,189,248,0.25)]',
+      icon: 'text-purple-600',
+      bg: 'bg-purple-100/80',
     },
     emerald: {
-      icon: 'text-emerald-400',
-      bg: 'bg-emerald-500/10',
-      border: 'border-emerald-500/20',
-      hoverBorder: 'hover:border-emerald-500/60',
-      hoverShadow: 'hover:shadow-[0_0_25px_rgba(16,185,129,0.25)]',
+      icon: 'text-cyan-600',
+      bg: 'bg-cyan-100/80',
     },
     amber: {
-      icon: 'text-amber-400',
-      bg: 'bg-amber-500/10',
-      border: 'border-amber-500/20',
-      hoverBorder: 'hover:border-amber-500/60',
-      hoverShadow: 'hover:shadow-[0_0_25px_rgba(245,158,11,0.25)]',
+      icon: 'text-amber-600',
+      bg: 'bg-amber-100/80',
     },
     red: {
-      icon: 'text-rose-400',
-      bg: 'bg-rose-500/10',
-      border: 'border-rose-500/20',
-      hoverBorder: 'hover:border-rose-500/60',
-      hoverShadow: 'hover:shadow-[0_0_25px_rgba(244,63,94,0.25)]',
-    },
-    cyan: {
-      icon: 'text-cyan-400',
-      bg: 'bg-cyan-500/10',
-      border: 'border-cyan-500/20',
-      hoverBorder: 'hover:border-cyan-500/60',
-      hoverShadow: 'hover:shadow-[0_0_25px_rgba(6,182,212,0.25)]',
-    },
-    purple: {
-      icon: 'text-purple-400',
-      bg: 'bg-purple-500/10',
-      border: 'border-purple-500/20',
-      hoverBorder: 'hover:border-purple-500/60',
-      hoverShadow: 'hover:shadow-[0_0_25px_rgba(168,85,247,0.25)]',
+      icon: 'text-rose-500',
+      bg: 'bg-rose-100/80',
     },
   };
 
@@ -52,28 +27,24 @@ export default function StatsCard({ title, value, change, icon: Icon, color = 'a
   return (
     <motion.div
       variants={staggerItem}
-      whileHover={{ y: -3 }}
-      transition={{ duration: 0.2 }}
-      className={`rounded-2xl bg-surface-900 border border-slate-200 dark:border-slate-800 p-5 shadow-subtle-card backdrop-blur-xl transition-all duration-300 ${colors.hoverBorder} ${colors.hoverShadow} group`}
+      whileHover={{ y: -2 }}
+      className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm hover:shadow-md transition-all duration-200"
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className={`p-2.5 rounded-xl ${colors.bg} border ${colors.border} group-hover:scale-110 transition-transform`}>
+      <div className="flex items-start justify-between mb-3">
+        <div className={`p-3 rounded-2xl ${colors.bg}`}>
           <Icon size={20} className={colors.icon} />
         </div>
-        {change !== undefined && (
-          <span
-            className={`text-xs font-black px-2.5 py-0.5 rounded-full ${
-              change >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
-            }`}
-          >
-            {change >= 0 ? '+' : ''}{change}%
-          </span>
-        )}
+        <button className="text-gray-300 hover:text-gray-500 transition-colors">
+          <MoreHorizontal size={18} />
+        </button>
       </div>
-      <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-1 group-hover:text-sky-400 transition-colors">{value}</p>
-      <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">{title}</p>
+      <div>
+        <p className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-0.5">{value}</p>
+        <p className="text-xs font-medium text-gray-400">{title}</p>
+      </div>
     </motion.div>
   );
 }
+
 
 

@@ -8,6 +8,9 @@ import {
   BarChart3,
   Settings,
   LogOut,
+  Smartphone,
+  ChevronDown,
+  Bell
 } from 'lucide-react';
 import VerisightLogo from '@/ui/VerisightLogo';
 import { sidebarVariants } from '@/animations/variants';
@@ -24,7 +27,7 @@ const iconMap = {
 };
 
 const navItems = [
-  { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard' },
+  { label: 'Overview', path: '/dashboard', icon: 'LayoutDashboard' },
   { label: 'Create Case', path: '/create-case', icon: 'Plus' },
   { label: 'Workflow', path: '/workflow', icon: 'GitBranch' },
   { label: 'Reports', path: '/reports', icon: 'FileText' },
@@ -46,59 +49,100 @@ export default function Sidebar() {
       variants={sidebarVariants}
       initial="hidden"
       animate="visible"
-      className="fixed left-0 top-0 bottom-0 w-64 bg-white/80 dark:bg-[#09090b]/90 backdrop-blur-xl border-r border-surface-200 dark:border-white/10 z-40 flex flex-col"
+      className="fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-150 z-40 flex flex-col justify-between"
     >
-      {/* Logo */}
-      <div className="p-5 border-b border-surface-200 dark:border-white/10">
-        <div className="flex items-center gap-2.5">
-          <VerisightLogo size={22} />
-          <span className="text-lg font-bold text-surface-900 dark:text-white tracking-tight">{APP_NAME}</span>
+      <div>
+        {/* Logo */}
+        <div className="p-6">
+          <div className="flex items-center gap-3">
+            <VerisightLogo size={26} />
+            <span className="text-xl font-bold text-gray-900 tracking-tight">{APP_NAME}</span>
+          </div>
         </div>
+
+        {/* Action Button "+ Register patient" / "+ New Investigation" */}
+        <div className="px-5 mb-4">
+          <button
+            onClick={() => navigate('/create-case')}
+            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-semibold text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+          >
+            <Plus size={18} strokeWidth={2.5} />
+            <span>New Investigation</span>
+          </button>
+        </div>
+
+        {/* Navigation Menu */}
+        <nav className="px-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+          {navItems.map((item) => {
+            const Icon = iconMap[item.icon];
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200 group relative ${
+                    isActive
+                      ? 'bg-purple-50 text-purple-700 font-bold'
+                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {Icon && (
+                      <Icon
+                        size={19}
+                        className={`shrink-0 transition-colors ${
+                          isActive ? 'text-purple-600' : 'text-gray-400 group-hover:text-gray-600'
+                        }`}
+                      />
+                    )}
+                    <span>{item.label}</span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto custom-scrollbar">
-        {navItems.map((item) => {
-          const Icon = iconMap[item.icon];
-          return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
-                  isActive
-                    ? 'bg-aegis-500/10 text-aegis-600 dark:text-aegis-400 font-semibold border border-aegis-500/20'
-                    : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-200/60 dark:hover:bg-surface-800/40'
-                }`
-              }
-            >
-              {Icon && <Icon size={18} className="shrink-0" />}
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
-
-      {/* User section */}
-      <div className="p-3 border-t border-surface-200 dark:border-white/10">
-        <div className="flex items-center gap-3 px-3 py-2 mb-1.5 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5">
-          <div className="h-8 w-8 rounded-full bg-aegis-500/20 flex items-center justify-center text-aegis-600 dark:text-aegis-400 text-xs font-bold shrink-0">
-            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+      {/* Bottom Section: Promo Card & User Footer */}
+      <div className="p-4 space-y-3">
+        {/* "Get mobile app" sidebar promo card */}
+        <div className="rounded-2xl bg-gradient-to-b from-purple-50/80 to-indigo-50/80 border border-purple-100/80 p-4 text-center relative overflow-hidden">
+          <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-purple-600/10 flex items-center justify-center text-purple-600">
+            <Smartphone size={20} />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-surface-900 dark:text-surface-100 truncate">{user?.name || 'User'}</p>
-            <p className="text-[11px] text-surface-500 truncate">{user?.email || ''}</p>
+          <p className="text-xs font-bold text-gray-900 mb-1">Get mobile app</p>
+          <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-gray-400 font-medium">
+            <span>iOS</span>
+            <span>•</span>
+            <span>Android</span>
           </div>
         </div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-xs font-medium text-surface-500 hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
-        >
-          <LogOut size={16} />
-          <span>Sign Out</span>
-        </button>
+
+        {/* User Card */}
+        <div className="flex items-center justify-between p-2 rounded-2xl border border-gray-100 bg-gray-50/50">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-gray-800 truncate">{user?.name || 'User'}</p>
+              <p className="text-[10px] text-gray-400 truncate">{user?.email || 'user@example.com'}</p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
       </div>
     </motion.aside>
   );
 }
+
 
