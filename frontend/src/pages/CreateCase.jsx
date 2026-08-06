@@ -63,15 +63,15 @@ export default function CreateCase() {
 
   return (
     <motion.div {...pageTransition} className="max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-surface-900 dark:text-white tracking-tight">Create New Case</h1>
-        <p className="text-surface-600 dark:text-surface-400 text-sm mt-1">Submit a case for AI-powered multi-agent analysis</p>
+      <div className="mb-6">
+        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">Create New Case</h1>
+        <p className="text-gray-500 dark:text-[#8a99b5] text-sm mt-1">Submit a case for AI-powered multi-agent analysis</p>
       </div>
 
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-8 shadow-subtle-card backdrop-blur-xl">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-150 dark:border-[#1e2942] p-8 shadow-sm dark:shadow-xl">
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400">
+            <div className="rounded-xl bg-rose-500/10 border border-rose-500/20 px-4 py-3 text-sm font-medium text-rose-600 dark:text-rose-400">
               {error}
             </div>
           )}
@@ -101,13 +101,13 @@ export default function CreateCase() {
           />
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-surface-600 dark:text-surface-400 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
               Attachments (optional)
             </label>
             <FileUpload onFilesSelected={setFiles} maxFiles={5} />
           </div>
 
-          <div className="flex items-center gap-3 pt-4 border-t border-surface-200 dark:border-white/5">
+          <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-[#1c273e]">
             <RadialGlowButton
               type="submit"
               loading={loading}
@@ -129,4 +129,5 @@ export default function CreateCase() {
     </motion.div>
   );
 }
+
 
