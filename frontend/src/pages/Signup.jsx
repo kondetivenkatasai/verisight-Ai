@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, User, Mail, Lock } from 'lucide-react';
-import RadialGlowButton from '@/ui/RadialGlowButton';
-import Input from '@/ui/Input';
+import { User, Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { fadeUp } from '@/animations/variants';
-import { APP_NAME } from '@/utils/constants';
 
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signup, isAuthenticated, loading: authLoading } = useAuth();
@@ -50,97 +48,173 @@ export default function Signup() {
   };
 
   return (
-    <div className="relative min-h-screen bg-surface-950 flex items-center justify-center px-4 py-12 overflow-hidden">
-      {/* Hero Ambient Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-b from-aegis-500/20 via-purple-500/10 to-transparent blur-[120px] pointer-events-none" />
-      <div className="absolute inset-0 dot-pattern opacity-20 pointer-events-none" />
+    <div className="relative min-h-screen bg-[#ba9ecf]/40 flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-hidden select-none">
+      {/* Background Soft Wave Accent */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#9d7bb0]/30 via-[#c3aed6]/20 to-[#9d7bb0]/30 pointer-events-none" />
 
+      {/* Main Split-Screen Container */}
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="relative z-10 w-full max-w-md"
+        className="relative z-10 w-full max-w-4xl bg-white rounded-3xl shadow-2xl shadow-purple-900/15 overflow-hidden flex flex-col md:flex-row min-h-[540px]"
       >
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-6 group">
-            <div className="p-2.5 rounded-2xl bg-aegis-500/10 border border-aegis-500/20 text-aegis-600 dark:text-aegis-400 group-hover:scale-105 transition-transform">
-              <Shield size={28} />
-            </div>
-            <span className="text-2xl font-black text-surface-900 dark:text-white tracking-tight">{APP_NAME}</span>
-          </Link>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-white tracking-tight mb-1">Create your account</h1>
-          <p className="text-surface-600 dark:text-surface-400 text-sm font-normal">Start analyzing cases with AI intelligence</p>
+        {/* Left Panel - Purple Graphic Banner */}
+        <div className="w-full md:w-1/2 bg-gradient-to-br from-[#77479d] via-[#633389] to-[#4a226c] text-white p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden">
+          {/* Topographic Lines Top-Left */}
+          <svg className="absolute -top-6 -left-6 w-56 h-56 text-white/20 pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M10,10 Q80,30 60,100 T10,180" />
+            <path d="M30,10 Q100,40 80,110 T20,190" />
+            <path d="M50,10 Q120,50 100,120 T30,200" />
+            <path d="M70,10 Q140,60 120,130 T40,210" />
+          </svg>
+
+          {/* Topographic Lines Bottom-Right */}
+          <svg className="absolute -bottom-8 -right-8 w-64 h-64 text-white/20 pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M190,190 Q120,170 140,100 T190,20" />
+            <path d="M170,190 Q100,160 120,90 T180,10" />
+            <path d="M150,190 Q80,150 100,80 T170,0" />
+          </svg>
+
+          {/* Dot Matrix Grid */}
+          <div className="absolute top-8 right-8 grid grid-cols-3 gap-2 opacity-40 pointer-events-none">
+            {[...Array(15)].map((_, i) => (
+              <div key={i} className="w-1.5 h-1.5 bg-white rounded-full" />
+            ))}
+          </div>
+
+          {/* Graphic Accent Icons */}
+          <span className="absolute top-16 left-32 text-white/40 text-xl font-light select-none">+</span>
+          <span className="absolute bottom-28 left-20 text-white/40 text-lg font-light select-none">+</span>
+          <div className="absolute top-28 right-28 w-4 h-4 rounded-full border-2 border-white/30 pointer-events-none" />
+          <div className="absolute bottom-16 left-12 w-3 h-3 rounded-full border-2 border-white/30 pointer-events-none" />
+
+          {/* Banner Text Content */}
+          <div className="relative z-10 max-w-sm">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+              Join Us!
+            </h1>
+            <p className="text-sm text-purple-100/90 leading-relaxed font-normal">
+              Create an account to access AI verification, risk analysis, and smart workspace tools.
+            </p>
+          </div>
         </div>
 
-        <div className="rounded-3xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] backdrop-blur-xl p-8 shadow-elevated-card">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Right Panel - Signup Form Area */}
+        <div className="w-full md:w-1/2 p-8 sm:p-12 bg-white flex flex-col justify-center">
+          <div className="max-w-sm mx-auto w-full">
+            {/* Header */}
+            <h2 className="text-2xl font-bold text-gray-800 tracking-tight mb-6">
+              Create Account
+            </h2>
+
+            {/* Error message */}
             {error && (
-              <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-xs font-semibold text-red-600 dark:text-red-400">
+              <div className="mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-xs font-semibold text-red-600 text-center">
                 {error}
               </div>
             )}
 
-            <Input
-              label="Full Name"
-              type="text"
-              icon={User}
-              placeholder="John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              {/* Full Name Input */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <User size={16} />
+                </div>
+                <input
+                  type="text"
+                  required
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                />
+              </div>
 
-            <Input
-              label="Email"
-              type="email"
-              icon={Mail}
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+              {/* Email Input */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Mail size={16} />
+                </div>
+                <input
+                  type="email"
+                  required
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                />
+              </div>
 
-            <Input
-              label="Password"
-              type="password"
-              icon={Lock}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+              {/* Password Input */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Lock size={16} />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Password (min 8 chars)"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-10 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
 
-            <Input
-              label="Confirm Password"
-              type="password"
-              icon={Lock}
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
+              {/* Confirm Password Input */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Lock size={16} />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                />
+              </div>
 
-            <RadialGlowButton
-              type="submit"
-              loading={loading}
-              className="w-full"
-              size="lg"
-            >
-              Create Account
-            </RadialGlowButton>
-          </form>
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 active:scale-[0.99] text-white font-semibold text-xs sm:text-sm shadow-md shadow-purple-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed mt-4"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Creating Account...
+                  </>
+                ) : (
+                  'Create Account'
+                )}
+              </button>
+            </form>
 
-          <div className="mt-6 text-center pt-5 border-t border-surface-200 dark:border-white/5">
-            <p className="text-xs font-medium text-surface-600 dark:text-surface-400">
-              Already have an account?{' '}
-              <Link to="/login" className="text-aegis-600 dark:text-aegis-400 hover:text-aegis-500 font-bold transition-colors">
-                Sign in
-              </Link>
-            </p>
+            {/* Account Redirect Link */}
+            <div className="mt-6 text-center">
+              <p className="text-xs text-gray-500 font-medium">
+                Already have an account?{' '}
+                <Link to="/login" className="text-purple-600 font-semibold hover:underline">
+                  Sign In
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </motion.div>
     </div>
   );
 }
+
 
