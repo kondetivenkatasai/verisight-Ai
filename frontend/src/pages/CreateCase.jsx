@@ -53,7 +53,9 @@ export default function CreateCase() {
       const res = await caseService.create(formData);
       navigate(`/workflow?caseId=${res.data.case.id}`);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create case');
+      const serverMsg = err.response?.data?.message;
+      const details = err.response?.data?.errors?.map((e) => `${e.field}: ${e.message}`).join(', ');
+      setError(details ? `${serverMsg} (${details})` : (serverMsg || 'Failed to create case'));
     } finally {
       setLoading(false);
     }

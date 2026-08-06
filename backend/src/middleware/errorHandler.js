@@ -2,8 +2,9 @@ export function errorHandler(err, req, res, _next) {
   console.error(`[ERROR] ${req.method} ${req.path}:`, err.message);
 
   if (err.name === 'ZodError') {
+    const details = err.errors.map((e) => `${e.path.join('.')}: ${e.message}`).join('; ');
     return res.status(400).json({
-      message: 'Validation failed',
+      message: `Validation failed: ${details}`,
       errors: err.errors.map((e) => ({
         field: e.path.join('.'),
         message: e.message,
