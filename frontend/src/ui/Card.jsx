@@ -17,9 +17,9 @@ export default function Card({
       whileHover={hover ? { y: -2, transition: { duration: 0.15 } } : {}}
       onClick={onClick}
       className={`
-        rounded-2xl bg-surface-900 border border-slate-200 dark:border-slate-800
-        backdrop-blur-xl transition-all duration-300 shadow-subtle-card
-        ${hover ? 'cursor-pointer hover:border-sky-500/50 hover:shadow-[0_0_25px_rgba(56,189,248,0.2)] hover:bg-slate-900/90' : ''}
+        rounded-2xl bg-white dark:bg-[#111726] border border-gray-150 dark:border-[#1e2942]
+        text-gray-900 dark:text-white transition-all duration-300 shadow-sm dark:shadow-xl
+        ${hover ? 'cursor-pointer hover:border-purple-200 dark:hover:border-blue-500/50 hover:shadow-md' : ''}
         ${glow ? 'glow' : ''}
         ${padding}
         ${className}
@@ -28,6 +28,7 @@ export default function Card({
     >
       {children}
     </motion.div>
+
   );
 }
 
