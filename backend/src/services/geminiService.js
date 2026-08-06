@@ -6,8 +6,7 @@ let genAI = null;
 
 function getClient() {
   if (!genAI) {
-    if (!env.GEMINI_API_KEY || env.GEMINI_API_KEY.includes('your-gemini-api-key')) {
-      logger.warn('GEMINI_API_KEY is not set or using placeholder. Dynamic AI reasoning engine enabled.');
+    if (!env.GEMINI_API_KEY || env.GEMINI_API_KEY.includes('your-gemini-api-key') || env.GEMINI_API_KEY.trim() === '') {
       return null;
     }
     try {

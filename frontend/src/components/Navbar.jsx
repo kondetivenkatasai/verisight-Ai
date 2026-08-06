@@ -27,7 +27,7 @@ export default function Navbar() {
       animate="visible"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-surface-950/80 backdrop-blur-xl border-b border-surface-800/50 shadow-lg shadow-black/10'
+          ? 'bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-xl border-b border-surface-200 dark:border-white/10 shadow-subtle-card'
           : 'bg-transparent'
       }`}
     >
@@ -35,8 +35,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <VerisightLogo size={20} />
-            <span className="text-lg font-bold text-white tracking-tight">{APP_NAME}</span>
+            <VerisightLogo size={22} />
+            <span className="text-lg font-bold text-surface-900 dark:text-white tracking-tight">{APP_NAME}</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -45,7 +45,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm text-surface-400 hover:text-white transition-colors duration-200"
+                className="text-sm font-medium text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white transition-colors duration-200"
               >
                 {link.label}
               </a>
@@ -72,7 +72,7 @@ export default function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-surface-400 hover:text-white"
+            className="md:hidden p-2 text-surface-500 hover:text-surface-900 dark:hover:text-white"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -86,20 +86,20 @@ export default function Navbar() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-surface-950/95 backdrop-blur-xl border-b border-surface-800/50"
+          className="md:hidden bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-xl border-b border-surface-200 dark:border-white/10"
         >
           <div className="px-4 py-4 space-y-3">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="block text-sm text-surface-400 hover:text-white py-2"
+                className="block text-sm font-medium text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white py-2"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <div className="pt-3 border-t border-surface-800/50 flex flex-col gap-2">
+            <div className="pt-3 border-t border-surface-200 dark:border-white/10 flex flex-col gap-2">
               {isAuthenticated ? (
                 <Button onClick={() => { navigate('/dashboard'); setMobileOpen(false); }} size="sm" className="w-full">
                   Dashboard
@@ -121,3 +121,4 @@ export default function Navbar() {
     </motion.nav>
   );
 }
+

@@ -9,15 +9,15 @@ import { PageLoader } from '@/ui/Loader';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { pageTransition } from '@/animations/variants';
 
-const COLORS = ['#6366f1', '#a78bfa', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
+const COLORS = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg bg-surface-900 border border-surface-700/50 px-3 py-2 shadow-xl">
-        <p className="text-xs text-surface-400 mb-1">{label}</p>
+      <div className="rounded-xl bg-white dark:bg-[#111318] border border-surface-200 dark:border-white/10 px-3.5 py-2.5 shadow-elevated-card backdrop-blur-md">
+        <p className="text-xs font-bold text-surface-900 dark:text-white mb-1">{label}</p>
         {payload.map((entry, i) => (
-          <p key={i} className="text-sm font-medium" style={{ color: entry.color }}>
+          <p key={i} className="text-xs font-semibold" style={{ color: entry.color }}>
             {entry.name}: {entry.value}
           </p>
         ))}
@@ -68,36 +68,36 @@ export default function Analytics() {
   ];
 
   return (
-    <motion.div {...pageTransition}>
+    <motion.div {...pageTransition} className="space-y-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Analytics</h1>
-        <p className="text-surface-400 text-sm mt-1">Performance metrics and insights</p>
+        <h1 className="text-2xl font-extrabold text-surface-900 dark:text-white tracking-tight">Analytics & Intelligence Insights</h1>
+        <p className="text-surface-600 dark:text-surface-400 text-sm mt-1">Multi-agent system metrics, confidence tracking, and case velocity</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Cases Over Time */}
         <Card>
-          <h3 className="text-sm font-semibold text-surface-200 mb-4">Cases Over Time</h3>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-surface-600 dark:text-surface-400 mb-4">Cases Over Time</h3>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={chartCases}>
               <defs>
                 <linearGradient id="colorCases" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
                   <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-              <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} />
-              <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(161, 161, 170, 0.15)" />
+              <XAxis dataKey="month" tick={{ fill: '#71717a', fontSize: 12 }} axisLine={false} />
+              <YAxis tick={{ fill: '#71717a', fontSize: 12 }} axisLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="cases" stroke="#6366f1" strokeWidth={2} fill="url(#colorCases)" />
+              <Area type="monotone" dataKey="cases" stroke="#6366f1" strokeWidth={2.5} fill="url(#colorCases)" />
             </AreaChart>
           </ResponsiveContainer>
         </Card>
 
         {/* Risk Distribution */}
         <Card>
-          <h3 className="text-sm font-semibold text-surface-200 mb-4">Risk Distribution</h3>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-surface-600 dark:text-surface-400 mb-4">Risk Distribution</h3>
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
               <Pie
@@ -119,8 +119,8 @@ export default function Analytics() {
           <div className="flex flex-wrap justify-center gap-4 mt-2">
             {chartRisk.map((entry, index) => (
               <div key={entry.name} className="flex items-center gap-1.5">
-                <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[index] }} />
-                <span className="text-xs text-surface-400">{entry.name}</span>
+                <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: COLORS[index] }} />
+                <span className="text-xs font-medium text-surface-600 dark:text-surface-400">{entry.name}</span>
               </div>
             ))}
           </div>
@@ -128,14 +128,14 @@ export default function Analytics() {
 
         {/* Agent Performance */}
         <Card className="lg:col-span-2">
-          <h3 className="text-sm font-semibold text-surface-200 mb-4">Agent Confidence Scores</h3>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-surface-600 dark:text-surface-400 mb-4">Agent Confidence Scores</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={chartAgents}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-              <XAxis dataKey="agent" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} />
-              <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} domain={[0, 100]} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(161, 161, 170, 0.15)" />
+              <XAxis dataKey="agent" tick={{ fill: '#71717a', fontSize: 12 }} axisLine={false} />
+              <YAxis tick={{ fill: '#71717a', fontSize: 12 }} axisLine={false} domain={[0, 100]} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="confidence" fill="#6366f1" radius={[6, 6, 0, 0]} name="Confidence %" />
+              <Bar dataKey="confidence" fill="#6366f1" radius={[8, 8, 0, 0]} name="Confidence %" />
             </BarChart>
           </ResponsiveContainer>
         </Card>
@@ -143,3 +143,4 @@ export default function Analytics() {
     </motion.div>
   );
 }
+

@@ -50,30 +50,32 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
-      <div className="absolute inset-0 dot-pattern opacity-20" />
+    <div className="relative min-h-screen bg-surface-950 flex items-center justify-center px-4 py-12 overflow-hidden">
+      {/* Hero Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-b from-aegis-500/20 via-purple-500/10 to-transparent blur-[120px] pointer-events-none" />
+      <div className="absolute inset-0 dot-pattern opacity-20 pointer-events-none" />
 
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="relative w-full max-w-md"
+        className="relative z-10 w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-6">
-            <div className="p-2 rounded-xl bg-aegis-600/20">
-              <Shield size={28} className="text-aegis-400" />
+          <Link to="/" className="inline-flex items-center gap-2.5 mb-6 group">
+            <div className="p-2.5 rounded-2xl bg-aegis-500/10 border border-aegis-500/20 text-aegis-600 dark:text-aegis-400 group-hover:scale-105 transition-transform">
+              <Shield size={28} />
             </div>
-            <span className="text-2xl font-bold text-white">{APP_NAME}</span>
+            <span className="text-2xl font-black text-surface-900 dark:text-white tracking-tight">{APP_NAME}</span>
           </Link>
-          <h1 className="text-2xl font-bold text-white mb-2">Create your account</h1>
-          <p className="text-surface-400 text-sm">Start analyzing cases with AI intelligence</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-white tracking-tight mb-1">Create your account</h1>
+          <p className="text-surface-600 dark:text-surface-400 text-sm font-normal">Start analyzing cases with AI intelligence</p>
         </div>
 
-        <div className="rounded-2xl bg-surface-900/50 border border-surface-700/30 backdrop-blur-sm p-8">
+        <div className="rounded-3xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] backdrop-blur-xl p-8 shadow-elevated-card">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
+              <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-xs font-semibold text-red-600 dark:text-red-400">
                 {error}
               </div>
             )}
@@ -128,10 +130,10 @@ export default function Signup() {
             </RadialGlowButton>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-surface-400">
+          <div className="mt-6 text-center pt-5 border-t border-surface-200 dark:border-white/5">
+            <p className="text-xs font-medium text-surface-600 dark:text-surface-400">
               Already have an account?{' '}
-              <Link to="/login" className="text-aegis-400 hover:text-aegis-300 font-medium transition-colors">
+              <Link to="/login" className="text-aegis-600 dark:text-aegis-400 hover:text-aegis-500 font-bold transition-colors">
                 Sign in
               </Link>
             </p>
@@ -141,3 +143,4 @@ export default function Signup() {
     </div>
   );
 }
+

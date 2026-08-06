@@ -61,55 +61,55 @@ export default function Reports() {
     <motion.div {...pageTransition} className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Full Report History & Decision Intelligence</h1>
-        <p className="text-surface-400 text-sm mt-1">Search, filter, analyze, and export complete multi-agent AI reports</p>
+        <h1 className="text-2xl font-extrabold text-surface-900 dark:text-white tracking-tight">Full Report History & Decision Intelligence</h1>
+        <p className="text-surface-600 dark:text-surface-400 text-sm mt-1">Search, filter, analyze, and export complete multi-agent AI reports</p>
       </div>
 
       {/* Controls Bar: Search, Filters, Sorting */}
-      <div className="rounded-2xl bg-surface-900/50 border border-surface-700/30 p-4 backdrop-blur-sm flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-4 backdrop-blur-xl shadow-subtle-card flex flex-wrap items-center justify-between gap-4">
         {/* Search */}
         <div className="relative flex-1 min-w-[240px]">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400 dark:text-surface-500" />
           <input
             type="text"
             placeholder="Search reports by title, keywords, or summary..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-surface-950/60 border border-surface-800/40 text-xs text-white placeholder-surface-500 focus:outline-none focus:border-aegis-500/50 transition-colors"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 text-xs font-medium text-surface-900 dark:text-white placeholder-surface-400 dark:placeholder-surface-500 focus:outline-none focus:border-aegis-500 transition-colors"
           />
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
           {/* Filter by Decision */}
-          <div className="flex items-center gap-2 bg-surface-950/60 border border-surface-800/40 rounded-xl px-3 py-1.5 text-xs text-surface-300">
-            <Filter size={14} className="text-aegis-400 shrink-0" />
+          <div className="flex items-center gap-2 bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 rounded-xl px-3 py-1.5 text-xs text-surface-600 dark:text-surface-300 font-medium">
+            <Filter size={14} className="text-aegis-600 dark:text-aegis-400 shrink-0" />
             <span>Decision:</span>
             <select
               value={decisionFilter}
               onChange={(e) => setDecisionFilter(e.target.value)}
-              className="bg-transparent text-white focus:outline-none cursor-pointer"
+              className="bg-transparent text-surface-900 dark:text-white font-semibold focus:outline-none cursor-pointer"
             >
-              <option value="all" className="bg-surface-900 text-white">All Decisions</option>
-              <option value="approved" className="bg-surface-900 text-emerald-400">Approved</option>
-              <option value="escalate" className="bg-surface-900 text-amber-400">Escalated</option>
-              <option value="needs_review" className="bg-surface-900 text-indigo-400">Needs Review</option>
-              <option value="rejected" className="bg-surface-900 text-red-400">Rejected</option>
+              <option value="all" className="bg-white dark:bg-[#111318] text-surface-900 dark:text-white">All Decisions</option>
+              <option value="approved" className="bg-white dark:bg-[#111318] text-emerald-600 dark:text-emerald-400">Approved</option>
+              <option value="escalate" className="bg-white dark:bg-[#111318] text-amber-600 dark:text-amber-400">Escalated</option>
+              <option value="needs_review" className="bg-white dark:bg-[#111318] text-indigo-600 dark:text-indigo-400">Needs Review</option>
+              <option value="rejected" className="bg-white dark:bg-[#111318] text-red-600 dark:text-red-400">Rejected</option>
             </select>
           </div>
 
           {/* Sort By */}
-          <div className="flex items-center gap-2 bg-surface-950/60 border border-surface-800/40 rounded-xl px-3 py-1.5 text-xs text-surface-300">
-            <ArrowUpDown size={14} className="text-indigo-400 shrink-0" />
+          <div className="flex items-center gap-2 bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 rounded-xl px-3 py-1.5 text-xs text-surface-600 dark:text-surface-300 font-medium">
+            <ArrowUpDown size={14} className="text-indigo-600 dark:text-indigo-400 shrink-0" />
             <span>Sort:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-transparent text-white focus:outline-none cursor-pointer"
+              className="bg-transparent text-surface-900 dark:text-white font-semibold focus:outline-none cursor-pointer"
             >
-              <option value="newest" className="bg-surface-900 text-white">Newest First</option>
-              <option value="oldest" className="bg-surface-900 text-white">Oldest First</option>
-              <option value="highest_risk" className="bg-surface-900 text-white">Highest Risk</option>
-              <option value="highest_confidence" className="bg-surface-900 text-white">Highest Confidence</option>
+              <option value="newest" className="bg-white dark:bg-[#111318] text-surface-900 dark:text-white">Newest First</option>
+              <option value="oldest" className="bg-white dark:bg-[#111318] text-surface-900 dark:text-white">Oldest First</option>
+              <option value="highest_risk" className="bg-white dark:bg-[#111318] text-surface-900 dark:text-white">Highest Risk</option>
+              <option value="highest_confidence" className="bg-white dark:bg-[#111318] text-surface-900 dark:text-white">Highest Confidence</option>
             </select>
           </div>
         </div>
@@ -130,10 +130,10 @@ export default function Reports() {
           ))}
         </motion.div>
       ) : (
-        <div className="rounded-2xl bg-surface-900/30 border border-surface-700/20 p-12 text-center">
-          <FileText size={40} className="mx-auto mb-4 text-surface-600" />
-          <h3 className="text-lg font-semibold text-surface-300 mb-2">No matching reports found</h3>
-          <p className="text-sm text-surface-500">Try adjusting your search terms or decision filters</p>
+        <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-12 text-center shadow-subtle-card">
+          <FileText size={40} className="mx-auto mb-4 text-surface-400 dark:text-surface-600" />
+          <h3 className="text-lg font-bold text-surface-900 dark:text-surface-200 mb-2">No matching reports found</h3>
+          <p className="text-sm text-surface-500 font-normal">Try adjusting your search terms or decision filters</p>
         </div>
       )}
 
@@ -154,3 +154,4 @@ export default function Reports() {
     </motion.div>
   );
 }
+

@@ -39,21 +39,24 @@ const steps = [
 
 export default function Landing() {
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
+      {/* Hero Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-aegis-500/15 via-purple-500/10 to-transparent blur-[120px] pointer-events-none" />
+
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
         <HeroScene />
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <motion.div variants={staggerContainer} initial="hidden" animate="visible">
             <motion.div variants={staggerItem} className="mb-6">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-aegis-600/10 border border-aegis-500/20 text-aegis-400 text-xs font-medium">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-aegis-500/10 border border-aegis-500/20 text-aegis-600 dark:text-aegis-400 text-xs font-semibold tracking-wide">
                 <Shield size={14} />
                 {APP_TAGLINE}
               </span>
             </motion.div>
             <motion.h1
               variants={staggerItem}
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-balance"
+              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6 text-balance text-surface-900 dark:text-white"
             >
               Intelligent Case{' '}
               <span className="gradient-text">Analysis</span>{' '}
@@ -61,7 +64,7 @@ export default function Landing() {
             </motion.h1>
             <motion.p
               variants={staggerItem}
-              className="text-lg sm:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+              className="text-lg sm:text-xl text-surface-600 dark:text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal"
             >
               {APP_DESCRIPTION}
             </motion.p>
@@ -81,17 +84,17 @@ export default function Landing() {
         </div>
 
         {/* Gradient fade at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface-950 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface-950 to-transparent pointer-events-none" />
       </section>
 
       {/* Features */}
       <section id="features" className="py-24 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-surface-900 dark:text-white mb-4">
               Built for <span className="gradient-text">Critical Decisions</span>
             </h2>
-            <p className="text-surface-400 max-w-2xl mx-auto">
+            <p className="text-surface-600 dark:text-surface-400 max-w-2xl mx-auto font-normal text-base">
               Every feature is designed to give you confidence in your most important analyses.
             </p>
           </ScrollReveal>
@@ -99,12 +102,12 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((feature, index) => (
               <ScrollReveal key={feature.title} delay={index * 0.1}>
-                <div className="group rounded-2xl bg-surface-900/30 border border-surface-700/20 p-6 hover:border-aegis-500/20 transition-all duration-300 h-full">
-                  <div className="p-2.5 rounded-xl bg-aegis-500/10 inline-flex mb-4 group-hover:bg-aegis-500/15 transition-colors">
-                    <feature.icon size={22} className="text-aegis-400" />
+                <div className="group rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-6 hover:border-aegis-500/40 transition-all duration-200 h-full shadow-subtle-card hover:shadow-elevated-card">
+                  <div className="p-3 rounded-xl bg-aegis-500/10 border border-aegis-500/20 inline-flex mb-4 group-hover:bg-aegis-500/20 transition-colors">
+                    <feature.icon size={22} className="text-aegis-600 dark:text-aegis-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-surface-100 mb-2">{feature.title}</h3>
-                  <p className="text-sm text-surface-400 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-lg font-bold text-surface-900 dark:text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-surface-600 dark:text-surface-400 leading-relaxed font-normal">{feature.description}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -114,30 +117,30 @@ export default function Landing() {
 
       {/* How It Works */}
       <section id="how-it-works" className="py-24 relative">
-        <div className="absolute inset-0 dot-pattern opacity-30" />
+        <div className="absolute inset-0 dot-pattern opacity-30 pointer-events-none" />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-surface-900 dark:text-white mb-4">
               How <span className="gradient-text">{APP_NAME}</span> Works
             </h2>
-            <p className="text-surface-400 max-w-2xl mx-auto">
+            <p className="text-surface-600 dark:text-surface-400 max-w-2xl mx-auto text-base">
               From case submission to actionable report — in four simple steps.
             </p>
           </ScrollReveal>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {steps.map((step, index) => (
-              <ScrollReveal key={step.step} delay={index * 0.15}>
-                <div className="flex items-start gap-6 rounded-2xl bg-surface-900/30 border border-surface-700/20 p-6">
-                  <div className="shrink-0 h-12 w-12 rounded-xl bg-aegis-600/15 flex items-center justify-center text-aegis-400 font-bold text-lg">
+              <ScrollReveal key={step.step} delay={index * 0.12}>
+                <div className="flex items-start gap-6 rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-6 shadow-subtle-card">
+                  <div className="shrink-0 h-12 w-12 rounded-xl bg-aegis-500/10 border border-aegis-500/20 flex items-center justify-center text-aegis-600 dark:text-aegis-400 font-extrabold text-lg">
                     {step.step}
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-surface-100 mb-1">{step.title}</h3>
-                    <p className="text-sm text-surface-400">{step.description}</p>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-surface-900 dark:text-white mb-1">{step.title}</h3>
+                    <p className="text-sm text-surface-600 dark:text-surface-400 font-normal">{step.description}</p>
                   </div>
                   {index < steps.length - 1 && (
-                    <CheckCircle size={20} className="text-emerald-500/40 shrink-0 ml-auto mt-1" />
+                    <CheckCircle size={20} className="text-emerald-500/50 shrink-0 ml-auto mt-1" />
                   )}
                 </div>
               </ScrollReveal>
@@ -150,11 +153,11 @@ export default function Landing() {
       <section id="about" className="py-24">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <ScrollReveal>
-            <div className="rounded-3xl bg-gradient-to-br from-aegis-600/10 via-surface-900/50 to-surface-900/30 border border-aegis-500/15 p-12">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <div className="rounded-3xl bg-gradient-to-br from-aegis-600/10 via-surface-900 to-indigo-600/10 border border-aegis-500/20 p-12 shadow-elevated-card">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-surface-900 dark:text-white mb-4">
                 Ready to Transform Your Analysis?
               </h2>
-              <p className="text-surface-400 mb-8 max-w-xl mx-auto">
+              <p className="text-surface-600 dark:text-surface-400 mb-8 max-w-xl mx-auto text-base">
                 Join teams already using {APP_NAME} to make faster, more confident decisions with multi-agent intelligence.
               </p>
               <Link to="/signup">
@@ -169,3 +172,4 @@ export default function Landing() {
     </div>
   );
 }
+

@@ -29,10 +29,15 @@ router.use('/uploads', uploadRoutes);
 router.use('/workflow', workflowRoutes);
 router.use('/users', userRoutes);
 
-// Health check
+// Health & Root Status
+router.get('/', (req, res) => {
+  res.json({ name: 'Verisight AI Backend API', status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
+});
+
 router.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
 
 // Temporary test endpoint under /api/test
 router.post('/test', async (req, res) => {

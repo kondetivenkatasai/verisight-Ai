@@ -5,25 +5,35 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('aegis_token'));
+  const [token, setToken] = useState(() => localStorage.getItem('aegis_token') || sessionStorage.getItem('aegis_token'));
   const [loading, setLoading] = useState(true);
+
+  const clearAuth = useCallback(() => {
+    localStorage.removeItem('aegis_token');
+    sessionStorage.removeItem('aegis_token');
+    setToken(null);
+    setUser(null);
+  }, []);
 
   const fetchUser = useCallback(async () => {
     if (!token) {
+      setUser(null);
       setLoading(false);
       return;
     }
     try {
       const res = await authService.getMe();
-      setUser(res.data.user);
+      if (res.data?.user) {
+        setUser(res.data.user);
+      } else {
+        clearAuth();
+      }
     } catch {
-      localStorage.removeItem('aegis_token');
-      setToken(null);
-      setUser(null);
+      clearAuth();
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, [token, clearAuth]);
 
   useEffect(() => {
     fetchUser();
@@ -48,9 +58,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('aegis_token');
-    setToken(null);
-    setUser(null);
+    clearAuth();
   };
 
   const value = {
@@ -60,7 +68,7 @@ export function AuthProvider({ children }) {
     login,
     signup,
     logout,
-    isAuthenticated: !!user,
+    isAuthenticated: !!token && !!user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

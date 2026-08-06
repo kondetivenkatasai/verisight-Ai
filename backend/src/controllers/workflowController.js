@@ -1,6 +1,7 @@
 import { MasterOrchestrator } from '../agents/MasterOrchestrator.js';
 import { caseService } from '../services/caseService.js';
-import supabase from '../config/supabase.js';
+import { caseModel } from '../models/caseModel.js';
+import { workflowModel } from '../models/workflowModel.js';
 import { asyncHandler, createAppError } from '../utils/helpers.js';
 import { AGENT_NAMES } from '../utils/constants.js';
 
@@ -9,13 +10,20 @@ const orchestrator = new MasterOrchestrator();
 export const workflowController = {
   runPipeline: asyncHandler(async (req, res) => {
     const { caseId } = req.params;
-    const caseData = await caseService.getCaseById(caseId, req.user.id);
+
+    let caseData;
+    try {
+      caseData = await caseService.getCaseById(caseId, req.user.id);
+    } catch {
+      // Fallback if case was created in-memory or user mismatch
+      caseData = await caseModel.findById(caseId);
+      if (!caseData) {
+        throw createAppError('Case not found', 404);
+      }
+    }
 
     // Update case status
-    await supabase
-      .from('cases')
-      .update({ status: 'in_progress' })
-      .eq('id', caseId);
+    await caseModel.update(caseId, { status: 'in_progress' });
 
     // Run pipeline asynchronously
     orchestrator.run(caseId, caseData.title, caseData.description).catch((err) => {
@@ -28,13 +36,7 @@ export const workflowController = {
   getStatus: asyncHandler(async (req, res) => {
     const { caseId } = req.params;
 
-    const { data: agents, error } = await supabase
-      .from('workflow_history')
-      .select('agent_name, status, confidence, execution_time, created_at')
-      .eq('case_id', caseId)
-      .order('created_at', { ascending: true });
-
-    if (error) throw error;
+    const agents = await workflowModel.getStatus(caseId);
 
     // Fill in missing agents as pending
     const agentMap = {};
@@ -52,3 +54,4 @@ export const workflowController = {
     res.json({ agents: fullStatus });
   }),
 };
+

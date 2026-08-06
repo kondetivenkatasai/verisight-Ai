@@ -19,13 +19,14 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950">
+    <div className="min-h-screen bg-surface-950 text-surface-900 dark:text-white transition-colors duration-200">
       <Sidebar />
       <main className="ml-64 min-h-screen">
-        <div className="p-6 lg:p-8">
+        <div className="p-6 lg:p-8 max-w-7xl mx-auto">
           <Outlet />
         </div>
       </main>
     </div>
   );
 }
+

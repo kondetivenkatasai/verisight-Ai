@@ -5,7 +5,9 @@ import { DecisionAgent } from './DecisionAgent.js';
 import { VerificationAgent } from './VerificationAgent.js';
 import { ReportAgent } from './ReportAgent.js';
 import { getCaseFileAnalysis } from '../utils/fileHelper.js';
-import supabase from '../config/supabase.js';
+import { caseModel } from '../models/caseModel.js';
+import { reportModel } from '../models/reportModel.js';
+import { workflowModel } from '../models/workflowModel.js';
 import logger from '../utils/logger.js';
 
 export class MasterOrchestrator {
@@ -87,7 +89,7 @@ export class MasterOrchestrator {
       }
       await this.saveResult(caseId, results.report);
 
-      // Save final Decision Intelligence report to Supabase reports table
+      // Save final Decision Intelligence report
       if (results.report && results.report.data) {
         const fullReportPayload = {
           ...results.report.data,
@@ -105,19 +107,12 @@ export class MasterOrchestrator {
           recommendation: JSON.stringify(fullReportPayload),
         };
 
-        const { error: reportErr } = await supabase.from('reports').insert(reportData);
-        if (reportErr) {
-          logger.warn(`[MasterOrchestrator] Failed to save report to Supabase: ${reportErr.message}`);
-        } else {
-          logger.info(`[MasterOrchestrator] Final Decision Intelligence report persisted to Supabase for case: ${caseId}`);
-        }
+        await reportModel.create(reportData);
+        logger.info(`[MasterOrchestrator] Final Decision Intelligence report persisted for case: ${caseId}`);
       }
 
       // Update case status to completed
-      await supabase
-        .from('cases')
-        .update({ status: 'completed' })
-        .eq('id', caseId);
+      await caseModel.update(caseId, { status: 'completed' });
 
       logger.info(`[MasterOrchestrator] 🎉 Dynamic AI pipeline completed successfully for case: "${caseTitle}"`);
       return { success: true, results };
@@ -128,61 +123,11 @@ export class MasterOrchestrator {
   }
 
   async updateStatus(caseId, agentName, status) {
-    try {
-      const { data: existing } = await supabase
-        .from('workflow_history')
-        .select('id')
-        .eq('case_id', caseId)
-        .eq('agent_name', agentName)
-        .maybeSingle();
-
-      if (existing) {
-        await supabase
-          .from('workflow_history')
-          .update({ status })
-          .eq('id', existing.id);
-      } else {
-        await supabase
-          .from('workflow_history')
-          .insert({
-            case_id: caseId,
-            agent_name: agentName,
-            status,
-            confidence: 0,
-            execution_time: 0,
-          });
-      }
-    } catch (err) {
-      logger.warn(`[MasterOrchestrator] Failed to update agent status for ${agentName}: ${err.message}`);
-    }
+    await workflowModel.updateStatus(caseId, agentName, status);
   }
 
   async saveResult(caseId, result) {
-    try {
-      const { data: existing } = await supabase
-        .from('workflow_history')
-        .select('id')
-        .eq('case_id', caseId)
-        .eq('agent_name', result.agent_name)
-        .maybeSingle();
-
-      const updatePayload = {
-        status: result.status,
-        confidence: result.confidence || 90,
-        execution_time: result.execution_time || 200,
-      };
-
-      if (existing) {
-        await supabase.from('workflow_history').update(updatePayload).eq('id', existing.id);
-      } else {
-        await supabase.from('workflow_history').insert({
-          case_id: caseId,
-          agent_name: result.agent_name,
-          ...updatePayload,
-        });
-      }
-    } catch (err) {
-      logger.warn(`[MasterOrchestrator] Failed to save agent result for ${result.agent_name}: ${err.message}`);
-    }
+    await workflowModel.saveResult(caseId, result);
   }
 }
+

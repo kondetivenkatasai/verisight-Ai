@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, CheckCircle, Clock, AlertTriangle, Plus, GitBranch, FileText, BarChart3, ChevronRight } from 'lucide-react';
+import { Briefcase, CheckCircle, Clock, AlertTriangle, Plus, GitBranch, FileText, BarChart3, ChevronRight, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/ui/Button';
 import RadialGlowButton from '@/ui/RadialGlowButton';
@@ -32,8 +32,12 @@ export default function Dashboard() {
       {/* Header & Quick Launch CTA */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Decision Intelligence Dashboard</h1>
-          <p className="text-surface-400 text-sm mt-1">Real-time overview of active investigations, agent performance, and risk metrics</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-white tracking-tight">
+            Decision Intelligence Dashboard
+          </h1>
+          <p className="text-surface-600 dark:text-surface-400 text-sm mt-1 font-normal">
+            Real-time overview of active investigations, agent performance, and risk metrics
+          </p>
         </div>
         <RadialGlowButton icon={Plus} onClick={() => navigate('/create-case')} size="md">
           New Investigation
@@ -53,71 +57,71 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Quick Actions Panel */}
-      <div className="rounded-2xl bg-surface-900/50 border border-surface-700/30 p-6 backdrop-blur-sm">
-        <h2 className="text-sm font-bold text-surface-300 uppercase tracking-wider mb-4">Quick Actions</h2>
+      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-6 backdrop-blur-xl shadow-subtle-card">
+        <h2 className="text-xs font-bold text-surface-600 dark:text-surface-400 uppercase tracking-wider mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <button
             onClick={() => navigate('/create-case')}
-            className="flex items-center justify-between p-4 rounded-xl bg-surface-950/60 border border-surface-800/40 hover:border-aegis-500/40 hover:bg-surface-850/40 transition-all text-left group"
+            className="flex items-center justify-between p-4 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 hover:border-aegis-500/40 hover:bg-surface-200/60 dark:hover:bg-surface-800/80 transition-all text-left group cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-aegis-500/10 text-aegis-400">
+              <div className="p-2.5 rounded-xl bg-aegis-500/10 text-aegis-600 dark:text-aegis-400 border border-aegis-500/20">
                 <Plus size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Create Case</p>
-                <p className="text-[11px] text-surface-400">Submit new input</p>
+                <p className="text-xs font-bold text-surface-900 dark:text-white">Create Case</p>
+                <p className="text-[11px] text-surface-500">Submit new input</p>
               </div>
             </div>
-            <ChevronRight size={14} className="text-surface-500 group-hover:text-aegis-400 transition-colors" />
+            <ChevronRight size={14} className="text-surface-400 dark:text-surface-500 group-hover:text-aegis-600 dark:group-hover:text-aegis-400 group-hover:translate-x-0.5 transition-all" />
           </button>
 
           <button
             onClick={() => navigate('/workflow')}
-            className="flex items-center justify-between p-4 rounded-xl bg-surface-950/60 border border-surface-800/40 hover:border-indigo-500/40 hover:bg-surface-850/40 transition-all text-left group"
+            className="flex items-center justify-between p-4 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 hover:border-indigo-500/40 hover:bg-surface-200/60 dark:hover:bg-surface-800/80 transition-all text-left group cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400">
+              <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
                 <GitBranch size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">AI Workflow</p>
-                <p className="text-[11px] text-surface-400">Run agent pipeline</p>
+                <p className="text-xs font-bold text-surface-900 dark:text-white">AI Workflow</p>
+                <p className="text-[11px] text-surface-500">Run agent pipeline</p>
               </div>
             </div>
-            <ChevronRight size={14} className="text-surface-500 group-hover:text-indigo-400 transition-colors" />
+            <ChevronRight size={14} className="text-surface-400 dark:text-surface-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
           </button>
 
           <button
             onClick={() => navigate('/reports')}
-            className="flex items-center justify-between p-4 rounded-xl bg-surface-950/60 border border-surface-800/40 hover:border-emerald-500/40 hover:bg-surface-850/40 transition-all text-left group"
+            className="flex items-center justify-between p-4 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 hover:border-emerald-500/40 hover:bg-surface-200/60 dark:hover:bg-surface-800/80 transition-all text-left group cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400">
+              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                 <FileText size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Reports Library</p>
-                <p className="text-[11px] text-surface-400">Search & export</p>
+                <p className="text-xs font-bold text-surface-900 dark:text-white">Reports Library</p>
+                <p className="text-[11px] text-surface-500">Search & export</p>
               </div>
             </div>
-            <ChevronRight size={14} className="text-surface-500 group-hover:text-emerald-400 transition-colors" />
+            <ChevronRight size={14} className="text-surface-400 dark:text-surface-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
           </button>
 
           <button
             onClick={() => navigate('/analytics')}
-            className="flex items-center justify-between p-4 rounded-xl bg-surface-950/60 border border-surface-800/40 hover:border-purple-500/40 hover:bg-surface-850/40 transition-all text-left group"
+            className="flex items-center justify-between p-4 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 hover:border-purple-500/40 hover:bg-surface-200/60 dark:hover:bg-surface-800/80 transition-all text-left group cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-purple-500/10 text-purple-400">
+              <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
                 <BarChart3 size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Analytics</p>
-                <p className="text-[11px] text-surface-400">System insights</p>
+                <p className="text-xs font-bold text-surface-900 dark:text-white">Analytics</p>
+                <p className="text-[11px] text-surface-500">System insights</p>
               </div>
             </div>
-            <ChevronRight size={14} className="text-surface-500 group-hover:text-purple-400 transition-colors" />
+            <ChevronRight size={14} className="text-surface-400 dark:text-surface-500 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-0.5 transition-all" />
           </button>
         </div>
       </div>
@@ -125,12 +129,13 @@ export default function Dashboard() {
       {/* Recent Investigations List */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-white">Recent Investigations</h2>
+          <h2 className="text-lg font-extrabold text-surface-900 dark:text-white tracking-tight">Recent Investigations</h2>
           <button
             onClick={() => fetchCases()}
-            className="text-xs font-medium text-aegis-400 hover:text-aegis-300 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-aegis-600 dark:text-aegis-400 hover:text-aegis-500 transition-colors cursor-pointer"
           >
-            Refresh
+            <RefreshCw size={13} />
+            <span>Refresh</span>
           </button>
         </div>
 
@@ -154,10 +159,10 @@ export default function Dashboard() {
             ))}
           </motion.div>
         ) : (
-          <div className="rounded-2xl bg-surface-900/30 border border-surface-700/20 p-12 text-center">
-            <Briefcase size={40} className="mx-auto mb-4 text-surface-600" />
-            <h3 className="text-lg font-semibold text-surface-300 mb-2">No active investigations</h3>
-            <p className="text-sm text-surface-500 mb-6">Create your first case to initiate multi-agent AI analysis</p>
+          <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/[0.08] p-12 text-center shadow-subtle-card">
+            <Briefcase size={40} className="mx-auto mb-4 text-surface-400 dark:text-surface-600" />
+            <h3 className="text-lg font-bold text-surface-900 dark:text-surface-200 mb-2">No active investigations</h3>
+            <p className="text-sm text-surface-500 mb-6 font-normal">Create your first case to initiate multi-agent AI analysis</p>
             <Button onClick={() => navigate('/create-case')} icon={Plus}>
               Create Case
             </Button>
@@ -167,3 +172,4 @@ export default function Dashboard() {
     </motion.div>
   );
 }
+

@@ -52,12 +52,12 @@ export default function FileUpload({ onFilesSelected, maxFiles = 5, accept = '*'
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={`
-          relative rounded-xl border-2 border-dashed p-8 text-center
-          transition-all duration-200 cursor-pointer
+          relative rounded-2xl border-2 border-dashed p-8 text-center
+          transition-all duration-200 cursor-pointer backdrop-blur-md
           ${
             dragActive
-              ? 'border-aegis-500 bg-aegis-500/5'
-              : 'border-surface-700/50 hover:border-surface-600 bg-surface-900/30'
+              ? 'border-aegis-500 bg-aegis-500/10'
+              : 'border-surface-300 dark:border-white/10 hover:border-aegis-500/50 bg-surface-100 dark:bg-surface-800/40'
           }
         `}
       >
@@ -68,11 +68,13 @@ export default function FileUpload({ onFilesSelected, maxFiles = 5, accept = '*'
           onChange={(e) => handleFiles(e.target.files)}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
-        <Upload size={28} className="mx-auto mb-3 text-surface-500" />
-        <p className="text-sm text-surface-300 mb-1">
-          <span className="text-aegis-400 font-medium">Click to upload</span> or drag and drop
+        <div className="p-3 rounded-2xl bg-aegis-500/10 border border-aegis-500/20 inline-flex mb-3">
+          <Upload size={24} className="text-aegis-600 dark:text-aegis-400" />
+        </div>
+        <p className="text-xs sm:text-sm text-surface-700 dark:text-surface-300 mb-1 font-semibold">
+          <span className="text-aegis-600 dark:text-aegis-400 font-bold">Click to upload</span> or drag and drop
         </p>
-        <p className="text-xs text-surface-500">Up to {maxFiles} files</p>
+        <p className="text-[11px] text-surface-500 font-medium">Up to {maxFiles} files</p>
       </div>
 
       {files.length > 0 && (
@@ -80,16 +82,17 @@ export default function FileUpload({ onFilesSelected, maxFiles = 5, accept = '*'
           {files.map((file, index) => (
             <div
               key={`${file.name}-${index}`}
-              className="flex items-center gap-3 rounded-lg bg-surface-900/50 border border-surface-700/30 px-3 py-2"
+              className="flex items-center gap-3 rounded-xl bg-surface-100 dark:bg-surface-800/40 border border-surface-200 dark:border-white/5 px-3.5 py-2.5 shadow-subtle-card"
             >
-              <FileIcon size={16} className="text-aegis-400 shrink-0" />
+              <FileIcon size={16} className="text-aegis-600 dark:text-aegis-400 shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-surface-200 truncate">{file.name}</p>
-                <p className="text-xs text-surface-500">{formatSize(file.size)}</p>
+                <p className="text-xs font-bold text-surface-900 dark:text-white truncate">{file.name}</p>
+                <p className="text-[11px] font-medium text-surface-500">{formatSize(file.size)}</p>
               </div>
               <button
+                type="button"
                 onClick={() => removeFile(index)}
-                className="p-1 rounded hover:bg-surface-800 text-surface-500 hover:text-red-400 transition-colors"
+                className="p-1 rounded-lg hover:bg-red-500/10 text-surface-400 hover:text-red-500 transition-colors cursor-pointer"
               >
                 <X size={14} />
               </button>
@@ -100,3 +103,4 @@ export default function FileUpload({ onFilesSelected, maxFiles = 5, accept = '*'
     </div>
   );
 }
+

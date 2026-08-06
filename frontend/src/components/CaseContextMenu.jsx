@@ -14,61 +14,61 @@ export default function CaseContextMenu({ position, onClose, onOpen, onRename, o
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.15 }}
+        initial={{ opacity: 0, scale: 0.95, y: -4 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: -4 }}
+        transition={{ duration: 0.12, ease: 'easeOut' }}
         style={{ top: position.y, left: position.x }}
-        className="fixed z-50 min-w-[180px] bg-surface-900 border border-surface-700/60 rounded-xl shadow-2xl p-1.5 backdrop-blur-xl text-xs"
+        className="fixed z-50 min-w-[190px] bg-surface-900 border border-surface-300 dark:border-white/10 rounded-2xl shadow-elevated-card p-1.5 backdrop-blur-xl text-xs font-medium"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={() => { onOpen(); onClose(); }}
-          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-200 hover:bg-aegis-600/20 hover:text-white rounded-lg transition-colors"
+          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-700 dark:text-surface-200 hover:bg-aegis-500/10 hover:text-aegis-600 dark:hover:text-aegis-400 rounded-xl transition-colors cursor-pointer"
         >
-          <ExternalLink size={14} className="text-aegis-400" />
+          <ExternalLink size={14} className="text-aegis-600 dark:text-aegis-400" />
           <span>Open Investigation</span>
         </button>
 
         <button
           onClick={() => { onRename(); onClose(); }}
-          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-200 hover:bg-surface-800 hover:text-white rounded-lg transition-colors"
+          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800/80 hover:text-surface-900 dark:hover:text-white rounded-xl transition-colors cursor-pointer"
         >
-          <Edit3 size={14} className="text-indigo-400" />
+          <Edit3 size={14} className="text-indigo-600 dark:text-indigo-400" />
           <span>Rename</span>
         </button>
 
         <button
           onClick={() => { onDuplicate(); onClose(); }}
-          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-200 hover:bg-surface-800 hover:text-white rounded-lg transition-colors"
+          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800/80 hover:text-surface-900 dark:hover:text-white rounded-xl transition-colors cursor-pointer"
         >
-          <Copy size={14} className="text-purple-400" />
+          <Copy size={14} className="text-purple-600 dark:text-purple-400" />
           <span>Duplicate</span>
         </button>
 
-        <div className="my-1 border-t border-surface-800/50" />
+        <div className="my-1 border-t border-surface-200 dark:border-white/5" />
 
         <button
           onClick={() => { onExportPDF(); onClose(); }}
-          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-200 hover:bg-surface-800 hover:text-white rounded-lg transition-colors"
+          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800/80 hover:text-surface-900 dark:hover:text-white rounded-xl transition-colors cursor-pointer"
         >
-          <FileText size={14} className="text-emerald-400" />
+          <FileText size={14} className="text-emerald-600 dark:text-emerald-400" />
           <span>Export PDF</span>
         </button>
 
         <button
           onClick={() => { onExportJSON(); onClose(); }}
-          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-200 hover:bg-surface-800 hover:text-white rounded-lg transition-colors"
+          className="flex items-center gap-2.5 w-full px-3 py-2 text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800/80 hover:text-surface-900 dark:hover:text-white rounded-xl transition-colors cursor-pointer"
         >
-          <Download size={14} className="text-amber-400" />
+          <Download size={14} className="text-amber-600 dark:text-amber-400" />
           <span>Export JSON</span>
         </button>
 
-        <div className="my-1 border-t border-surface-800/50" />
+        <div className="my-1 border-t border-surface-200 dark:border-white/5" />
 
         <button
           onClick={() => { onDelete(); onClose(); }}
-          className="flex items-center gap-2.5 w-full px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+          className="flex items-center gap-2.5 w-full px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
         >
           <Trash2 size={14} />
           <span>Delete Case</span>
@@ -77,3 +77,4 @@ export default function CaseContextMenu({ position, onClose, onOpen, onRename, o
     </AnimatePresence>
   );
 }
+

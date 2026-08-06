@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 import env from './env.js';
 
 const supabaseUrl = env.SUPABASE_URL || process.env.SUPABASE_URL;
@@ -18,6 +19,9 @@ export const supabase = createClient(
       autoRefreshToken: false,
       persistSession: false,
     },
+    realtime: {
+      transport: WebSocket,
+    },
   }
 );
 
@@ -30,19 +34,27 @@ export const supabaseAnon = createClient(
       autoRefreshToken: false,
       persistSession: false,
     },
+    realtime: {
+      transport: WebSocket,
+    },
   }
 );
+
 
 /**
  * Tests database connectivity on server startup.
  * Logs "Supabase Connected Successfully" on success, or a detailed error without crashing.
  */
 export async function testConnection() {
+  if (!supabaseUrl || supabaseUrl.includes('placeholder')) {
+    console.log('ℹ️ Operating in Local In-Memory Fallback Mode (No live Supabase credentials)');
+    return false;
+  }
+
   try {
     const { data, error } = await supabase.from('users').select('id').limit(1);
 
     if (error) {
-      // PGRST205 / 42P01 / schema cache: table not created yet, but connection to Supabase API succeeded
       if (
         error.code === '42P01' ||
         error.code === 'PGRST205' ||
@@ -55,19 +67,16 @@ export async function testConnection() {
 
       console.error('❌ Supabase Connection Failed:');
       console.error('   Message:', error.message);
-      console.error('   Code:', error.code || 'N/A');
-      console.error('   Details:', error.details || 'Check your SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in backend/.env');
       return false;
     }
 
     console.log('Supabase Connected Successfully');
     return true;
   } catch (err) {
-    console.error('❌ Supabase Connection Exception:');
-    console.error('   Message:', err.message);
-    console.error('   Stack:', err.stack);
+    console.error('❌ Supabase Connection Exception:', err.message);
     return false;
   }
 }
 
 export default supabase;
+
