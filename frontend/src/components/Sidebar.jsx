@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -8,9 +9,8 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  Smartphone,
-  ChevronDown,
-  Bell
+  Sun,
+  Moon,
 } from 'lucide-react';
 import VerisightLogo from '@/ui/VerisightLogo';
 import { sidebarVariants } from '@/animations/variants';
@@ -27,7 +27,7 @@ const iconMap = {
 };
 
 const navItems = [
-  { label: 'Overview', path: '/dashboard', icon: 'LayoutDashboard' },
+  { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard' },
   { label: 'Create Case', path: '/create-case', icon: 'Plus' },
   { label: 'Workflow', path: '/workflow', icon: 'GitBranch' },
   { label: 'Reports', path: '/reports', icon: 'FileText' },
@@ -38,6 +38,7 @@ const navItems = [
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isDark, setIsDark] = useState(true);
 
   const handleLogout = () => {
     logout();
@@ -49,30 +50,19 @@ export default function Sidebar() {
       variants={sidebarVariants}
       initial="hidden"
       animate="visible"
-      className="fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-150 z-40 flex flex-col justify-between"
+      className="fixed left-0 top-0 bottom-0 w-64 bg-[#0a0f1d] border-r border-[#1a233a] z-40 flex flex-col justify-between"
     >
       <div>
-        {/* Logo */}
+        {/* Logo Header */}
         <div className="p-6">
           <div className="flex items-center gap-3">
             <VerisightLogo size={26} />
-            <span className="text-xl font-bold text-gray-900 tracking-tight">{APP_NAME}</span>
+            <span className="text-xl font-extrabold text-white tracking-tight">{APP_NAME}</span>
           </div>
         </div>
 
-        {/* Action Button "+ Register patient" / "+ New Investigation" */}
-        <div className="px-5 mb-4">
-          <button
-            onClick={() => navigate('/create-case')}
-            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-semibold text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
-          >
-            <Plus size={18} strokeWidth={2.5} />
-            <span>New Investigation</span>
-          </button>
-        </div>
-
         {/* Navigation Menu */}
-        <nav className="px-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+        <nav className="px-3 space-y-1.5 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => {
             const Icon = iconMap[item.icon];
             return (
@@ -80,10 +70,10 @@ export default function Sidebar() {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200 group relative ${
+                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 group relative ${
                     isActive
-                      ? 'bg-purple-50 text-purple-700 font-bold'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                      : 'text-[#7b89a6] hover:text-white hover:bg-[#131b2e]'
                   }`
                 }
               >
@@ -93,7 +83,7 @@ export default function Sidebar() {
                       <Icon
                         size={19}
                         className={`shrink-0 transition-colors ${
-                          isActive ? 'text-purple-600' : 'text-gray-400 group-hover:text-gray-600'
+                          isActive ? 'text-white' : 'text-[#7b89a6] group-hover:text-white'
                         }`}
                       />
                     )}
@@ -106,36 +96,50 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Bottom Section: Promo Card & User Footer */}
+      {/* Bottom Section: Theme Switcher & User Footer */}
       <div className="p-4 space-y-3">
-        {/* "Get mobile app" sidebar promo card */}
-        <div className="rounded-2xl bg-gradient-to-b from-purple-50/80 to-indigo-50/80 border border-purple-100/80 p-4 text-center relative overflow-hidden">
-          <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-purple-600/10 flex items-center justify-center text-purple-600">
-            <Smartphone size={20} />
-          </div>
-          <p className="text-xs font-bold text-gray-900 mb-1">Get mobile app</p>
-          <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-gray-400 font-medium">
-            <span>iOS</span>
-            <span>•</span>
-            <span>Android</span>
-          </div>
+        {/* Light | Dark Mode Toggle (matching bottom left of image) */}
+        <div className="p-1 rounded-xl bg-[#111728] border border-[#1d263b] flex items-center gap-1">
+          <button
+            onClick={() => setIsDark(false)}
+            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+              !isDark
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-[#7b89a6] hover:text-white'
+            }`}
+          >
+            <Sun size={13} />
+            <span>Light</span>
+          </button>
+
+          <button
+            onClick={() => setIsDark(true)}
+            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+              isDark
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-[#7b89a6] hover:text-white'
+            }`}
+          >
+            <Moon size={13} />
+            <span>Dark</span>
+          </button>
         </div>
 
-        {/* User Card */}
-        <div className="flex items-center justify-between p-2 rounded-2xl border border-gray-100 bg-gray-50/50">
+        {/* User Card & Logout */}
+        <div className="flex items-center justify-between p-2.5 rounded-xl border border-[#1d263b] bg-[#111728]">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+            <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-bold text-gray-800 truncate">{user?.name || 'User'}</p>
-              <p className="text-[10px] text-gray-400 truncate">{user?.email || 'user@example.com'}</p>
+              <p className="text-xs font-bold text-white truncate">{user?.name || 'User'}</p>
+              <p className="text-[10px] text-[#7b89a6] truncate">{user?.email || 'user@example.com'}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
             title="Sign Out"
-            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+            className="p-1.5 text-[#7b89a6] hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
           >
             <LogOut size={16} />
           </button>
@@ -144,5 +148,6 @@ export default function Sidebar() {
     </motion.aside>
   );
 }
+
 
 

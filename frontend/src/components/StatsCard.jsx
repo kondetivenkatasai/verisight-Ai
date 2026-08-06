@@ -1,24 +1,23 @@
 import { motion } from 'framer-motion';
 import { staggerItem } from '@/animations/variants';
-import { MoreHorizontal } from 'lucide-react';
 
 export default function StatsCard({ title, value, change, icon: Icon, color = 'aegis' }) {
   const colorMap = {
     aegis: {
-      icon: 'text-purple-600',
-      bg: 'bg-purple-100/80',
+      gradient: 'bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600',
+      shadow: 'shadow-indigo-500/15',
     },
     emerald: {
-      icon: 'text-cyan-600',
-      bg: 'bg-cyan-100/80',
+      gradient: 'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600',
+      shadow: 'shadow-cyan-500/15',
     },
     amber: {
-      icon: 'text-amber-600',
-      bg: 'bg-amber-100/80',
+      gradient: 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700',
+      shadow: 'shadow-blue-500/15',
     },
     red: {
-      icon: 'text-rose-500',
-      bg: 'bg-rose-100/80',
+      gradient: 'bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500',
+      shadow: 'shadow-rose-500/15',
     },
   };
 
@@ -27,24 +26,37 @@ export default function StatsCard({ title, value, change, icon: Icon, color = 'a
   return (
     <motion.div
       variants={staggerItem}
-      whileHover={{ y: -2 }}
-      className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm hover:shadow-md transition-all duration-200"
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.2 }}
+      className={`rounded-2xl ${colors.gradient} ${colors.shadow} p-5 text-white shadow-xl relative overflow-hidden border border-white/10 group cursor-pointer`}
     >
-      <div className="flex items-start justify-between mb-3">
-        <div className={`p-3 rounded-2xl ${colors.bg}`}>
-          <Icon size={20} className={colors.icon} />
+      {/* Decorative inner glow circle */}
+      <div className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+
+      <div className="flex items-start justify-between relative z-10 mb-2">
+        <span className="text-[11px] font-semibold tracking-wider text-white/80 uppercase">
+          {title}
+        </span>
+        <div className="p-2.5 rounded-full bg-white/20 text-white backdrop-blur-md shadow-inner shrink-0 group-hover:scale-110 transition-transform">
+          <Icon size={18} />
         </div>
-        <button className="text-gray-300 hover:text-gray-500 transition-colors">
-          <MoreHorizontal size={18} />
-        </button>
       </div>
-      <div>
-        <p className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-0.5">{value}</p>
-        <p className="text-xs font-medium text-gray-400">{title}</p>
+
+      <div className="relative z-10">
+        <p className="text-3xl font-extrabold text-white tracking-tight mb-1">{value}</p>
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-white/90 font-medium">Verisight Metric</span>
+          {change !== undefined && (
+            <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full text-white">
+              {change >= 0 ? '+' : ''}{change}%
+            </span>
+          )}
+        </div>
       </div>
     </motion.div>
   );
 }
+
 
 
 

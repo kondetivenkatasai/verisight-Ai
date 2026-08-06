@@ -2,14 +2,14 @@ import { Outlet, Navigate } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import { PageLoader } from '@/ui/Loader';
-import { Search, Bell, ChevronDown } from 'lucide-react';
+import { Search, Bell, History, ChevronDown } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f4f5f8] flex items-center justify-center">
+      <div className="min-h-screen bg-[#090d16] flex items-center justify-center">
         <PageLoader />
       </div>
     );
@@ -20,44 +20,55 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f5f8] text-gray-900 font-sans">
+    <div className="min-h-screen bg-[#090d16] text-white font-sans selection:bg-blue-600 selection:text-white">
       <Sidebar />
 
-      <main className="ml-64 min-h-screen">
-        {/* Top Header Bar matching Image 1 */}
-        <header className="sticky top-0 z-30 bg-[#f4f5f8]/90 backdrop-blur-md px-8 py-4 flex items-center justify-between">
-          {/* Search Input */}
-          <div className="relative w-72">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-              <Search size={16} />
-            </div>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 bg-white rounded-xl border border-gray-100 text-xs sm:text-sm text-gray-800 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-500 transition-all"
-            />
+      <main className="ml-64 min-h-screen bg-[#090d16]">
+        {/* Top Header Bar matching Image */}
+        <header className="sticky top-0 z-30 bg-[#090d16]/90 backdrop-blur-md px-8 py-4 flex items-center justify-between border-b border-[#182035]">
+          {/* Breadcrumb / Title */}
+          <div className="flex items-center gap-4">
+            <h1 className="text-lg font-bold text-white tracking-tight">Verisight Dashboard</h1>
           </div>
 
-          {/* User Profile & Notifications */}
-          <div className="flex items-center gap-5">
-            <button className="relative p-2 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-white transition-colors shadow-sm bg-white border border-gray-100">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-purple-600" />
+          {/* Search & Actions */}
+          <div className="flex items-center gap-4">
+            {/* Search Input */}
+            <div className="relative w-64 sm:w-80">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#5c6b8a]">
+                <Search size={15} />
+              </div>
+              <input
+                type="text"
+                placeholder="Search..."
+                className="w-full pl-9 pr-4 py-2 bg-[#121929] rounded-xl border border-[#1e2942] text-xs text-white placeholder-[#5c6b8a] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+              />
+            </div>
+
+            {/* Header Icon Buttons */}
+            <button className="p-2 rounded-xl text-[#7b89a6] hover:text-white hover:bg-[#121929] border border-transparent hover:border-[#1e2942] transition-all">
+              <History size={17} />
             </button>
 
-            <div className="flex items-center gap-3 cursor-pointer">
-              <div className="h-9 w-9 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-                {user?.name?.charAt(0)?.toUpperCase() || 'E'}
+            <button className="relative p-2 rounded-xl text-[#7b89a6] hover:text-white hover:bg-[#121929] border border-transparent hover:border-[#1e2942] transition-all">
+              <Bell size={17} />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500" />
+            </button>
+
+            {/* User Profile */}
+            <div className="flex items-center gap-2.5 pl-2 border-l border-[#1d273f] cursor-pointer">
+              <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               <div className="hidden sm:flex items-center gap-1.5">
-                <span className="text-xs font-bold text-gray-800">{user?.name || 'Emma Kwain'}</span>
-                <ChevronDown size={14} className="text-gray-400" />
+                <span className="text-xs font-semibold text-white">{user?.name || 'Super Admin'}</span>
+                <ChevronDown size={13} className="text-[#5c6b8a]" />
               </div>
             </div>
           </div>
         </header>
 
-        {/* Content Container */}
+        {/* Main Content Area */}
         <div className="p-6 lg:p-8 max-w-7xl mx-auto">
           <Outlet />
         </div>
@@ -65,5 +76,6 @@ export default function DashboardLayout() {
     </div>
   );
 }
+
 
 
