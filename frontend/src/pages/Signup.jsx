@@ -48,29 +48,77 @@ export default function Signup() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#ba9ecf]/40 flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-hidden select-none">
-      {/* Background Soft Wave Accent */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#9d7bb0]/30 via-[#c3aed6]/20 to-[#9d7bb0]/30 pointer-events-none" />
+    <div className="relative min-h-screen bg-[#090D18] flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-hidden select-none">
+      {/* Background Soft Floating Glow Accents */}
+      <motion.div
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.35, 0.55, 0.35],
+          x: [0, 20, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        className="absolute -top-32 -left-32 w-96 h-96 bg-[rgba(37,99,235,0.18)] rounded-full blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+          x: [0, -25, 0],
+          y: [0, 25, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        className="absolute -bottom-32 -right-32 w-[28rem] h-[28rem] bg-[rgba(59,130,246,0.12)] rounded-full blur-3xl pointer-events-none"
+      />
 
       {/* Main Split-Screen Container */}
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="relative z-10 w-full max-w-4xl bg-white rounded-3xl shadow-2xl shadow-purple-900/15 overflow-hidden flex flex-col md:flex-row min-h-[540px]"
+        className="relative z-10 w-full max-w-4xl bg-[#111827] rounded-3xl border border-white/[0.06] shadow-[0_20px_60px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col md:flex-row min-h-[540px]"
       >
-        {/* Left Panel - Purple Graphic Banner */}
-        <div className="w-full md:w-1/2 bg-gradient-to-br from-[#77479d] via-[#633389] to-[#4a226c] text-white p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden">
-          {/* Topographic Lines Top-Left */}
-          <svg className="absolute -top-6 -left-6 w-56 h-56 text-white/20 pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.5">
+        {/* Left Panel - Dashboard Style Gradient Banner */}
+        <div
+          className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden text-white"
+          style={{
+            background: 'linear-gradient(135deg, #1D4ED8 0%, #2563EB 35%, #4F46E5 70%, #7C3AED 100%)',
+          }}
+        >
+          {/* Glowing Circle Overlays */}
+          <div className="absolute -top-12 -left-12 w-48 h-48 bg-[rgba(59,130,246,0.15)] rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-[rgba(59,130,246,0.15)] rounded-full blur-3xl pointer-events-none" />
+
+          {/* Decorative Lines Top-Left */}
+          <svg
+            className="absolute -top-6 -left-6 w-56 h-56 text-white/[0.12] pointer-events-none"
+            viewBox="0 0 200 200"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <path d="M10,10 Q80,30 60,100 T10,180" />
             <path d="M30,10 Q100,40 80,110 T20,190" />
             <path d="M50,10 Q120,50 100,120 T30,200" />
             <path d="M70,10 Q140,60 120,130 T40,210" />
           </svg>
 
-          {/* Topographic Lines Bottom-Right */}
-          <svg className="absolute -bottom-8 -right-8 w-64 h-64 text-white/20 pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.5">
+          {/* Decorative Lines Bottom-Right */}
+          <svg
+            className="absolute -bottom-8 -right-8 w-64 h-64 text-white/[0.12] pointer-events-none"
+            viewBox="0 0 200 200"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <path d="M190,190 Q120,170 140,100 T190,20" />
             <path d="M170,190 Q100,160 120,90 T180,10" />
             <path d="M150,190 Q80,150 100,80 T170,0" />
@@ -91,26 +139,26 @@ export default function Signup() {
 
           {/* Banner Text Content */}
           <div className="relative z-10 max-w-sm">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#F8FAFC] tracking-tight mb-3">
               Join Us!
             </h1>
-            <p className="text-sm text-purple-100/90 leading-relaxed font-normal">
+            <p className="text-sm text-blue-100/90 leading-relaxed font-normal">
               Create an account to access AI verification, risk analysis, and smart workspace tools.
             </p>
           </div>
         </div>
 
         {/* Right Panel - Signup Form Area */}
-        <div className="w-full md:w-1/2 p-8 sm:p-12 bg-white flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-8 sm:p-12 bg-[#111827] flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/[0.06]">
           <div className="max-w-sm mx-auto w-full">
             {/* Header */}
-            <h2 className="text-2xl font-bold text-gray-800 tracking-tight mb-6">
+            <h2 className="text-2xl font-bold text-[#F8FAFC] tracking-tight mb-6">
               Create Account
             </h2>
 
             {/* Error message */}
             {error && (
-              <div className="mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-xs font-semibold text-red-600 text-center">
+              <div className="mb-4 rounded-xl bg-rose-500/10 border border-rose-500/20 p-3 text-xs font-semibold text-rose-400 text-center">
                 {error}
               </div>
             )}
@@ -119,7 +167,7 @@ export default function Signup() {
             <form onSubmit={handleSubmit} className="space-y-3.5">
               {/* Full Name Input */}
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#94A3B8]">
                   <User size={16} />
                 </div>
                 <input
@@ -128,13 +176,13 @@ export default function Signup() {
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-white/[0.08] text-xs sm:text-sm text-[#F8FAFC] placeholder-[#64748B] bg-[#0F172A] focus:outline-none focus:border-[#3B82F6] focus:ring-4 focus:ring-[#3B82F6]/15 transition-all"
                 />
               </div>
 
               {/* Email Input */}
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#94A3B8]">
                   <Mail size={16} />
                 </div>
                 <input
@@ -143,13 +191,13 @@ export default function Signup() {
                   placeholder="Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-white/[0.08] text-xs sm:text-sm text-[#F8FAFC] placeholder-[#64748B] bg-[#0F172A] focus:outline-none focus:border-[#3B82F6] focus:ring-4 focus:ring-[#3B82F6]/15 transition-all"
                 />
               </div>
 
               {/* Password Input */}
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#94A3B8]">
                   <Lock size={16} />
                 </div>
                 <input
@@ -158,12 +206,12 @@ export default function Signup() {
                   placeholder="Password (min 8 chars)"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-full border border-white/[0.08] text-xs sm:text-sm text-[#F8FAFC] placeholder-[#64748B] bg-[#0F172A] focus:outline-none focus:border-[#3B82F6] focus:ring-4 focus:ring-[#3B82F6]/15 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[#94A3B8] hover:text-[#F8FAFC] focus:outline-none cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -171,7 +219,7 @@ export default function Signup() {
 
               {/* Confirm Password Input */}
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#94A3B8]">
                   <Lock size={16} />
                 </div>
                 <input
@@ -180,7 +228,7 @@ export default function Signup() {
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 text-xs sm:text-sm text-gray-700 placeholder-gray-400 bg-white focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-full border border-white/[0.08] text-xs sm:text-sm text-[#F8FAFC] placeholder-[#64748B] bg-[#0F172A] focus:outline-none focus:border-[#3B82F6] focus:ring-4 focus:ring-[#3B82F6]/15 transition-all"
                 />
               </div>
 
@@ -188,11 +236,14 @@ export default function Signup() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 active:scale-[0.99] text-white font-semibold text-xs sm:text-sm shadow-md shadow-purple-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed mt-4"
+                style={{
+                  background: 'linear-gradient(90deg, #2563EB, #3B82F6, #4F46E5)',
+                }}
+                className="w-full py-3 px-6 rounded-full text-white font-semibold text-xs sm:text-sm shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(37,99,235,0.35)] active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed mt-4"
               >
                 {loading ? (
                   <>
-                    <Loader2 size={16} className="animate-spin" />
+                    <Loader2 size={16} className="animate-spin text-white" />
                     Creating Account...
                   </>
                 ) : (
@@ -203,9 +254,9 @@ export default function Signup() {
 
             {/* Account Redirect Link */}
             <div className="mt-6 text-center">
-              <p className="text-xs text-gray-500 font-medium">
+              <p className="text-xs text-[#94A3B8] font-medium">
                 Already have an account?{' '}
-                <Link to="/login" className="text-purple-600 font-semibold hover:underline">
+                <Link to="/login" className="text-[#60A5FA] font-semibold hover:text-[#93C5FD] hover:underline">
                   Sign In
                 </Link>
               </p>
@@ -216,5 +267,6 @@ export default function Signup() {
     </div>
   );
 }
+
 
 
