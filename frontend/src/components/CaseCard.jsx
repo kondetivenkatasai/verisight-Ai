@@ -9,9 +9,13 @@ import Input from '@/ui/Input';
 import CaseContextMenu from '@/components/CaseContextMenu';
 import { formatRelativeTime, truncate } from '@/utils/formatters';
 import api from '@/services/api';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function CaseCard({ caseData, onUpdate }) {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   const [contextPos, setContextPos] = useState(null);
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -19,6 +23,7 @@ export default function CaseCard({ caseData, onUpdate }) {
   const [loading, setLoading] = useState(false);
 
   const longPressTimer = useRef(null);
+
 
   // Desktop right-click
   const handleContextMenu = (e) => {
