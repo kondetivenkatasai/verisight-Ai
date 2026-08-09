@@ -42,11 +42,11 @@ export default function TrendAnalyticsChart() {
     return 'Resolved Threats';
   };
 
-  const getMetricColor = (key) => {
-    if (key === 'avgRiskScore') return 'from-rose-500 to-amber-500 text-rose-400';
-    if (key === 'confidenceRate') return 'from-emerald-500 to-teal-400 text-emerald-400';
-    if (key === 'totalScans') return 'from-blue-500 to-indigo-500 text-blue-400';
-    return 'from-purple-500 to-indigo-500 text-purple-400';
+  const getBarGradient = (key) => {
+    if (key === 'avgRiskScore') return 'bg-gradient-to-t from-blue-600 via-indigo-500 to-cyan-400 shadow-blue-500/30';
+    if (key === 'confidenceRate') return 'bg-gradient-to-t from-emerald-600 via-teal-500 to-emerald-400 shadow-emerald-500/30';
+    if (key === 'totalScans') return 'bg-gradient-to-t from-purple-600 via-indigo-500 to-blue-400 shadow-purple-500/30';
+    return 'bg-gradient-to-t from-amber-600 via-rose-500 to-pink-400 shadow-rose-500/30';
   };
 
   const maxVal = Math.max(...trends.map((t) => Number(t[activeMetric]) || 100), 10);
@@ -82,11 +82,11 @@ export default function TrendAnalyticsChart() {
             <button
               key={item.key}
               onClick={() => setActiveMetric(item.key)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                 activeMetric === item.key
                   ? isDark
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-[#9a55ff] text-white shadow-sm'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                    : 'bg-[#9a55ff] text-white shadow-md shadow-purple-500/30'
                   : isDark
                   ? 'bg-[#151c2e] border border-[#1e2942] text-gray-400 hover:text-white'
                   : 'bg-gray-100 border border-gray-200 text-gray-600 hover:bg-gray-200'
@@ -99,29 +99,29 @@ export default function TrendAnalyticsChart() {
       </div>
 
       {/* Visual Bar Chart Rendering */}
-      <div className="pt-4 pb-2">
-        <div className="flex items-end justify-between gap-3 h-48 px-2">
+      <div className="pt-6 pb-2">
+        <div className="flex items-end justify-between gap-3 h-52 px-2">
           {trends.map((item, idx) => {
             const val = Number(item[activeMetric]) || 0;
-            const heightPct = Math.min(100, Math.max(12, (val / maxVal) * 100));
+            const heightPct = Math.min(100, Math.max(15, Math.round((val / maxVal) * 100)));
 
             return (
-              <div key={item.month || idx} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                {/* Value Hover Pill */}
-                <span className="text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity text-blue-500 -mb-1">
+              <div key={item.month || idx} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer h-full justify-end">
+                {/* Value Label */}
+                <span className="text-[11px] font-black tracking-tight text-gray-700 dark:text-gray-200 group-hover:text-blue-400 transition-colors">
                   {val}{activeMetric === 'confidenceRate' ? '%' : ''}
                 </span>
 
-                {/* Bar */}
-                <div className="w-full bg-gray-100 dark:bg-[#151c2e] rounded-xl h-full flex items-end p-1 overflow-hidden border border-transparent group-hover:border-blue-500/40 transition-all">
+                {/* Bar Track Container */}
+                <div className="w-full bg-gray-100 dark:bg-[#151c2e] rounded-xl flex-1 flex items-end p-1.5 overflow-hidden border border-gray-200 dark:border-[#1e2942] group-hover:border-blue-500/50 transition-all">
                   <div
                     style={{ height: `${heightPct}%` }}
-                    className={`w-full rounded-lg bg-gradient-to-t ${getMetricColor(activeMetric)} transition-all duration-500 shadow-md group-hover:brightness-125`}
+                    className={`w-full rounded-lg ${getBarGradient(activeMetric)} transition-all duration-500 shadow-md group-hover:brightness-125`}
                   />
                 </div>
 
                 {/* Month Label */}
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-gray-500 dark:text-[#5c6b8a]">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-gray-500 dark:text-[#5c6b8a] mt-1">
                   {item.month}
                 </span>
               </div>
@@ -131,20 +131,20 @@ export default function TrendAnalyticsChart() {
       </div>
 
       {/* Footer Metrics Overview */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 mt-4 border-t border-gray-100 dark:border-[#1e2942]">
-        <div className="p-3 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 mt-6 border-t border-gray-100 dark:border-[#1e2942]">
+        <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Metric</span>
           <span className="text-xs font-black text-gray-900 dark:text-white mt-0.5 block">{getMetricLabel(activeMetric)}</span>
         </div>
-        <div className="p-3 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
+        <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Peak Value</span>
           <span className="text-xs font-black text-emerald-500 mt-0.5 block">{maxVal}{activeMetric === 'confidenceRate' ? '%' : ''}</span>
         </div>
-        <div className="p-3 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
+        <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Projection</span>
           <span className="text-xs font-black text-blue-500 mt-0.5 block">+12.4% MoM</span>
         </div>
-        <div className="p-3 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
+        <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#151c2e] border border-gray-150 dark:border-[#1e2942]">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Status</span>
           <span className="text-xs font-black text-emerald-400 mt-0.5 block">Optimal</span>
         </div>
