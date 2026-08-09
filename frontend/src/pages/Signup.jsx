@@ -24,11 +24,11 @@ export default function Signup() {
     }
   }, [isAuthenticated, authLoading, navigate]);
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async (googlePayload) => {
     setError('');
     setGoogleLoading(true);
     try {
-      await loginWithGoogle();
+      await loginWithGoogle(googlePayload);
       navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || 'Google authentication failed');

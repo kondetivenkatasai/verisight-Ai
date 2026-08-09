@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '916949413980-d7hefq0shfqmobcrtide4smhmd0g4aj9.apps.googleusercontent.com';
+
 export default function GoogleSignInButton({ onClick, loading = false, text = 'Sign in with Google' }) {
+  useEffect(() => {
+    if (window.google?.accounts?.id && GOOGLE_CLIENT_ID) {
+      try {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: (response) => {
+            if (response.credential) {
+              onClick({ credential: response.credential });
+            }
+          },
+        });
+      } catch (err) {
+        console.warn('Google Identity initialization notice:', err);
+      }
+    }
+  }, [onClick]);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (window.google?.accounts?.id && GOOGLE_CLIENT_ID) {
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          onClick();
+        }
+      });
+    } else {
+      onClick();
+    }
+  };
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
       disabled={loading}
       className="w-full py-2.5 px-4 rounded-full bg-white hover:bg-gray-50 active:bg-gray-100 text-slate-700 font-medium text-xs sm:text-sm border border-slate-200 shadow-sm transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed hover:-translate-y-0.5 hover:shadow-md"
     >
@@ -40,3 +72,4 @@ export default function GoogleSignInButton({ onClick, loading = false, text = 'S
     </button>
   );
 }
+

@@ -51,9 +51,26 @@ export const authService = {
   },
 
   async googleLogin(payload = {}) {
-    const email = payload.email || 'demo.google@verisight.ai';
-    const name = payload.name || 'Google User';
-    const avatar = payload.avatar || 'https://lh3.googleusercontent.com/a/default-user';
+    let email = payload.email;
+    let name = payload.name;
+    let avatar = payload.avatar;
+
+    if (payload.credential) {
+      try {
+        const decoded = jwt.decode(payload.credential);
+        if (decoded && decoded.email) {
+          email = decoded.email;
+          name = decoded.name || decoded.email.split('@')[0];
+          avatar = decoded.picture || avatar;
+        }
+      } catch (err) {
+        console.warn('Could not decode Google JWT credential:', err);
+      }
+    }
+
+    email = email || 'demo.google@verisight.ai';
+    name = name || 'Google User';
+    avatar = avatar || 'https://lh3.googleusercontent.com/a/default-user';
 
     let user = await userModel.findByEmail(email);
 
