@@ -8,6 +8,8 @@ import Card from '@/ui/Card';
 import { PageLoader } from '@/ui/Loader';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { pageTransition } from '@/animations/variants';
+import RiskHeatmap3D from '@/components/RiskHeatmap3D';
+import TrendAnalyticsChart from '@/components/TrendAnalyticsChart';
 
 // Color Palette Mappings
 const RISK_COLORS = {
@@ -96,6 +98,10 @@ export default function Analytics() {
         <p className="text-gray-500 dark:text-[#8a99b5] text-sm mt-1">
           Multi-agent system metrics, confidence tracking, and case velocity
         </p>
+      {/* Interactive 3D Risk Heatmap & Trend Forecasting */}
+      <div className="space-y-6">
+        <RiskHeatmap3D />
+        <TrendAnalyticsChart />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
