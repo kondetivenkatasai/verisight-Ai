@@ -76,12 +76,21 @@ export const authService = {
             if (pData.photos?.[0]?.url) {
               avatar = pData.photos[0].url;
             }
-            if (pData.birthdays?.[0]?.date) {
-              const bDate = pData.birthdays[0].date;
-              if (bDate.year && bDate.month && bDate.day) {
-                dob = `${bDate.year}-${String(bDate.month).padStart(2, '0')}-${String(bDate.day).padStart(2, '0')}`;
-              } else if (bDate.month && bDate.day) {
-                dob = `${String(bDate.month).padStart(2, '0')}-${String(bDate.day).padStart(2, '0')}`;
+            if (pData.birthdays && Array.isArray(pData.birthdays)) {
+              for (const bItem of pData.birthdays) {
+                if (bItem.date) {
+                  const { year, month, day } = bItem.date;
+                  if (year && month && day) {
+                    dob = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    break;
+                  } else if (month && day) {
+                    dob = `${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    break;
+                  }
+                } else if (bItem.text) {
+                  dob = bItem.text;
+                  break;
+                }
               }
             }
           }

@@ -226,10 +226,10 @@ export default function Settings() {
               />
               <Input
                 label="Date of Birth (DOB)"
-                type="text"
-                value={profile.dob}
+                type="date"
+                value={profile.dob === 'Not specified' ? '' : profile.dob}
                 onChange={(e) => setProfile((p) => ({ ...p, dob: e.target.value }))}
-                placeholder="e.g. 1998-05-15 or Not specified"
+                placeholder="YYYY-MM-DD"
               />
             </div>
 
