@@ -205,6 +205,8 @@ function WorkflowContent() {
             </RadialGlowButton>
           )}
         </div>
+      </div>
+
       {/* AIAudioPlayer Spoken Case Summary */}
       <AIAudioPlayer
         textToRead={`Verisight AI Workflow Report for ${caseData?.title || 'Active Investigation Case'}. Pipeline progress is currently at ${progressPct} percent with 6 specialized agents evaluating risk and evidence.`}
