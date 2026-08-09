@@ -1,37 +1,68 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '916949413980-d7hefq0shfqmobcrtide4smhmd0g4aj9.apps.googleusercontent.com';
 
 export default function GoogleSignInButton({ onClick, loading = false, text = 'Sign in with Google' }) {
+  const tokenClientRef = useRef(null);
+
   useEffect(() => {
-    if (window.google?.accounts?.id && GOOGLE_CLIENT_ID) {
-      try {
-        window.google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: (response) => {
-            if (response.credential) {
-              onClick({ credential: response.credential });
-            }
-          },
-        });
-      } catch (err) {
-        console.warn('Google Identity initialization notice:', err);
+    const initClient = () => {
+      if (window.google?.accounts?.oauth2 && GOOGLE_CLIENT_ID) {
+        try {
+          tokenClientRef.current = window.google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID,
+            scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+            callback: (tokenResponse) => {
+              if (tokenResponse && tokenResponse.access_token) {
+                onClick({ access_token: tokenResponse.access_token });
+              }
+            },
+          });
+        } catch (err) {
+          console.warn('Google OAuth Token Client initialization notice:', err);
+        }
       }
-    }
+    };
+
+    initClient();
+    const timer = setTimeout(initClient, 1000);
+    return () => clearTimeout(timer);
   }, [onClick]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (window.google?.accounts?.id && GOOGLE_CLIENT_ID) {
-      window.google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          onClick();
-        }
-      });
-    } else {
-      onClick();
+
+    if (tokenClientRef.current) {
+      tokenClientRef.current.requestAccessToken({ prompt: 'select_account' });
+      return;
     }
+
+    if (window.google?.accounts?.oauth2 && GOOGLE_CLIENT_ID) {
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        callback: (tokenResponse) => {
+          if (tokenResponse && tokenResponse.access_token) {
+            onClick({ access_token: tokenResponse.access_token });
+          }
+        },
+      });
+      tokenClientRef.current = client;
+      client.requestAccessToken({ prompt: 'select_account' });
+      return;
+    }
+
+    // Fallback: Open standard Google OAuth consent popup window directly
+    const redirectUri = window.location.origin + '/login';
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent('openid email profile')}&prompt=select_account`;
+    
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    
+    window.open(authUrl, 'GoogleSignIn', `width=${width},height=${height},left=${left},top=${top}`);
   };
 
   return (

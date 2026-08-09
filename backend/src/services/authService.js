@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 import env from '../config/env.js';
 import { userModel } from '../models/userModel.js';
 import { createAppError } from '../utils/helpers.js';
@@ -55,7 +56,21 @@ export const authService = {
     let name = payload.name;
     let avatar = payload.avatar;
 
-    if (payload.credential) {
+    if (payload.access_token) {
+      try {
+        const userInfoRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${payload.access_token}` },
+        });
+        if (userInfoRes.data?.email) {
+          email = userInfoRes.data.email;
+          name = userInfoRes.data.name || userInfoRes.data.email.split('@')[0];
+          avatar = userInfoRes.data.picture || avatar;
+        }
+      } catch (err) {
+        console.error('Failed to verify Google access_token:', err.response?.data || err.message);
+        throw createAppError('Google account verification failed', 401);
+      }
+    } else if (payload.credential) {
       try {
         const decoded = jwt.decode(payload.credential);
         if (decoded && decoded.email) {
@@ -68,8 +83,10 @@ export const authService = {
       }
     }
 
-    email = email || 'demo.google@verisight.ai';
-    name = name || 'Google User';
+    if (!email) {
+      throw createAppError('Please select a valid Google account to sign in', 400);
+    }
+
     avatar = avatar || 'https://lh3.googleusercontent.com/a/default-user';
 
     let user = await userModel.findByEmail(email);
