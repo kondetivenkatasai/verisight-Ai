@@ -18,4 +18,9 @@ export const authController = {
     const user = await authService.getMe(req.user.id);
     res.json({ user });
   }),
+
+  googleAuth: asyncHandler(async (req, res) => {
+    const result = await authService.googleLogin(req.body);
+    res.json(result);
+  }),
 };

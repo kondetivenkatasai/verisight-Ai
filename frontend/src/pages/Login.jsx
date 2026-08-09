@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { User, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { fadeUp } from '@/animations/variants';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,7 +13,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, isAuthenticated, loading: authLoading } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { login, loginWithGoogle, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +22,19 @@ export default function Login() {
       navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated, authLoading, navigate]);
+
+  const handleGoogleLogin = async () => {
+    setError('');
+    setGoogleLoading(true);
+    try {
+      await loginWithGoogle();
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Google authentication failed');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -156,7 +171,7 @@ export default function Login() {
             </div>
 
             {/* Header */}
-            <h2 className="text-2xl font-bold text-[#F8FAFC] tracking-tight mb-6">
+            <h2 className="text-2xl font-bold text-[#F8FAFC] tracking-tight mb-5">
               Sign In
             </h2>
 
@@ -166,6 +181,25 @@ export default function Login() {
                 {error}
               </div>
             )}
+
+            {/* Google Sign-In Button */}
+            <div className="mb-4">
+              <GoogleSignInButton
+                onClick={handleGoogleLogin}
+                loading={googleLoading}
+                text="Sign in with Google"
+              />
+            </div>
+
+            {/* Divider */}
+            <div className="relative mb-5 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/[0.08]" />
+              </div>
+              <span className="relative bg-[#111827] px-3 text-[11px] font-medium uppercase tracking-wider text-[#94A3B8]">
+                or continue with
+              </span>
+            </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">

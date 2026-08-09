@@ -9,6 +9,7 @@ const env = {
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 };
 
 // Validate required variables in production with soft warning to prevent container build crashes

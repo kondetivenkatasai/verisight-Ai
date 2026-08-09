@@ -78,6 +78,21 @@ export function AuthProvider({ children }) {
     return mergedUser;
   };
 
+  const loginWithGoogle = async (googleData = {}) => {
+    const res = await authService.googleLogin(googleData);
+    const { token: newToken, user: userData } = res.data;
+    localStorage.setItem('aegis_token', newToken);
+    const storedAvatar = localStorage.getItem('aegis_user_avatar') || userData.avatar || 'https://lh3.googleusercontent.com/a/default-user';
+    const mergedUser = {
+      ...userData,
+      name: userData.name,
+      avatar: storedAvatar,
+    };
+    setToken(newToken);
+    setUser(mergedUser);
+    return mergedUser;
+  };
+
   const updateUser = (updatedFields) => {
     if (updatedFields.name) {
       localStorage.setItem('aegis_user_name', updatedFields.name);
@@ -98,6 +113,7 @@ export function AuthProvider({ children }) {
     loading,
     login,
     signup,
+    loginWithGoogle,
     updateUser,
     logout,
     isAuthenticated: !!token && !!user,

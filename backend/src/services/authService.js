@@ -49,6 +49,30 @@ export const authService = {
     }
     return user;
   },
+
+  async googleLogin(payload = {}) {
+    const email = payload.email || 'demo.google@verisight.ai';
+    const name = payload.name || 'Google User';
+    const avatar = payload.avatar || 'https://lh3.googleusercontent.com/a/default-user';
+
+    let user = await userModel.findByEmail(email);
+
+    if (!user) {
+      const dummyPassword = await bcrypt.hash(`google-auth-${Date.now()}`, SALT_ROUNDS);
+      user = await userModel.create({
+        name,
+        email,
+        password: dummyPassword,
+        role: 'user',
+        avatar,
+        provider: 'google',
+      });
+    }
+
+    const token = generateToken(user);
+    const { password: _, ...userWithoutPassword } = user;
+    return { user: userWithoutPassword, token };
+  },
 };
 
 function generateToken(user) {
