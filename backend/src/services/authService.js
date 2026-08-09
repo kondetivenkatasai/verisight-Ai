@@ -143,9 +143,9 @@ export const authService = {
         provider: 'google',
       });
     } else {
-      // Preserve custom uploaded photo (data URLs or non-google photos) over Google avatar
-      const hasCustomUploadedAvatar = user.avatar && (user.avatar.startsWith('data:') || (!user.avatar.includes('googleusercontent.com') && user.avatar !== 'https://lh3.googleusercontent.com/a/default-user'));
-      const preservedAvatar = hasCustomUploadedAvatar ? user.avatar : (avatar || user.avatar);
+      // If user already has an avatar in database, preserve it over Google's default avatar
+      const hasCustomAvatar = user.avatar && user.avatar !== 'https://lh3.googleusercontent.com/a/default-user';
+      const preservedAvatar = hasCustomAvatar ? user.avatar : (avatar || user.avatar);
 
       user = await userModel.update(user.id, {
         name: name || user.name,

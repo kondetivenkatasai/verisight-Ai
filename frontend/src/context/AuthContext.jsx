@@ -83,19 +83,25 @@ export function AuthProvider({ children }) {
     const { token: newToken, user: userData } = res.data;
     localStorage.setItem('aegis_token', newToken);
 
-    const storedCustomAvatar = localStorage.getItem('aegis_user_avatar');
-    const isCustomUploaded = localStorage.getItem('aegis_custom_avatar_uploaded') === 'true';
+    const email = userData?.email || '';
+    const storedUserAvatar = email ? localStorage.getItem(`user_avatar_${email}`) : null;
+    const generalStoredAvatar = localStorage.getItem('aegis_user_avatar');
 
-    // If user previously uploaded a custom profile photo, preserve it
-    const finalAvatar = (isCustomUploaded && storedCustomAvatar) ? storedCustomAvatar : (userData.avatar || storedCustomAvatar);
+    // Prefer backend user avatar or email-keyed uploaded avatar over Google extracted photo
+    const finalAvatar = (userData.avatar && !userData.avatar.includes('googleusercontent.com') && userData.avatar !== 'https://lh3.googleusercontent.com/a/default-user')
+      ? userData.avatar
+      : (storedUserAvatar || generalStoredAvatar || userData.avatar);
 
     const finalUser = {
       ...userData,
-      avatar: finalAvatar || userData?.avatar,
+      avatar: finalAvatar,
     };
 
     if (finalUser?.name) localStorage.setItem('aegis_user_name', finalUser.name);
-    if (finalUser?.avatar) localStorage.setItem('aegis_user_avatar', finalUser.avatar);
+    if (finalUser?.avatar) {
+      localStorage.setItem('aegis_user_avatar', finalUser.avatar);
+      if (email) localStorage.setItem(`user_avatar_${email}`, finalUser.avatar);
+    }
     if (finalUser?.dob) localStorage.setItem('aegis_user_dob', finalUser.dob);
 
     setToken(newToken);
@@ -109,6 +115,7 @@ export function AuthProvider({ children }) {
     }
     if (updatedFields.avatar) {
       localStorage.setItem('aegis_user_avatar', updatedFields.avatar);
+      if (user?.email) localStorage.setItem(`user_avatar_${user.email}`, updatedFields.avatar);
       localStorage.setItem('aegis_custom_avatar_uploaded', 'true');
     }
     if (updatedFields.dob) {

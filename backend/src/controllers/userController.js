@@ -4,8 +4,14 @@ import { asyncHandler, createAppError } from '../utils/helpers.js';
 
 export const userController = {
   updateProfile: asyncHandler(async (req, res) => {
-    const { name, email } = req.body;
-    const user = await userModel.update(req.user.id, { name, email });
+    const { name, email, avatar, dob } = req.body;
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (email !== undefined) updateData.email = email;
+    if (avatar !== undefined) updateData.avatar = avatar;
+    if (dob !== undefined) updateData.dob = dob;
+
+    const user = await userModel.update(req.user.id, updateData);
     res.json({ user });
   }),
 

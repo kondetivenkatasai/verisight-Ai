@@ -63,11 +63,16 @@ export default function Settings() {
     setProfileMsg('');
     setProfileLoading(true);
     try {
-      // Update backend user profile if endpoint available
+      // Update backend user profile
       try {
-        await api.put('/users/profile', { name: profile.name, email: profile.email });
-      } catch {
-        // Fallback for local persistence
+        await api.put('/users/profile', {
+          name: profile.name,
+          email: profile.email,
+          avatar: profile.avatar,
+          dob: profile.dob,
+        });
+      } catch (err) {
+        console.warn('Backend profile update notice:', err);
       }
 
       // Update state & localStorage across app
