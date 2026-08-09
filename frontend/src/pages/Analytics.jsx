@@ -98,6 +98,8 @@ export default function Analytics() {
         <p className="text-gray-500 dark:text-[#8a99b5] text-sm mt-1">
           Multi-agent system metrics, confidence tracking, and case velocity
         </p>
+      </div>
+
       {/* Interactive 3D Risk Heatmap & Trend Forecasting */}
       <div className="space-y-6">
         <RiskHeatmap3D />
