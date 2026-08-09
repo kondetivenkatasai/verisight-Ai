@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import AICopilot from '@/components/AICopilot';
+import VoiceAssistant from '@/components/VoiceAssistant';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { useSearch } from '@/context/SearchContext';
@@ -235,6 +236,8 @@ export default function DashboardLayout() {
               )}
             </div>
 
+            {/* Voice Assistant */}
+            <VoiceAssistant onTranscript={(text) => setSearchQuery(text)} />
 
             {/* History Icon */}
             {isDark && (

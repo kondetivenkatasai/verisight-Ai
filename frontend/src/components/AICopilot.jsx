@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/hooks/useAuth';
 import api from '@/services/api';
+import VoiceAssistant from './VoiceAssistant';
 
 const cleanFormattedText = (rawText) => {
   if (!rawText) return '';
@@ -210,7 +211,7 @@ export default function AICopilot() {
           >
             <input
               type="text"
-              placeholder="Ask Copilot anything about active cases..."
+              placeholder="Ask Copilot anything or use Voice AI..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className={`flex-1 px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none ${
@@ -219,6 +220,7 @@ export default function AICopilot() {
                   : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:border-[#9a55ff]'
               }`}
             />
+            <VoiceAssistant onTranscript={(text) => handleSend(text)} />
             <button
               type="submit"
               disabled={loading || !input.trim()}
