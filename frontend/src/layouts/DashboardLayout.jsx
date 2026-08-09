@@ -178,7 +178,7 @@ export default function DashboardLayout() {
             >
               <Menu size={18} />
             </button>
-            <h1 className={`text-sm sm:text-lg font-bold tracking-tight truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h1 className="md:hidden text-sm sm:text-lg font-bold tracking-tight truncate text-gray-900 dark:text-white">
               Verisight AI
             </h1>
           </div>
@@ -393,7 +393,7 @@ export default function DashboardLayout() {
         </header>
 
         {/* Main Content Area */}
-        <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+        <div className="px-4 sm:px-8 py-6 space-y-6 w-full">
           {/* Daily Notification Welcome Banner Toast */}
           {showDailyBanner && (
             <div className={`p-4 rounded-2xl border flex items-center justify-between shadow-sm transition-all animate-fade-in ${
