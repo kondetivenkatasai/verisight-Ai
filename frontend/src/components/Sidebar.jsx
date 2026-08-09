@@ -65,9 +65,9 @@ export default function Sidebar({ isOpen = false, onClose }) {
         />
       )}
 
-      {/* Sidebar Container (Desktop Fixed + Mobile Slide-Out Drawer) */}
+      {/* Sidebar Container (Desktop Fixed under top navbar + Mobile Slide-Out Drawer) */}
       <aside
-        className={`fixed left-0 top-0 bottom-0 w-64 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out md:translate-x-0 ${
+        className={`fixed left-0 top-0 md:top-16 bottom-0 w-64 z-40 flex flex-col justify-between transition-transform duration-300 ease-in-out md:translate-x-0 ${
           isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
         } ${
           isDark
@@ -76,24 +76,25 @@ export default function Sidebar({ isOpen = false, onClose }) {
         }`}
       >
         <div>
-          {/* Brand Logo Header & Mobile Close Button */}
-          <div className="p-5 flex items-center justify-between">
+          {/* Mobile Drawer Header with Logo & Close Button */}
+          <div className="md:hidden p-5 flex items-center justify-between border-b border-gray-200 dark:border-[#1a233a] mb-3">
             <div className="flex items-center gap-3">
-              <VerisightLogo size={26} />
-              <span className={`text-xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-[#9a55ff]'}`}>
+              <VerisightLogo size={24} />
+              <span className={`text-lg font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-[#9a55ff]'}`}>
                 {APP_NAME}
               </span>
             </div>
 
-            {/* Mobile Close Icon */}
             <button
               type="button"
               onClick={onClose}
-              className="md:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
             >
               <X size={18} />
             </button>
           </div>
+
+          <div className="pt-3 md:pt-5">
 
         {/* User Card right under logo */}
         <div className="px-5 mb-5">
@@ -164,6 +165,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
             );
           })}
         </nav>
+        </div>
       </div>
 
       {/* Bottom CTA, Theme Switcher & Sign Out */}

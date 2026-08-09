@@ -5,7 +5,8 @@ import AICopilot from '@/components/AICopilot';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { useSearch } from '@/context/SearchContext';
-import { PageLoader } from '@/ui/Loader';
+import VerisightLogo from '@/ui/VerisightLogo';
+import { APP_NAME } from '@/utils/constants';
 import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X, Sparkles, ShieldCheck, Activity, Menu } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -155,36 +156,37 @@ export default function DashboardLayout() {
         ? 'bg-[#090d16] text-white selection:bg-blue-600 selection:text-white'
         : 'bg-[#f2edf3] text-gray-800 selection:bg-[#9a55ff] selection:text-white'
     }`}>
-      <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      {/* Full-Width Top Header Bar spanning 100% top of screen */}
+      <header className={`fixed top-0 left-0 right-0 h-16 z-50 backdrop-blur-xl px-4 sm:px-6 flex items-center justify-between border-b transition-colors duration-200 ${
+        isDark
+          ? 'bg-[#0a0f1d]/95 border-[#1a233a] text-white shadow-md'
+          : 'bg-white/95 border-gray-200 text-gray-800 shadow-sm'
+      }`}>
+        {/* Left: Brand Logo & Mobile Toggle */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className={`md:hidden p-2 rounded-xl border transition-all cursor-pointer ${
+              isDark
+                ? 'bg-[#121929] border-[#1e2942] text-white hover:bg-[#1a243a]'
+                : 'bg-gray-100 border-gray-200 text-gray-700 hover:bg-gray-200'
+            }`}
+            title="Open Navigation Menu"
+          >
+            <Menu size={18} />
+          </button>
 
-      <main className="flex-1 md:ml-64 min-h-screen min-w-0 max-w-full overflow-x-hidden">
-        {/* Top Header Bar (Fixed Sticky Top) */}
-        <header className={`sticky top-0 z-30 w-full backdrop-blur-xl px-4 sm:px-8 py-3.5 flex items-center justify-between border-b transition-colors duration-200 ${
-          isDark
-            ? 'bg-[#090d16]/95 border-[#182035] text-white shadow-md'
-            : 'bg-white/95 border-gray-150 text-gray-800 shadow-sm'
-        }`}>
-          {/* Title & Mobile Toggle */}
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className={`md:hidden p-2 rounded-xl border transition-all cursor-pointer ${
-                isDark
-                  ? 'bg-[#121929] border-[#1e2942] text-white hover:bg-[#1a243a]'
-                  : 'bg-gray-100 border-gray-200 text-gray-700 hover:bg-gray-200'
-              }`}
-              title="Open Navigation Menu"
-            >
-              <Menu size={18} />
-            </button>
-            <h1 className="md:hidden text-sm sm:text-lg font-bold tracking-tight truncate text-gray-900 dark:text-white">
-              Verisight AI
-            </h1>
+          <div className="flex items-center gap-2.5">
+            <VerisightLogo size={24} />
+            <span className={`text-lg font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-[#9a55ff]'}`}>
+              {APP_NAME}
+            </span>
           </div>
+        </div>
 
-          {/* Search & Actions */}
-          <div className="flex items-center gap-2 sm:gap-4">
+        {/* Search & Actions */}
+        <div className="flex items-center gap-2 sm:gap-4">
             {/* Search Input */}
             <div className="relative w-36 sm:w-64 md:w-80">
               <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none ${isDark ? 'text-[#5c6b8a]' : 'text-gray-400'}`}>
@@ -390,9 +392,13 @@ export default function DashboardLayout() {
               )}
             </div>
           </div>
-        </header>
+      </header>
 
-        {/* Main Content Area */}
+      {/* Sidebar starting below top header */}
+      <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+
+      {/* Main Content Area starting below top header */}
+      <main className="ml-0 md:ml-64 pt-16 min-h-screen flex-1 min-w-0 max-w-full overflow-x-hidden">
         <div className="px-4 sm:px-8 py-6 space-y-6 w-full">
           {/* Daily Notification Welcome Banner Toast */}
           {showDailyBanner && (
