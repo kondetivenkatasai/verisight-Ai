@@ -6,6 +6,7 @@ import VoiceAssistant from '@/components/VoiceAssistant';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { useSearch } from '@/context/SearchContext';
+import { notificationService } from '@/services/notificationService';
 import VerisightLogo from '@/ui/VerisightLogo';
 import { APP_NAME } from '@/utils/constants';
 import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X, Sparkles, ShieldCheck, Activity, Menu } from 'lucide-react';
@@ -20,17 +21,8 @@ export default function DashboardLayout() {
   const dropdownRef = useRef(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const [notifOpen, setNotifOpen] = useState(false);
-
-  const [readNotifIds, setReadNotifIds] = useState(() => {
-    try {
-      const stored = localStorage.getItem('verisight_read_notifs');
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [notificationsList, setNotificationsList] = useState([]);
 
   const [showDailyBanner, setShowDailyBanner] = useState(() => {
     try {
@@ -49,53 +41,42 @@ export default function DashboardLayout() {
     } catch {}
   };
 
-  const initialNotificationsList = [
-    {
-      id: 1,
-      title: "Daily AI Digest Ready",
-      desc: "3 active cases & risk findings evaluated for today.",
-      time: "Today, 9:00 AM",
-    },
-    {
-      id: 2,
-      title: "Account Login Verified",
-      desc: `Logged in as ${user?.email || 'authenticated user'} via Google OAuth.`,
-      time: "Today, 8:45 AM",
-    },
-    {
-      id: 3,
-      title: "Daily Security & Risk Status",
-      desc: "All multi-agent pipelines running cleanly. 0 high risk threats.",
-      time: "Today, 8:00 AM",
-    },
-  ];
-
-  const notifications = initialNotificationsList.map((n) => ({
-    ...n,
-    read: readNotifIds.includes(n.id),
-  }));
-
-  const notifRef = useRef(null);
-
-  const unreadCount = notifications.filter((n) => !n.read).length;
-
-  const markAllRead = () => {
-    const allIds = initialNotificationsList.map((n) => n.id);
-    setReadNotifIds(allIds);
+  const fetchNotifications = async () => {
     try {
-      localStorage.setItem('verisight_read_notifs', JSON.stringify(allIds));
+      const res = await notificationService.getAll();
+      if (res.data?.notifications) {
+        setNotificationsList(res.data.notifications);
+      }
     } catch {}
   };
 
-  const markItemRead = (id) => {
-    setReadNotifIds((prev) => {
-      if (prev.includes(id)) return prev;
-      const updated = [...prev, id];
-      try {
-        localStorage.setItem('verisight_read_notifs', JSON.stringify(updated));
-      } catch {}
-      return updated;
-    });
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const notifRef = useRef(null);
+  const unreadCount = notificationsList.filter((n) => !n.read).length;
+
+  const markAllRead = async () => {
+    setNotificationsList((prev) => prev.map((n) => ({ ...n, read: true })));
+    try {
+      await notificationService.markAllRead();
+    } catch {}
+  };
+
+  const markItemRead = async (id, targetRoute) => {
+    setNotificationsList((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+    try {
+      await notificationService.markRead(id);
+    } catch {}
+    if (targetRoute) {
+      navigate(targetRoute);
+      setNotifOpen(false);
+    }
   };
 
   const isDark = theme === 'dark';
@@ -287,27 +268,35 @@ export default function DashboardLayout() {
                   </div>
 
                   <div className="space-y-2.5 max-h-80 overflow-y-auto">
-                    {notifications.map((n) => (
-                      <div
-                        key={n.id}
-                        onClick={() => markItemRead(n.id)}
-                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                          !n.read
-                            ? isDark
-                              ? 'bg-blue-500/10 border-blue-500/30'
-                              : 'bg-purple-50/70 border-purple-200'
-                            : isDark
-                            ? 'bg-[#151c2e] border-[#1e2942] opacity-75'
-                            : 'bg-gray-50 border-gray-150 opacity-75'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <h4 className="text-xs font-bold text-gray-900 dark:text-white">{n.title}</h4>
-                          <span className="text-[9px] text-gray-400 dark:text-[#5c6b8a] shrink-0">{n.time}</span>
+                    {notificationsList.length > 0 ? (
+                      notificationsList.map((n) => (
+                        <div
+                          key={n.id}
+                          onClick={() => markItemRead(n.id, n.type === 'report' ? '/reports' : n.type === 'case' ? '/dashboard' : null)}
+                          className={`p-3 rounded-xl border transition-all cursor-pointer ${
+                            !n.read
+                              ? isDark
+                                ? 'bg-blue-500/10 border-blue-500/30'
+                                : 'bg-purple-50/70 border-purple-200'
+                              : isDark
+                              ? 'bg-[#151c2e] border-[#1e2942] opacity-75'
+                              : 'bg-gray-50 border-gray-150 opacity-75'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="text-xs font-bold text-gray-900 dark:text-white">{n.title}</h4>
+                            <span className="text-[9px] text-gray-400 dark:text-[#5c6b8a] shrink-0">
+                              {n.created_at ? new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (n.time || 'Today')}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-gray-600 dark:text-[#8a99b5] mt-1 leading-snug">{n.desc}</p>
                         </div>
-                        <p className="text-[11px] text-gray-600 dark:text-[#8a99b5] mt-1 leading-snug">{n.desc}</p>
+                      ))
+                    ) : (
+                      <div className="p-4 text-center text-xs text-gray-500 dark:text-[#8a99b5]">
+                        No notifications right now
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               )}

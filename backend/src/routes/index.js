@@ -13,6 +13,7 @@ import { signupSchema, loginSchema } from '../validators/authValidator.js';
 import { authLimiter } from '../middleware/rateLimiter.js';
 
 import aiRoutes from './aiRoutes.js';
+import notificationRoutes from './notificationRoutes.js';
 
 const router = Router();
 
@@ -31,6 +32,7 @@ router.use('/uploads', uploadRoutes);
 router.use('/workflow', workflowRoutes);
 router.use('/users', userRoutes);
 router.use('/ai', aiRoutes);
+router.use('/notifications', notificationRoutes);
 
 // Health & Root Status
 router.get('/', (req, res) => {

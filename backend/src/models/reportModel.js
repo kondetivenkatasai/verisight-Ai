@@ -49,23 +49,35 @@ export const reportModel = {
   },
 
   async create(reportData) {
+    let createdObj = null;
     try {
       const { data, error } = await supabase
         .from('reports')
         .insert(reportData)
         .select()
         .single();
-      if (!error && data) return data;
+      if (!error && data) createdObj = data;
     } catch {
       // Fall through
     }
-    const newReport = {
-      id: uuidv4(),
-      created_at: new Date().toISOString(),
-      ...reportData,
-    };
-    inMemoryReports.unshift(newReport);
-    return newReport;
+    if (!createdObj) {
+      createdObj = {
+        id: uuidv4(),
+        created_at: new Date().toISOString(),
+        ...reportData,
+      };
+      inMemoryReports.unshift(createdObj);
+    }
+    try {
+      notificationModel.create({
+        user_id: reportData.user_id || 'default',
+        title: 'AI Decision Report Generated',
+        desc: `Multi-agent audit completed: ${reportData.decision ? reportData.decision.toUpperCase() : 'APPROVED'} (${reportData.confidence || 95}% Confidence).`,
+        type: 'report',
+        report_id: createdObj.id,
+      });
+    } catch {}
+    return createdObj;
   },
 
   async delete(id) {

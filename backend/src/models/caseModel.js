@@ -1,5 +1,6 @@
 import supabase from '../config/supabase.js';
 import { v4 as uuidv4 } from 'uuid';
+import { notificationModel } from './notificationModel.js';
 
 const inMemoryCases = [];
 
@@ -36,26 +37,38 @@ export const caseModel = {
   },
 
   async create(caseData) {
+    let createdObj = null;
     try {
       const { data, error } = await supabase
         .from('cases')
         .insert(caseData)
         .select()
         .single();
-      if (!error && data) return data;
+      if (!error && data) createdObj = data;
     } catch {
       // Fall through
     }
-    const newCase = {
-      id: uuidv4(),
-      status: 'open',
-      priority: 'medium',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      ...caseData,
-    };
-    inMemoryCases.unshift(newCase);
-    return newCase;
+    if (!createdObj) {
+      createdObj = {
+        id: uuidv4(),
+        status: 'open',
+        priority: 'medium',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        ...caseData,
+      };
+      inMemoryCases.unshift(createdObj);
+    }
+    try {
+      notificationModel.create({
+        user_id: caseData.user_id || 'default',
+        title: 'New Investigation Created',
+        desc: `Case "${caseData.title}" initialized for AI multi-agent analysis.`,
+        type: 'case',
+        case_id: createdObj.id,
+      });
+    } catch {}
+    return createdObj;
   },
 
   async update(id, updates) {
