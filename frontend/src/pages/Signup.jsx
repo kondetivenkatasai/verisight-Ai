@@ -103,7 +103,7 @@ export default function Signup() {
       >
         {/* Left Panel - Dashboard Style Gradient Banner */}
         <div
-          className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden text-white"
+          className="w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col justify-center relative overflow-hidden text-white"
           style={{
             background: 'linear-gradient(135deg, #1D4ED8 0%, #2563EB 35%, #4F46E5 70%, #7C3AED 100%)',
           }}
@@ -154,17 +154,17 @@ export default function Signup() {
 
           {/* Banner Text Content */}
           <div className="relative z-10 max-w-sm">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#F8FAFC] tracking-tight mb-3">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-[#F8FAFC] tracking-tight mb-2 sm:mb-3">
               Join Us!
             </h1>
-            <p className="text-sm text-blue-100/90 leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-normal">
               Create an account to access AI verification, risk analysis, and smart workspace tools.
             </p>
           </div>
         </div>
 
         {/* Right Panel - Signup Form Area */}
-        <div className="w-full md:w-1/2 p-8 sm:p-12 bg-[#111827] flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/[0.06]">
+        <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-12 bg-[#111827] flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/[0.06]">
           <div className="max-w-sm mx-auto w-full">
             {/* Auth Mode Tabs */}
             <div className="flex items-center gap-1 p-1 bg-[#0F172A] rounded-full border border-white/[0.08] mb-6">

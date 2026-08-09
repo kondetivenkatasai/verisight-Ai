@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { useSearch } from '@/context/SearchContext';
 import { PageLoader } from '@/ui/Loader';
-import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X, Sparkles, ShieldCheck, Activity } from 'lucide-react';
+import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X, Sparkles, ShieldCheck, Activity, Menu } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, logout, isAuthenticated, loading } = useAuth();
@@ -15,6 +15,8 @@ export default function DashboardLayout() {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [notifOpen, setNotifOpen] = useState(false);
 
@@ -152,26 +154,38 @@ export default function DashboardLayout() {
         ? 'bg-[#090d16] text-white selection:bg-blue-600 selection:text-white'
         : 'bg-[#f2edf3] text-gray-800 selection:bg-[#9a55ff] selection:text-white'
     }`}>
-      <Sidebar />
+      <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
-      <main className="ml-64 min-h-screen">
+      <main className="ml-0 md:ml-64 min-h-screen w-full overflow-x-hidden">
         {/* Top Header Bar */}
-        <header className={`sticky top-0 z-30 backdrop-blur-md px-8 py-3.5 flex items-center justify-between border-b transition-colors duration-200 ${
+        <header className={`sticky top-0 z-30 backdrop-blur-md px-4 sm:px-8 py-3.5 flex items-center justify-between border-b transition-colors duration-200 ${
           isDark
             ? 'bg-[#090d16]/90 border-[#182035] text-white'
             : 'bg-white/90 border-gray-150 text-gray-800 shadow-sm'
         }`}>
-          {/* Title */}
-          <div className="flex items-center gap-4">
-            <h1 className={`text-lg font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Verisight AI Dashboard
+          {/* Title & Mobile Toggle */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className={`md:hidden p-2 rounded-xl border transition-all cursor-pointer ${
+                isDark
+                  ? 'bg-[#121929] border-[#1e2942] text-white hover:bg-[#1a243a]'
+                  : 'bg-gray-100 border-gray-200 text-gray-700 hover:bg-gray-200'
+              }`}
+              title="Open Navigation Menu"
+            >
+              <Menu size={18} />
+            </button>
+            <h1 className={`text-sm sm:text-lg font-bold tracking-tight truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              Verisight AI
             </h1>
           </div>
 
           {/* Search & Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* Search Input */}
-            <div className="relative w-64 sm:w-80">
+            <div className="relative w-36 sm:w-64 md:w-80">
               <div className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none ${isDark ? 'text-[#5c6b8a]' : 'text-gray-400'}`}>
                 <Search size={15} />
               </div>

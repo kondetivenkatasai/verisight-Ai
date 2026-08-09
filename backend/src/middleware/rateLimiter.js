@@ -15,7 +15,7 @@ export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: isDev ? 500000 : 200000,
   message: { message: 'Too many auth attempts. Please try again later.' },
-  standardHeaders: true,
+  stawndardHeaders: true,
   legacyHeaders: false,
 });
 

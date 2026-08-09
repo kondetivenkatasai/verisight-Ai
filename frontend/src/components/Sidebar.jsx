@@ -36,7 +36,9 @@ const navItems = [
   { label: 'Settings', path: '/settings', icon: 'Settings' },
 ];
 
-export default function Sidebar() {
+import { Menu, X } from 'lucide-react';
+
+export default function Sidebar({ isOpen = false, onClose }) {
   const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
@@ -44,31 +46,54 @@ export default function Sidebar() {
   const isDark = theme === 'dark';
 
   const handleLogout = () => {
+    onClose?.();
     logout();
     navigate('/login');
   };
 
+  const handleNavClick = () => {
+    onClose?.();
+  };
+
   return (
-    <motion.aside
-      variants={sidebarVariants}
-      initial="hidden"
-      animate="visible"
-      className={`fixed left-0 top-0 bottom-0 w-64 z-40 flex flex-col justify-between transition-colors duration-200 ${
-        isDark
-          ? 'bg-[#0a0f1d] border-r border-[#1a233a]'
-          : 'bg-white border-r border-gray-150'
-      }`}
-    >
-      <div>
-        {/* Brand Logo Header */}
-        <div className="p-6">
-          <div className="flex items-center gap-3">
-            <VerisightLogo size={26} />
-            <span className={`text-xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-[#9a55ff]'}`}>
-              {APP_NAME}
-            </span>
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden transition-opacity"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar Container (Desktop Fixed + Mobile Slide-Out Drawer) */}
+      <aside
+        className={`fixed left-0 top-0 bottom-0 w-64 z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out md:translate-x-0 ${
+          isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
+        } ${
+          isDark
+            ? 'bg-[#0a0f1d] border-r border-[#1a233a]'
+            : 'bg-white border-r border-gray-150'
+        }`}
+      >
+        <div>
+          {/* Brand Logo Header & Mobile Close Button */}
+          <div className="p-5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <VerisightLogo size={26} />
+              <span className={`text-xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-[#9a55ff]'}`}>
+                {APP_NAME}
+              </span>
+            </div>
+
+            {/* Mobile Close Icon */}
+            <button
+              type="button"
+              onClick={onClose}
+              className="md:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <X size={18} />
+            </button>
           </div>
-        </div>
 
         {/* User Card right under logo */}
         <div className="px-5 mb-5">
@@ -100,6 +125,7 @@ export default function Sidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center justify-between px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 group relative ${
                     isActive
@@ -197,7 +223,8 @@ export default function Sidebar() {
           <span>Sign Out</span>
         </button>
       </div>
-    </motion.aside>
+    </aside>
+    </>
   );
 }
 
