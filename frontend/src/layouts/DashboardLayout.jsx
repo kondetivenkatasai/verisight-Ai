@@ -113,6 +113,16 @@ export default function DashboardLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Register Service Worker for Background Push Notifications (works even when closed)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => console.log('✅ Background Service Worker active:', reg.scope))
+        .catch((err) => console.warn('Service Worker notice:', err));
+    }
+  }, []);
+
   // Trigger Hourly Native Browser Push Notification System (Every 1 Hour)
   useEffect(() => {
     if (!isAuthenticated || typeof window === 'undefined' || !('Notification' in window)) return;
