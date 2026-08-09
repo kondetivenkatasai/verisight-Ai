@@ -10,8 +10,8 @@ export const userModel = {
       const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('email', email)
-        .single();
+        .eq('email', email.toLowerCase())
+        .maybeSingle();
       if (!error && data) return data;
     } catch {
       // Fall through to in-memory store
@@ -26,7 +26,7 @@ export const userModel = {
         .from('users')
         .select('id, name, email, role, created_at')
         .eq('id', id)
-        .single();
+        .maybeSingle();
       if (!error && data) return data;
     } catch {
       // Fall through to in-memory store
@@ -38,15 +38,27 @@ export const userModel = {
   },
 
   async create(userData) {
+    const { avatar, provider, ...coreFields } = userData;
     try {
+      // Attempt insert with full fields
       const { data, error } = await supabase
         .from('users')
         .insert(userData)
         .select('id, name, email, role, created_at')
         .single();
-      if (!error && data) return data;
+      if (!error && data) return { ...data, avatar, provider };
     } catch {
-      // Fall through to in-memory store
+      // Retry insert with core schema fields if custom columns fail
+      try {
+        const { data, error } = await supabase
+          .from('users')
+          .insert(coreFields)
+          .select('id, name, email, role, created_at')
+          .single();
+        if (!error && data) return { ...data, avatar, provider };
+      } catch {
+        // Fall through to in-memory store
+      }
     }
     const newUser = {
       id: uuidv4(),
@@ -65,7 +77,7 @@ export const userModel = {
         .update(updates)
         .eq('id', id)
         .select('id, name, email, role, created_at')
-        .single();
+        .maybeSingle();
       if (!error && data) return data;
     } catch {
       // Fall through to in-memory store
