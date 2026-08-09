@@ -185,13 +185,13 @@ export default function Dashboard() {
           </div>
           <button
             onClick={() => fetchCases()}
-            className={`inline-flex items-center gap-1.5 text-xs font-semibold transition-colors cursor-pointer px-3 py-1.5 rounded-xl border shadow-sm ${
+            className={`inline-flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer px-3.5 py-1.5 rounded-xl border shadow-sm active:scale-95 ${
               isDark
-                ? 'text-blue-400 hover:text-blue-300 bg-[#111726] border-[#1e2942]'
-                : 'text-[#9a55ff] hover:text-[#8843ed] bg-white border-gray-150'
+                ? 'text-blue-300 hover:text-white bg-blue-600/20 hover:bg-blue-600/30 border-blue-500/40'
+                : 'text-[#9a55ff] hover:text-[#8843ed] bg-purple-50 hover:bg-purple-100 border-purple-200'
             }`}
           >
-            <RefreshCw size={13} />
+            <RefreshCw size={13} className="text-blue-400 dark:text-blue-300" />
             <span>Refresh</span>
           </button>
         </div>

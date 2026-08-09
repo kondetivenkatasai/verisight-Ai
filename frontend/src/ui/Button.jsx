@@ -5,13 +5,13 @@ import RadialGlowButton from './RadialGlowButton';
 const variants = {
   primary: '',
   secondary:
-    'bg-surface-850 hover:bg-surface-800 text-surface-700 dark:text-surface-100 border border-surface-300 dark:border-white/10 hover:border-surface-400 dark:hover:border-white/20 shadow-subtle-card',
+    'bg-gray-100 dark:bg-[#1e2942] hover:bg-gray-200 dark:hover:bg-[#2a3a5c] text-gray-900 dark:text-white border border-gray-250 dark:border-[#33466e] shadow-sm font-bold',
   outline:
-    'bg-transparent hover:bg-aegis-500/10 text-aegis-500 dark:text-aegis-400 border border-aegis-500/30 hover:border-aegis-500',
+    'bg-transparent hover:bg-purple-500/10 dark:hover:bg-blue-500/10 text-purple-600 dark:text-blue-400 border border-purple-500/30 dark:border-blue-500/30 font-semibold',
   ghost:
-    'bg-transparent hover:bg-surface-200 dark:hover:bg-surface-800 text-surface-500 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-100',
+    'bg-transparent hover:bg-gray-100 dark:hover:bg-[#1c273e] text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white font-semibold',
   danger:
-    'bg-red-500/10 hover:bg-red-500/20 text-red-500 dark:text-red-400 border border-red-500/20 hover:border-red-500/40',
+    'bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30 hover:border-rose-500/50 font-bold',
 };
 
 const sizes = {
