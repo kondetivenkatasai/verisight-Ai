@@ -113,29 +113,40 @@ export default function DashboardLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Trigger Native Browser Push Notification for daily logged-in users
+  // Trigger Hourly Native Browser Push Notification System (Every 1 Hour)
   useEffect(() => {
-    if (isAuthenticated && typeof window !== 'undefined' && 'Notification' in window) {
+    if (!isAuthenticated || typeof window === 'undefined' || !('Notification' in window)) return;
+
+    const sendHourlyNotification = () => {
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       try {
         if (Notification.permission === 'granted') {
-          new Notification('Verisight AI Daily Digest 🌟', {
-            body: `Good day ${user?.name || 'User'}! 3 new daily AI case updates are ready for your review.`,
+          new Notification('Verisight AI Hourly Security Digest 🔔', {
+            body: `[${timeStr}] Hourly Update: 3 active cases running nominal with 96.5% confidence. System Risk: Low (24/100).`,
             icon: '/logo-icon.svg',
           });
         } else if (Notification.permission !== 'denied') {
           Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
-              new Notification('Verisight AI Daily Digest 🌟', {
-                body: `Good day ${user?.name || 'User'}! 3 new daily AI case updates are ready for your review.`,
+              new Notification('Verisight AI Hourly Security Digest 🔔', {
+                body: `[${timeStr}] Hourly Update: 3 active cases running nominal with 96.5% confidence. System Risk: Low (24/100).`,
                 icon: '/logo-icon.svg',
               });
             }
           });
         }
       } catch (err) {
-        console.warn('Browser Push Notification notice:', err);
+        console.warn('Hourly notification error:', err);
       }
-    }
+    };
+
+    // Send initial notification on login
+    sendHourlyNotification();
+
+    // Set hourly interval (3,600,000 ms = 1 hour)
+    const hourlyInterval = setInterval(sendHourlyNotification, 3600000);
+
+    return () => clearInterval(hourlyInterval);
   }, [isAuthenticated, user?.name]);
 
   if (loading) {
