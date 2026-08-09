@@ -82,17 +82,12 @@ export function AuthProvider({ children }) {
     const res = await authService.googleLogin(googleData);
     const { token: newToken, user: userData } = res.data;
     localStorage.setItem('aegis_token', newToken);
-    const storedAvatar = localStorage.getItem('aegis_user_avatar') || userData.avatar || 'https://lh3.googleusercontent.com/a/default-user';
-    const storedDob = localStorage.getItem('aegis_user_dob') || userData.dob || 'Not specified';
-    const mergedUser = {
-      ...userData,
-      name: userData.name,
-      avatar: storedAvatar,
-      dob: storedDob,
-    };
+    if (userData?.name) localStorage.setItem('aegis_user_name', userData.name);
+    if (userData?.avatar) localStorage.setItem('aegis_user_avatar', userData.avatar);
+    if (userData?.dob) localStorage.setItem('aegis_user_dob', userData.dob);
     setToken(newToken);
-    setUser(mergedUser);
-    return mergedUser;
+    setUser(userData);
+    return userData;
   };
 
   const updateUser = (updatedFields) => {

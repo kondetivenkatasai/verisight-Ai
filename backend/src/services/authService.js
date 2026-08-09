@@ -134,12 +134,12 @@ export const authService = {
         provider: 'google',
       });
     } else {
-      // Ensure user avatar, name, and dob are updated with latest Google profile
+      // Always update user record with fresh Gmail profile details from Google
       user = await userModel.update(user.id, {
-        name: user.name || name,
+        name: name || user.name,
         avatar: avatar || user.avatar,
-        dob: user.dob || dob,
-      }) || user;
+        dob: dob !== 'Not specified' ? dob : (user.dob || 'Not specified'),
+      }) || { ...user, name: name || user.name, avatar: avatar || user.avatar, dob: dob !== 'Not specified' ? dob : user.dob };
     }
 
     const token = generateToken(user);
