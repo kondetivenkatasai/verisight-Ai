@@ -54,10 +54,12 @@ export const aiController = {
     };
 
     try {
-      const { data: dbCases } = await supabase
-        .from('cases')
-        .select('title, priority, status, created_at')
-        .limit(10);
+      const userId = req.user?.id;
+      let query = supabase.from('cases').select('title, priority, status, created_at');
+      if (userId) {
+        query = query.eq('user_id', userId);
+      }
+      const { data: dbCases } = await query;
 
       if (dbCases && dbCases.length > 0) {
         liveMetrics.totalCases = dbCases.length;
