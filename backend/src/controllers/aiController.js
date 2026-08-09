@@ -41,32 +41,36 @@ export const aiController = {
     const apiKey = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
     if (apiKey) {
-      try {
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-        const promptText = `You are Verisight AI Copilot, a high-precision multi-agent decision intelligence assistant.
+      const geminiModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
+      const promptText = `You are Verisight AI Copilot, a high-precision multi-agent decision intelligence assistant.
 User query: "${message}"
 ${caseContext ? `Active Case Context: ${JSON.stringify(caseContext)}` : ''}
 
 Provide a helpful, structured, concise response with markdown styling, key insights, and actionable next steps.`;
 
-        const geminiRes = await axios.post(
-          geminiUrl,
-          {
-            contents: [
-              {
-                parts: [{ text: promptText }],
-              },
-            ],
-          },
-          { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
-        );
+      for (const model of geminiModels) {
+        try {
+          const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+          const geminiRes = await axios.post(
+            geminiUrl,
+            {
+              contents: [
+                {
+                  parts: [{ text: promptText }],
+                },
+              ],
+            },
+            { headers: { 'Content-Type': 'application/json' }, timeout: 12000 }
+          );
 
-        const textOutput = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (textOutput && textOutput.trim()) {
-          reply = textOutput.trim();
+          const textOutput = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (textOutput && textOutput.trim()) {
+            reply = textOutput.trim();
+            break; // Stop loop on successful generation
+          }
+        } catch (geminiError) {
+          console.warn(`⚠️ Gemini model ${model} failed, trying fallback... Error:`, geminiError.response?.data?.error?.message || geminiError.message);
         }
-      } catch (geminiError) {
-        console.warn('⚠️ Gemini API call failed or rate limited, using structured fallback:', geminiError.message);
       }
     }
 
