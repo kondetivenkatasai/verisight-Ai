@@ -65,6 +65,31 @@ export default function DashboardLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Trigger Native Browser Push Notification for daily logged-in users
+  useEffect(() => {
+    if (isAuthenticated && typeof window !== 'undefined' && 'Notification' in window) {
+      try {
+        if (Notification.permission === 'granted') {
+          new Notification('Verisight AI Daily Digest 🌟', {
+            body: `Good day ${user?.name || 'User'}! 3 new daily AI case updates are ready for your review.`,
+            icon: '/logo-icon.svg',
+          });
+        } else if (Notification.permission !== 'denied') {
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              new Notification('Verisight AI Daily Digest 🌟', {
+                body: `Good day ${user?.name || 'User'}! 3 new daily AI case updates are ready for your review.`,
+                icon: '/logo-icon.svg',
+              });
+            }
+          });
+        }
+      } catch (err) {
+        console.warn('Browser Push Notification notice:', err);
+      }
+    }
+  }, [isAuthenticated, user?.name]);
+
   if (loading) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-[#090d16]' : 'bg-[#f2edf3]'}`}>
