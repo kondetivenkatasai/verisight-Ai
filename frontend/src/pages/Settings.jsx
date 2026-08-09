@@ -29,7 +29,9 @@ export default function Settings() {
   const [profile, setProfile] = useState({
     name: user?.name || '',
     email: user?.email || '',
+    dob: user?.dob || '',
     avatar: user?.avatar || '/default_avatar.png',
+    provider: user?.provider || (user?.email ? 'google' : 'email'),
   });
 
   const [passwords, setPasswords] = useState({
@@ -72,6 +74,7 @@ export default function Settings() {
       updateUser({
         name: profile.name,
         email: profile.email,
+        dob: profile.dob,
         avatar: profile.avatar,
       });
 
@@ -220,6 +223,13 @@ export default function Settings() {
                 onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))}
                 placeholder="Enter your email address"
                 required
+              />
+              <Input
+                label="Date of Birth (DOB)"
+                type="text"
+                value={profile.dob}
+                onChange={(e) => setProfile((p) => ({ ...p, dob: e.target.value }))}
+                placeholder="e.g. 1998-05-15 or Not specified"
               />
             </div>
 

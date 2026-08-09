@@ -55,19 +55,49 @@ export const authService = {
     let email = payload.email;
     let name = payload.name;
     let avatar = payload.avatar;
+    let dob = payload.dob || '';
 
     if (payload.access_token) {
       try {
-        const userInfoRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${payload.access_token}` },
-        });
-        if (userInfoRes.data?.email) {
-          email = userInfoRes.data.email;
-          name = userInfoRes.data.name || userInfoRes.data.email.split('@')[0];
-          avatar = userInfoRes.data.picture || avatar;
+        // Try Google People API first for rich profile details including Date of Birth (DOB)
+        try {
+          const peopleRes = await axios.get('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,birthdays', {
+            headers: { Authorization: `Bearer ${payload.access_token}` },
+          });
+
+          if (peopleRes.data) {
+            const pData = peopleRes.data;
+            if (pData.emailAddresses?.[0]?.value) {
+              email = pData.emailAddresses[0].value;
+            }
+            if (pData.names?.[0]?.displayName) {
+              name = pData.names[0].displayName;
+            }
+            if (pData.photos?.[0]?.url) {
+              avatar = pData.photos[0].url;
+            }
+            if (pData.birthdays?.[0]?.date) {
+              const bDate = pData.birthdays[0].date;
+              if (bDate.year && bDate.month && bDate.day) {
+                dob = `${bDate.year}-${String(bDate.month).padStart(2, '0')}-${String(bDate.day).padStart(2, '0')}`;
+              } else if (bDate.month && bDate.day) {
+                dob = `${String(bDate.month).padStart(2, '0')}-${String(bDate.day).padStart(2, '0')}`;
+              }
+            }
+          }
+        } catch {
+          // Fallback to UserInfo API if People API is unconfigured
+          const userInfoRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${payload.access_token}` },
+          });
+          if (userInfoRes.data?.email) {
+            email = userInfoRes.data.email;
+            name = userInfoRes.data.name || userInfoRes.data.email.split('@')[0];
+            avatar = userInfoRes.data.picture || avatar;
+          }
         }
       } catch (err) {
-        console.error('Failed to verify Google access_token:', err.response?.data || err.message);
+        console.error('Failed to verify Google token:', err.response?.data || err.message);
         throw createAppError('Google account verification failed', 401);
       }
     } else if (payload.credential) {
@@ -88,6 +118,7 @@ export const authService = {
     }
 
     avatar = avatar || 'https://lh3.googleusercontent.com/a/default-user';
+    dob = dob || 'Not specified';
 
     let user = await userModel.findByEmail(email);
 
@@ -99,8 +130,16 @@ export const authService = {
         password: dummyPassword,
         role: 'user',
         avatar,
+        dob,
         provider: 'google',
       });
+    } else {
+      // Ensure user avatar, name, and dob are updated with latest Google profile
+      user = await userModel.update(user.id, {
+        name: user.name || name,
+        avatar: avatar || user.avatar,
+        dob: user.dob || dob,
+      }) || user;
     }
 
     const token = generateToken(user);

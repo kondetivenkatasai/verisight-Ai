@@ -38,7 +38,7 @@ export const userModel = {
   },
 
   async create(userData) {
-    const { avatar, provider, ...coreFields } = userData;
+    const { avatar, provider, dob, ...coreFields } = userData;
     try {
       // Attempt insert with full fields
       const { data, error } = await supabase
@@ -46,7 +46,7 @@ export const userModel = {
         .insert(userData)
         .select('id, name, email, role, created_at')
         .single();
-      if (!error && data) return { ...data, avatar, provider };
+      if (!error && data) return { ...data, avatar, provider, dob };
     } catch {
       // Retry insert with core schema fields if custom columns fail
       try {
@@ -55,7 +55,7 @@ export const userModel = {
           .insert(coreFields)
           .select('id, name, email, role, created_at')
           .single();
-        if (!error && data) return { ...data, avatar, provider };
+        if (!error && data) return { ...data, avatar, provider, dob };
       } catch {
         // Fall through to in-memory store
       }

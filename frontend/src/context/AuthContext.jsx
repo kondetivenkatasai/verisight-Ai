@@ -83,10 +83,12 @@ export function AuthProvider({ children }) {
     const { token: newToken, user: userData } = res.data;
     localStorage.setItem('aegis_token', newToken);
     const storedAvatar = localStorage.getItem('aegis_user_avatar') || userData.avatar || 'https://lh3.googleusercontent.com/a/default-user';
+    const storedDob = localStorage.getItem('aegis_user_dob') || userData.dob || 'Not specified';
     const mergedUser = {
       ...userData,
       name: userData.name,
       avatar: storedAvatar,
+      dob: storedDob,
     };
     setToken(newToken);
     setUser(mergedUser);
@@ -99,6 +101,9 @@ export function AuthProvider({ children }) {
     }
     if (updatedFields.avatar) {
       localStorage.setItem('aegis_user_avatar', updatedFields.avatar);
+    }
+    if (updatedFields.dob) {
+      localStorage.setItem('aegis_user_dob', updatedFields.dob);
     }
     setUser((prev) => (prev ? { ...prev, ...updatedFields } : prev));
   };

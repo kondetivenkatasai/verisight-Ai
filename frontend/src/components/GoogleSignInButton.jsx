@@ -12,7 +12,7 @@ export default function GoogleSignInButton({ onClick, loading = false, text = 'S
         try {
           tokenClientRef.current = window.google.accounts.oauth2.initTokenClient({
             client_id: GOOGLE_CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+            scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/user.birthday.read',
             callback: (tokenResponse) => {
               if (tokenResponse && tokenResponse.access_token) {
                 onClick({ access_token: tokenResponse.access_token });
@@ -41,7 +41,7 @@ export default function GoogleSignInButton({ onClick, loading = false, text = 'S
     if (window.google?.accounts?.oauth2 && GOOGLE_CLIENT_ID) {
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: GOOGLE_CLIENT_ID,
-        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/user.birthday.read',
         callback: (tokenResponse) => {
           if (tokenResponse && tokenResponse.access_token) {
             onClick({ access_token: tokenResponse.access_token });
