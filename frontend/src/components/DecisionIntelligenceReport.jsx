@@ -7,6 +7,7 @@ import {
 import Badge from '@/ui/Badge';
 import RadialGlowButton from '@/ui/RadialGlowButton';
 import Button from '@/ui/Button';
+import AIAudioPlayer from '@/components/AIAudioPlayer';
 import { formatDate } from '@/utils/formatters';
 
 export default function DecisionIntelligenceReport({ report, onClose }) {
@@ -189,6 +190,12 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
           </div>
         </div>
       </div>
+
+      {/* AIAudioPlayer Spoken Report Summary */}
+      <AIAudioPlayer
+        textToRead={`Executive Decision Intelligence Summary for ${caseTitle}. Final Decision is ${decision.toUpperCase()} with ${confidence}% overall confidence and a risk score of ${riskScore} percent. ${summaryText}`}
+        title="Listen to Spoken Report Executive Summary"
+      />
 
       {/* SECTION 10: METRICS DASHBOARD (8 Metric Cards) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

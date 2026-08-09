@@ -12,6 +12,8 @@ import { validate } from '../middleware/validate.js';
 import { signupSchema, loginSchema } from '../validators/authValidator.js';
 import { authLimiter } from '../middleware/rateLimiter.js';
 
+import aiRoutes from './aiRoutes.js';
+
 const router = Router();
 
 // Primary Auth Routes (/api/auth/signup, /api/auth/login, /api/auth/me)
@@ -28,6 +30,7 @@ router.use('/analytics', analyticsRoutes);
 router.use('/uploads', uploadRoutes);
 router.use('/workflow', workflowRoutes);
 router.use('/users', userRoutes);
+router.use('/ai', aiRoutes);
 
 // Health & Root Status
 router.get('/', (req, res) => {

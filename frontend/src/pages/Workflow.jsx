@@ -7,6 +7,8 @@ import RadialGlowButton from '@/ui/RadialGlowButton';
 import Card from '@/ui/Card';
 import Badge from '@/ui/Badge';
 import AgentStatusCard from '@/components/AgentStatusCard';
+import CustomAgentBuilder from '@/components/CustomAgentBuilder';
+import AIAudioPlayer from '@/components/AIAudioPlayer';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { PageLoader } from '@/ui/Loader';
 import { caseService } from '@/services/caseService';
@@ -203,9 +205,11 @@ function WorkflowContent() {
             </RadialGlowButton>
           )}
         </div>
-      </div>
-
-      {/* Pipeline Visualization */}
+      {/* AIAudioPlayer Spoken Case Summary */}
+      <AIAudioPlayer
+        textToRead={`Verisight AI Workflow Report for ${caseData?.title || 'Active Investigation Case'}. Pipeline progress is currently at ${progressPct} percent with 6 specialized agents evaluating risk and evidence.`}
+        title="AI Voice Summary of Case Pipeline"
+      />
       <Card className="mb-8 hover:border-sky-500/40 hover:shadow-[0_0_25px_rgba(56,189,248,0.15)] transition-all">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Pipeline Status</h2>
@@ -252,6 +256,9 @@ function WorkflowContent() {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Custom AI Agent Builder */}
+      <CustomAgentBuilder />
     </motion.div>
   );
 }
