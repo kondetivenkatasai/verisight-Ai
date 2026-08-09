@@ -15,8 +15,8 @@ const Textarea = forwardRef(function Textarea(
         ref={ref}
         rows={rows}
         className={`
-          w-full rounded-xl bg-white dark:bg-[#151c2e] border border-gray-200 dark:border-[#1e2942]
-          text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-[#5c6b8a]
+          w-full rounded-xl bg-white dark:bg-[#1a233a] border border-gray-200 dark:border-[#2a3a5e]
+          text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-400
           focus:outline-none focus:ring-2 focus:ring-[#9a55ff]/20 dark:focus:ring-blue-500/20 focus:border-[#9a55ff] dark:focus:border-blue-500
           transition-all duration-200 resize-none font-medium text-sm px-4 py-2.5
           ${error ? 'border-red-500/60 focus:ring-red-500/30 focus:border-red-500' : ''}
