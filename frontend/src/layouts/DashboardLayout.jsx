@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { useSearch } from '@/context/SearchContext';
 import { PageLoader } from '@/ui/Loader';
-import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X } from 'lucide-react';
+import { Search, Bell, History, ChevronDown, Settings, Lock, LogOut, X, Sparkles, ShieldCheck, Activity } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, logout, isAuthenticated, loading } = useAuth();
@@ -16,14 +16,49 @@ export default function DashboardLayout() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [showDailyBanner, setShowDailyBanner] = useState(true);
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "Daily AI Digest Ready",
+      desc: "3 active cases & risk findings evaluated for today.",
+      time: "Today, 9:00 AM",
+      read: false,
+    },
+    {
+      id: 2,
+      title: "Account Login Verified",
+      desc: `Logged in as ${user?.email || 'authenticated user'} via Google OAuth.`,
+      time: "Today, 8:45 AM",
+      read: false,
+    },
+    {
+      id: 3,
+      title: "Daily Security & Risk Status",
+      desc: "All multi-agent pipelines running cleanly. 0 high risk threats.",
+      time: "Today, 8:00 AM",
+      read: false,
+    },
+  ]);
+  const notifRef = useRef(null);
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const markAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  };
+
   const isDark = theme === 'dark';
 
-
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setNotifOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -101,15 +136,74 @@ export default function DashboardLayout() {
               </button>
             )}
 
-            {/* Bell Icon */}
-            <button className={`relative p-2 rounded-xl transition-colors ${
-              isDark
-                ? 'text-[#7b89a6] hover:text-white hover:bg-[#121929]'
-                : 'text-gray-400 hover:text-[#9a55ff] hover:bg-purple-50'
-            }`}>
-              <Bell size={17} />
-              <span className={`absolute top-1.5 right-1.5 w-2 h-2 rounded-full ${isDark ? 'bg-blue-500' : 'bg-[#9a55ff]'}`} />
-            </button>
+            {/* Bell Icon & Daily Notifications Popover */}
+            <div className="relative" ref={notifRef}>
+              <button
+                onClick={() => setNotifOpen((prev) => !prev)}
+                className={`relative p-2 rounded-xl transition-colors cursor-pointer ${
+                  isDark
+                    ? 'text-[#7b89a6] hover:text-white hover:bg-[#121929]'
+                    : 'text-gray-400 hover:text-[#9a55ff] hover:bg-purple-50'
+                }`}
+              >
+                <Bell size={17} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Notifications Popover Panel */}
+              {notifOpen && (
+                <div className={`absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl p-4 shadow-2xl border backdrop-blur-xl z-50 transition-all ${
+                  isDark
+                    ? 'bg-[#111726] border-[#1e2942] text-white'
+                    : 'bg-white border-gray-200 text-gray-800'
+                }`}>
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-200 dark:border-[#1e2942]">
+                    <div className="flex items-center gap-2">
+                      <Bell size={16} className="text-blue-500" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider">Daily Notifications</h3>
+                    </div>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={markAllRead}
+                        className="text-[10px] font-semibold text-blue-500 hover:underline cursor-pointer"
+                      >
+                        Mark all read
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-2.5 max-h-80 overflow-y-auto">
+                    {notifications.map((n) => (
+                      <div
+                        key={n.id}
+                        onClick={() => {
+                          setNotifications((prev) => prev.map((item) => item.id === n.id ? { ...item, read: true } : item));
+                        }}
+                        className={`p-3 rounded-xl border transition-all cursor-pointer ${
+                          !n.read
+                            ? isDark
+                              ? 'bg-blue-500/10 border-blue-500/30'
+                              : 'bg-purple-50/70 border-purple-200'
+                            : isDark
+                            ? 'bg-[#151c2e] border-[#1e2942] opacity-75'
+                            : 'bg-gray-50 border-gray-150 opacity-75'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="text-xs font-bold text-gray-900 dark:text-white">{n.title}</h4>
+                          <span className="text-[9px] text-gray-400 dark:text-[#5c6b8a] shrink-0">{n.time}</span>
+                        </div>
+                        <p className="text-[11px] text-gray-600 dark:text-[#8a99b5] mt-1 leading-snug">{n.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Interactive User Profile Dropdown Menu */}
             <div className="relative" ref={dropdownRef}>
@@ -218,6 +312,37 @@ export default function DashboardLayout() {
 
         {/* Main Content Area */}
         <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+          {/* Daily Notification Welcome Banner Toast */}
+          {showDailyBanner && (
+            <div className={`p-4 rounded-2xl border flex items-center justify-between shadow-sm transition-all animate-fade-in ${
+              isDark
+                ? 'bg-gradient-to-r from-[#111827] via-[#1e293b] to-[#0f172a] border-blue-500/20 text-white'
+                : 'bg-gradient-to-r from-blue-50 via-purple-50 to-indigo-50 border-purple-100 text-gray-800'
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`p-2.5 rounded-xl ${isDark ? 'bg-blue-500/10 text-blue-400' : 'bg-purple-100 text-[#9a55ff]'}`}>
+                  <Sparkles size={20} />
+                </div>
+                <div>
+                  <h4 className="text-xs sm:text-sm font-bold">
+                    Daily Notification Digest for {user?.name || 'Logged-In User'}
+                  </h4>
+                  <p className="text-[11px] sm:text-xs opacity-80 mt-0.5">
+                    Welcome back! You have {unreadCount} unread daily notification{unreadCount === 1 ? '' : 's'} for today.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowDailyBanner(false)}
+                className="p-1.5 rounded-lg opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                title="Dismiss Banner"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          )}
+
           <Outlet />
         </div>
       </main>
