@@ -94,28 +94,7 @@ export default function Sidebar({ isOpen = false, onClose }) {
             </button>
           </div>
 
-          <div className="pt-3 md:pt-5">
-
-        {/* User Card right under logo */}
-        <div className="px-5 mb-5">
-          <div className={`flex items-center gap-3 p-3 rounded-2xl border ${
-            isDark
-              ? 'bg-[#111728] border-[#1d263b] text-white'
-              : 'bg-purple-50/50 border-purple-100/60 text-gray-900'
-          }`}>
-            <img
-              src={user?.avatar || '/default_avatar.png'}
-              alt={user?.name || 'User Profile'}
-              className="h-10 w-10 rounded-full object-cover border border-blue-500/40 shrink-0 shadow-sm"
-            />
-            <div className="min-w-0 flex-1">
-              <p className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{user?.name || 'Verisight User'}</p>
-              <span className={`text-[10px] font-semibold uppercase tracking-wider block ${isDark ? 'text-[#7b89a6]' : 'text-purple-600'}`}>
-                Decision Workspace
-              </span>
-            </div>
-          </div>
-        </div>
+          <div className="pt-3 md:pt-4">
 
 
         {/* Navigation Links */}
