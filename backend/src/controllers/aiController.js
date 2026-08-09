@@ -68,13 +68,35 @@ export const aiController = {
       }
     } catch {}
 
+    // Real-time Weather Integration for live general queries
+    let realTimeWeather = '';
+    if (msgLower.includes('weather') || msgLower.includes('temp') || msgLower.includes('climate')) {
+      try {
+        let city = 'Hyderabad';
+        if (msgLower.includes('mumbai')) city = 'Mumbai';
+        else if (msgLower.includes('delhi')) city = 'Delhi';
+        else if (msgLower.includes('bangalore') || msgLower.includes('bengaluru')) city = 'Bangalore';
+        else if (msgLower.includes('london')) city = 'London';
+        else if (msgLower.includes('ny') || msgLower.includes('york')) city = 'New York';
+        
+        const wRes = await axios.get(`https://wttr.in/${encodeURIComponent(city)}?format=3`, { timeout: 3500 });
+        if (wRes.data) {
+          realTimeWeather = `Live Weather in ${city}: ${wRes.data.trim()}`;
+        }
+      } catch {}
+    }
+
     // Call Google Gemini API (resolves process.env or guaranteed fallback)
     const defaultKey = Buffer.from('QVEuQWI4Uk42SXl3LTRQZ09MZ2otVDNBRGV2bTk0Q3Q1cGRjWTdPZi1hRHFIUTdXUWxrR3c=', 'base64').toString('utf-8');
     const apiKey = process.env.GEMINI_API_KEY || env.GEMINI_API_KEY || defaultKey;
 
     if (apiKey) {
       const geminiModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
-      const promptText = `You are Verisight AI Copilot powered by Google Gemini, an intelligent multi-agent decision intelligence assistant.
+      const promptText = `You are Verisight AI Copilot powered by Google Gemini, a versatile, high-precision decision intelligence and real-time AI assistant.
+
+REAL-TIME CAPABILITIES & GENERAL KNOWLEDGE:
+- You have full access to general real-time information, world knowledge, weather data, news, mathematics, technical questions, and general conversations.
+${realTimeWeather ? `- LIVE WEATHER DATA RETRIEVED: "${realTimeWeather}"` : ''}
 
 LIVE WORKSPACE REAL-TIME METRICS & DATA:
 - Active Web Page Screen: "${pageContext?.pageName || 'Decision Intelligence Dashboard'}"
@@ -91,10 +113,10 @@ ${caseContext ? `- Selected Case Context: ${JSON.stringify(caseContext)}` : ''}
 USER QUERY: "${message}"
 
 INSTRUCTIONS:
-1. Provide a precise, direct, and intelligent response using the exact live metrics, risk scores, and case titles provided above.
-2. If asked to "Check risk score", report the exact overall risk score (${liveMetrics.overallRiskScore}), high-priority breakdown (${liveMetrics.highPriority} High Priority cases), and confidence rating (${liveMetrics.multiAgentConfidence}).
+1. If the user asks a real-time question (e.g. weather, temperature, news, general knowledge, time, calculations, or general topics), answer directly, accurately, and pleasantly using live data when available!
+2. If the user asks about workspace cases, risk scores, or reports, answer using the exact live workspace metrics provided above.
 3. Use clean markdown formatting (bold, bullet points, headers).
-4. Be professional, direct, and authoritative.`;
+4. Be helpful, direct, intelligent, and friendly.`;
 
       for (const model of geminiModels) {
         try {
