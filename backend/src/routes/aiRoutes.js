@@ -13,4 +13,7 @@ router.post('/custom-agents', authenticate, aiController.createCustomAgent);
 router.patch('/custom-agents/:id/toggle', authenticate, aiController.toggleCustomAgent);
 router.delete('/custom-agents/:id', authenticate, aiController.deleteCustomAgent);
 
+// Multimodal OCR Document Scanner Route
+router.post('/scan-document', authenticate, aiController.scanDocument);
+
 export default router;

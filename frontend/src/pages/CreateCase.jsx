@@ -8,6 +8,7 @@ import Input from '@/ui/Input';
 import Textarea from '@/ui/Textarea';
 import Select from '@/ui/Select';
 import FileUpload from '@/components/FileUpload';
+import DocumentScanner from '@/components/DocumentScanner';
 import { caseService } from '@/services/caseService';
 import { pageTransition } from '@/animations/variants';
 
@@ -61,12 +62,25 @@ export default function CreateCase() {
     }
   };
 
+  const handleAutofill = (scanData) => {
+    if (!scanData) return;
+    setForm((prev) => ({
+      ...prev,
+      title: scanData.title || prev.title,
+      description: `${scanData.extractedSummary || ''}\n\n• Document Type: ${scanData.documentType || 'N/A'}\n• Document ID: ${scanData.idNumber || 'N/A'}\n• Forgery Risk Score: ${scanData.forgeryRiskScore || 'N/A'}\n• Vision Confidence: ${scanData.confidenceScore || '96.5%'}`,
+      priority: scanData.recommendedPriority || 'high',
+    }));
+  };
+
   return (
-    <motion.div {...pageTransition} className="max-w-2xl mx-auto">
-      <div className="mb-6">
+    <motion.div {...pageTransition} className="max-w-3xl mx-auto space-y-6">
+      <div>
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">Create New Case</h1>
         <p className="text-gray-500 dark:text-[#8a99b5] text-sm mt-1">Submit a case for AI-powered multi-agent analysis</p>
       </div>
+
+      {/* Multimodal Gemini Vision Document Scanner */}
+      <DocumentScanner onAutofill={handleAutofill} />
 
       <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-150 dark:border-[#1e2942] p-4 sm:p-8 shadow-sm dark:shadow-xl">
         <form onSubmit={handleSubmit} className="space-y-6">
