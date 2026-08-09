@@ -5,6 +5,16 @@ import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/hooks/useAuth';
 import api from '@/services/api';
 
+const cleanFormattedText = (rawText) => {
+  if (!rawText) return '';
+  return rawText
+    .replace(/^#{1,6}\s*/gm, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/^\*\s+/gm, '• ')
+    .replace(/^-\s+/gm, '• ');
+};
+
 export default function AICopilot() {
   const { theme } = useTheme();
   const { user } = useAuth();
@@ -157,7 +167,7 @@ export default function AICopilot() {
                     ? 'bg-[#151c2e] border border-[#1e2942] text-gray-200 rounded-bl-none'
                     : 'bg-gray-100 text-gray-800 rounded-bl-none'
                 }`}>
-                  <p className="whitespace-pre-line">{m.text}</p>
+                  <p className="whitespace-pre-line leading-relaxed">{cleanFormattedText(m.text)}</p>
                 </div>
                 <span className="text-[9px] opacity-50 mt-1 px-1">{m.time}</span>
               </div>

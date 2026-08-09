@@ -122,7 +122,7 @@ INSTRUCTIONS:
 1. If the user asks for a weather report or temperature (e.g. for Aziznagar, Hyderabad, or any city), report the exact real-time weather details!
 2. If the user asks a real-time or general question, answer directly, accurately, and pleasantly.
 3. If the user asks about workspace cases, risk scores, or reports, answer using the exact live workspace metrics provided above.
-4. Use clean markdown formatting (bold, bullet points, headers).`;
+4. Do NOT output raw markdown symbols like hashes (###) or double asterisks (**). Use clean bullet points (•), clear headers, emojis, and professional plain text spacing.`;
 
       for (const model of geminiModels) {
         try {
