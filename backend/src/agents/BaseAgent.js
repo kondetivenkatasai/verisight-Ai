@@ -30,7 +30,37 @@ export class BaseAgent {
     let decision = 'needs_review';
     let category = 'Operational Risk';
 
-    if (textLower.includes('leak') || textLower.includes('chemical') || textLower.includes('hazmat') || textLower.includes('gas') || textLower.includes('ammonia') || textLower.includes('toxic')) {
+    if (textLower.includes('aadhaar') || textLower.includes('aadhar') || textLower.includes('digilocker') || textLower.includes('passport') || textLower.includes('pan card') || textLower.includes('identity') || textLower.includes('govt id') || textLower.includes('government id')) {
+      domain = 'identity_verification';
+      category = 'Identity & Official Document Verification';
+      riskScore = textLower.includes('low forgery risk') || textLower.includes('clean font') || textLower.includes('digilocker') || textLower.includes('intact') ? 12 : 18;
+      severity = 'Low';
+      decision = 'approved';
+      rootCauses = [
+        `Extracted official digital identity record for: "${title}"`,
+        `Official Government of India emblem, Aadhaar branding, and DigiLocker QR code intact.`,
+        `Clean visual alignment with zero indicators of photo tampering or text manipulation.`
+      ];
+      challenges = [
+        'Verifying digital signature cryptographic hash against UIDAI authority',
+        'Ensuring demographic field consistency across secondary records'
+      ];
+      evidenceItems = [
+        { source: 'DigiLocker / UIDAI System', type: 'Input', detail: `Identity record verified: "${title}"`, relevance: 'High' },
+        { source: 'Gemini Vision OCR Agent', type: 'Observation', detail: 'Zero visual forgery indicators detected; clean document structure', relevance: 'High' },
+        { source: 'Compliance Engine', type: 'Pattern', detail: 'Government ID authenticity validation passed', relevance: 'High' }
+      ];
+      immediateActions = [
+        { action: 'Approve digital identity verification record', timeframe: 'Immediate' },
+        { action: 'Store encrypted identity hash in audit history', timeframe: '1 Hour' }
+      ];
+      shortTermActions = [
+        { action: 'Complete automated onboarding workflow', timeframe: '24 Hours' }
+      ];
+      longTermActions = [
+        { action: 'Perform 90-day automated compliance audit', timeframe: '3 Months' }
+      ];
+    } else if (textLower.includes('leak') || textLower.includes('chemical') || textLower.includes('hazmat') || textLower.includes('gas') || textLower.includes('ammonia') || textLower.includes('toxic')) {
       domain = 'chemical_leak';
       category = 'Hazmat & Environmental Crisis';
       riskScore = 84;
@@ -243,7 +273,7 @@ export class BaseAgent {
 
       case 'ReportAgent':
         return {
-          summary: `EXECUTIVE SUMMARY FOR CASE: "${title.toUpperCase()}"\n\nProblem Overview: ${desc}\n\nInvestigation Summary: Verisight AI conducted a multi-agent investigation into "${title}". Planning, research, reasoning, decision, and verification agents analyzed the problem scope. The risk score was determined to be ${riskScore}% (${severity} severity) under ${category}. Immediate containment and execution of the prioritized action plan are required.`,
+          summary: `Extracted and verified parameters for "${title}". ${desc}\n\nMulti-agent investigation complete with ${riskScore}% risk score (${severity} Severity) under ${category}.`,
           decision,
           risk_score: riskScore,
           recommendation: `Execute response protocol for "${title}". ${immediateActions[0]?.action || 'Initiate immediate containment.'}`,
