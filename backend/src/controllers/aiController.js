@@ -91,10 +91,11 @@ export const aiController = {
 
     // Call Google Gemini API (resolves process.env or guaranteed fallback)
     const defaultKey = Buffer.from('QVEuQWI4Uk42SXl3LTRQZ09MZ2otVDNBRGV2bTk0Q3Q1cGRjWTdPZi1hRHFIUTdXUWxrR3c=', 'base64').toString('utf-8');
-    const apiKey = process.env.GEMINI_API_KEY || env.GEMINI_API_KEY || defaultKey;
+    const envKey = (process.env.GEMINI_API_KEY || env.GEMINI_API_KEY || '').trim();
+    const apiKey = (envKey && envKey.length > 10) ? envKey : defaultKey;
 
     if (apiKey) {
-      const geminiModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
+      const geminiModels = ['gemini-flash-latest', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-flash-lite-latest'];
       const promptText = `You are Verisight AI Copilot powered by Google Gemini, a versatile, high-precision decision intelligence and real-time AI assistant.
 
 REAL-TIME CAPABILITIES & GENERAL KNOWLEDGE:
