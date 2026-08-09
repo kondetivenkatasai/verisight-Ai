@@ -17,36 +17,80 @@ export default function DashboardLayout() {
   const dropdownRef = useRef(null);
 
   const [notifOpen, setNotifOpen] = useState(false);
-  const [showDailyBanner, setShowDailyBanner] = useState(true);
-  const [notifications, setNotifications] = useState([
+
+  const [readNotifIds, setReadNotifIds] = useState(() => {
+    try {
+      const stored = localStorage.getItem('verisight_read_notifs');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [showDailyBanner, setShowDailyBanner] = useState(() => {
+    try {
+      const todayKey = `verisight_banner_dismissed_${new Date().toISOString().slice(0, 10)}`;
+      return !localStorage.getItem(todayKey);
+    } catch {
+      return true;
+    }
+  });
+
+  const dismissDailyBanner = () => {
+    setShowDailyBanner(false);
+    try {
+      const todayKey = `verisight_banner_dismissed_${new Date().toISOString().slice(0, 10)}`;
+      localStorage.setItem(todayKey, 'true');
+    } catch {}
+  };
+
+  const initialNotificationsList = [
     {
       id: 1,
       title: "Daily AI Digest Ready",
       desc: "3 active cases & risk findings evaluated for today.",
       time: "Today, 9:00 AM",
-      read: false,
     },
     {
       id: 2,
       title: "Account Login Verified",
       desc: `Logged in as ${user?.email || 'authenticated user'} via Google OAuth.`,
       time: "Today, 8:45 AM",
-      read: false,
     },
     {
       id: 3,
       title: "Daily Security & Risk Status",
       desc: "All multi-agent pipelines running cleanly. 0 high risk threats.",
       time: "Today, 8:00 AM",
-      read: false,
     },
-  ]);
+  ];
+
+  const notifications = initialNotificationsList.map((n) => ({
+    ...n,
+    read: readNotifIds.includes(n.id),
+  }));
+
   const notifRef = useRef(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    const allIds = initialNotificationsList.map((n) => n.id);
+    setReadNotifIds(allIds);
+    try {
+      localStorage.setItem('verisight_read_notifs', JSON.stringify(allIds));
+    } catch {}
+  };
+
+  const markItemRead = (id) => {
+    setReadNotifIds((prev) => {
+      if (prev.includes(id)) return prev;
+      const updated = [...prev, id];
+      try {
+        localStorage.setItem('verisight_read_notifs', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   const isDark = theme === 'dark';
@@ -205,9 +249,7 @@ export default function DashboardLayout() {
                     {notifications.map((n) => (
                       <div
                         key={n.id}
-                        onClick={() => {
-                          setNotifications((prev) => prev.map((item) => item.id === n.id ? { ...item, read: true } : item));
-                        }}
+                        onClick={() => markItemRead(n.id)}
                         className={`p-3 rounded-xl border transition-all cursor-pointer ${
                           !n.read
                             ? isDark
@@ -359,7 +401,7 @@ export default function DashboardLayout() {
               </div>
               <button
                 type="button"
-                onClick={() => setShowDailyBanner(false)}
+                onClick={dismissDailyBanner}
                 className="p-1.5 rounded-lg opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
                 title="Dismiss Banner"
               >
