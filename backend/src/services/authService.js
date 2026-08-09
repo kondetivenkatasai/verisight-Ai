@@ -143,12 +143,15 @@ export const authService = {
         provider: 'google',
       });
     } else {
-      // Always update user record with fresh Gmail profile details from Google
+      // Preserve custom uploaded photo (data URLs or non-google photos) over Google avatar
+      const hasCustomUploadedAvatar = user.avatar && (user.avatar.startsWith('data:') || (!user.avatar.includes('googleusercontent.com') && user.avatar !== 'https://lh3.googleusercontent.com/a/default-user'));
+      const preservedAvatar = hasCustomUploadedAvatar ? user.avatar : (avatar || user.avatar);
+
       user = await userModel.update(user.id, {
         name: name || user.name,
-        avatar: avatar || user.avatar,
+        avatar: preservedAvatar,
         dob: dob !== 'Not specified' ? dob : (user.dob || 'Not specified'),
-      }) || { ...user, name: name || user.name, avatar: avatar || user.avatar, dob: dob !== 'Not specified' ? dob : user.dob };
+      }) || { ...user, name: name || user.name, avatar: preservedAvatar, dob: dob !== 'Not specified' ? dob : user.dob };
     }
 
     const token = generateToken(user);

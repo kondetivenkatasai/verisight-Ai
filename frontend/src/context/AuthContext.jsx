@@ -82,12 +82,25 @@ export function AuthProvider({ children }) {
     const res = await authService.googleLogin(googleData);
     const { token: newToken, user: userData } = res.data;
     localStorage.setItem('aegis_token', newToken);
-    if (userData?.name) localStorage.setItem('aegis_user_name', userData.name);
-    if (userData?.avatar) localStorage.setItem('aegis_user_avatar', userData.avatar);
-    if (userData?.dob) localStorage.setItem('aegis_user_dob', userData.dob);
+
+    const storedCustomAvatar = localStorage.getItem('aegis_user_avatar');
+    const isCustomUploaded = localStorage.getItem('aegis_custom_avatar_uploaded') === 'true';
+
+    // If user previously uploaded a custom profile photo, preserve it
+    const finalAvatar = (isCustomUploaded && storedCustomAvatar) ? storedCustomAvatar : (userData.avatar || storedCustomAvatar);
+
+    const finalUser = {
+      ...userData,
+      avatar: finalAvatar || userData?.avatar,
+    };
+
+    if (finalUser?.name) localStorage.setItem('aegis_user_name', finalUser.name);
+    if (finalUser?.avatar) localStorage.setItem('aegis_user_avatar', finalUser.avatar);
+    if (finalUser?.dob) localStorage.setItem('aegis_user_dob', finalUser.dob);
+
     setToken(newToken);
-    setUser(userData);
-    return userData;
+    setUser(finalUser);
+    return finalUser;
   };
 
   const updateUser = (updatedFields) => {
@@ -96,6 +109,7 @@ export function AuthProvider({ children }) {
     }
     if (updatedFields.avatar) {
       localStorage.setItem('aegis_user_avatar', updatedFields.avatar);
+      localStorage.setItem('aegis_custom_avatar_uploaded', 'true');
     }
     if (updatedFields.dob) {
       localStorage.setItem('aegis_user_dob', updatedFields.dob);
