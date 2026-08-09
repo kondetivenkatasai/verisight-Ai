@@ -158,11 +158,11 @@ export default function DashboardLayout() {
       <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       <main className="flex-1 md:ml-64 min-h-screen min-w-0 max-w-full overflow-x-hidden">
-        {/* Top Header Bar */}
-        <header className={`sticky top-0 z-30 backdrop-blur-md px-4 sm:px-8 py-3.5 flex items-center justify-between border-b transition-colors duration-200 ${
+        {/* Top Header Bar (Fixed Sticky Top) */}
+        <header className={`sticky top-0 z-30 w-full backdrop-blur-xl px-4 sm:px-8 py-3.5 flex items-center justify-between border-b transition-colors duration-200 ${
           isDark
-            ? 'bg-[#090d16]/90 border-[#182035] text-white'
-            : 'bg-white/90 border-gray-150 text-gray-800 shadow-sm'
+            ? 'bg-[#090d16]/95 border-[#182035] text-white shadow-md'
+            : 'bg-white/95 border-gray-150 text-gray-800 shadow-sm'
         }`}>
           {/* Title & Mobile Toggle */}
           <div className="flex items-center gap-3">
