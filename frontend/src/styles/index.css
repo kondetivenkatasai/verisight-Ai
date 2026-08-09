@@ -179,3 +179,35 @@
   }
 }
 
+@media print {
+  header,
+  aside,
+  nav,
+  button:not(.print-keep),
+  input,
+  select,
+  .print\:hidden,
+  .fixed.z-50:not(.print-container) {
+    display: none !important;
+  }
+
+  body, html, #root, main {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .print-report-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+}
+

@@ -7,6 +7,8 @@ import Modal from '@/ui/Modal';
 import Button from '@/ui/Button';
 import Input from '@/ui/Input';
 import CaseContextMenu from '@/components/CaseContextMenu';
+import DecisionIntelligenceReport from '@/components/DecisionIntelligenceReport';
+import { reportService } from '@/services/reportService';
 import { formatRelativeTime, truncate } from '@/utils/formatters';
 import api from '@/services/api';
 import { useTheme } from '@/context/ThemeContext';
@@ -19,6 +21,7 @@ export default function CaseCard({ caseData, onUpdate }) {
   const [contextPos, setContextPos] = useState(null);
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedReport, setSelectedReport] = useState(null);
   const [newTitle, setNewTitle] = useState(caseData.title);
   const [loading, setLoading] = useState(false);
 
@@ -76,8 +79,18 @@ export default function CaseCard({ caseData, onUpdate }) {
     }
   };
 
-  const handleExportPDF = () => {
-    window.print();
+  const handleExportPDF = async () => {
+    try {
+      const res = await reportService.getByCase(caseData.id);
+      const reports = res.data?.reports || [];
+      if (reports.length > 0) {
+        setSelectedReport(reports[0]);
+      } else {
+        navigate('/reports');
+      }
+    } catch {
+      navigate('/reports');
+    }
   };
 
   const handleExportJSON = () => {
@@ -235,6 +248,21 @@ export default function CaseCard({ caseData, onUpdate }) {
             </Button>
           </div>
         </div>
+      </Modal>
+
+      {/* Decision Intelligence Report Modal */}
+      <Modal
+        isOpen={!!selectedReport}
+        onClose={() => setSelectedReport(null)}
+        title="AI Decision Intelligence Report"
+        size="5xl"
+      >
+        {selectedReport && (
+          <DecisionIntelligenceReport
+            report={selectedReport}
+            onClose={() => setSelectedReport(null)}
+          />
+        )}
       </Modal>
     </>
   );
