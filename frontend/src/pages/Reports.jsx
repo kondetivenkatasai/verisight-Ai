@@ -83,9 +83,9 @@ export default function Reports() {
       </div>
 
       {/* Controls Bar: Search, Filters, Sorting */}
-      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-150 dark:border-[#1e2942] p-4 shadow-sm dark:shadow-xl flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-150 dark:border-[#1e2942] p-4 shadow-sm dark:shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Search */}
-        <div className="relative flex-1 min-w-[240px]">
+        <div className="relative w-full sm:flex-1">
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#5c6b8a]" />
           <input
             type="text"

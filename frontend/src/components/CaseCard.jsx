@@ -144,7 +144,7 @@ export default function CaseCard({ caseData, onUpdate }) {
           {truncate(caseData.description, 120)}
         </p>
 
-        <div className={`flex items-center justify-between pt-3 border-t ${isDark ? 'border-[#1c273e]' : 'border-gray-100'}`}>
+        <div className={`flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 pt-3 border-t ${isDark ? 'border-[#1c273e]' : 'border-gray-100'}`}>
           <div className="flex items-center gap-2">
             <Badge type="status" value={caseData.status} />
             <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${
