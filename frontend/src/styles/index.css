@@ -179,35 +179,46 @@
   }
 }
 
+.print-only-wrapper {
+  display: none;
+}
+
 @media print {
-  header,
-  aside,
-  nav,
-  button:not(.print-keep),
-  input,
-  select,
-  .print\:hidden,
-  .fixed.z-50:not(.print-container) {
-    display: none !important;
+  body * {
+    visibility: hidden !important;
   }
 
-  body, html, #root, main {
-    background: #ffffff !important;
-    color: #0f172a !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    height: auto !important;
+  .print-only-wrapper,
+  .print-only-wrapper *,
+  .print-report-container,
+  .print-report-container * {
+    visibility: visible !important;
+    display: block !important;
   }
 
   .print-report-container {
-    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
-    padding: 24px !important;
+    padding: 32px !important;
     background: #ffffff !important;
     color: #0f172a !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Inline flex alignment inside printable container */
+  .print-report-container .flex {
+    display: flex !important;
+  }
+  .print-report-container .grid {
+    display: grid !important;
+  }
+  .print-report-container .hidden {
+    display: none !important;
   }
 }
 

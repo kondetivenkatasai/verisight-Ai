@@ -138,7 +138,7 @@ export default function DecisionIntelligenceReport({ report, onClose, onDelete }
   return (
     <>
       {/* Executive Printable PDF Template (Visible only when Printing to PDF) */}
-      <div className="hidden print:block">
+      <div className="print-only-wrapper">
         <PDFReportTemplate
           report={report}
           caseTitle={caseTitle}
