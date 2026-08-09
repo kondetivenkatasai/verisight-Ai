@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   ShieldCheck, AlertTriangle, CheckCircle2, Clock, Zap, Download, Copy, Printer,
-  Brain, FileText, ChevronRight, Target, Activity, Layers, HelpCircle, Check
+  Brain, FileText, ChevronRight, Target, Activity, Layers, HelpCircle, Check, Trash2
 } from 'lucide-react';
 import Badge from '@/ui/Badge';
 import RadialGlowButton from '@/ui/RadialGlowButton';
@@ -10,7 +10,7 @@ import Button from '@/ui/Button';
 import AIAudioPlayer from '@/components/AIAudioPlayer';
 import { formatDate } from '@/utils/formatters';
 
-export default function DecisionIntelligenceReport({ report, onClose }) {
+export default function DecisionIntelligenceReport({ report, onClose, onDelete }) {
   const [copied, setCopied] = useState(false);
 
   // Parse rich payload if stored in recommendation, or use fallback structured parser
@@ -163,6 +163,11 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
             <Button variant="secondary" size="sm" icon={copied ? Check : Copy} onClick={handleCopy}>
               {copied ? 'Copied!' : 'Copy'}
             </Button>
+            {onDelete && (
+              <Button variant="danger" size="sm" icon={Trash2} onClick={() => onDelete(report.id)}>
+                Delete Report
+              </Button>
+            )}
           </div>
         </div>
 

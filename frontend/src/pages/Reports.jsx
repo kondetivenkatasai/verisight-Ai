@@ -68,6 +68,16 @@ export default function Reports() {
       });
   }, [reports, searchQuery, decisionFilter, sortBy]);
 
+  const handleDeleteReport = async (reportId) => {
+    try {
+      await reportService.delete(reportId);
+      setReports((prev) => prev.filter((r) => r.id !== reportId));
+      if (selectedReport?.id === reportId) setSelectedReport(null);
+    } catch {
+      // Fail silently
+    }
+  };
+
   if (loading) return <PageLoader />;
 
   return (
@@ -152,7 +162,11 @@ export default function Reports() {
         >
           {processedReports.map((report) => (
             <motion.div key={report.id} variants={staggerItem}>
-              <ReportCard report={report} onClick={() => setSelectedReport(report)} />
+              <ReportCard
+                report={report}
+                onClick={() => setSelectedReport(report)}
+                onDelete={handleDeleteReport}
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -176,6 +190,7 @@ export default function Reports() {
           <DecisionIntelligenceReport
             report={selectedReport}
             onClose={() => setSelectedReport(null)}
+            onDelete={handleDeleteReport}
           />
         )}
       </Modal>

@@ -66,5 +66,23 @@ export const reportModel = {
     inMemoryReports.unshift(newReport);
     return newReport;
   },
+
+  async delete(id) {
+    try {
+      const { error } = await supabase
+        .from('reports')
+        .delete()
+        .eq('id', id);
+      if (!error) return true;
+    } catch {
+      // Fall through
+    }
+    const idx = inMemoryReports.findIndex((r) => r.id === id);
+    if (idx !== -1) {
+      inMemoryReports.splice(idx, 1);
+      return true;
+    }
+    return false;
+  },
 };
 

@@ -16,4 +16,9 @@ export const reportController = {
     const reports = await reportService.getReportsByCase(req.params.caseId);
     res.json({ reports });
   }),
+
+  delete: asyncHandler(async (req, res) => {
+    await reportService.deleteReport(req.params.id);
+    res.json({ message: 'Report deleted successfully' });
+  }),
 };

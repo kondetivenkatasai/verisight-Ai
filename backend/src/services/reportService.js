@@ -16,4 +16,8 @@ export const reportService = {
   async createReport(reportData) {
     return await reportModel.create(reportData);
   },
+
+  async deleteReport(id) {
+    return await reportModel.delete(id);
+  },
 };

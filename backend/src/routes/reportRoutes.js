@@ -9,5 +9,6 @@ router.use(authenticate);
 router.get('/', reportController.getAll);
 router.get('/:id', reportController.getById);
 router.get('/case/:caseId', reportController.getByCase);
+router.delete('/:id', reportController.delete);
 
 export default router;

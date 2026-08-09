@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, ArrowRight, MoreVertical } from 'lucide-react';
+import { Clock, ArrowRight, MoreVertical, Trash2 } from 'lucide-react';
 import Badge from '@/ui/Badge';
 import Modal from '@/ui/Modal';
 import Button from '@/ui/Button';
@@ -124,14 +124,25 @@ export default function CaseCard({ caseData, onUpdate }) {
           }`}>
             {truncate(caseData.title, 50)}
           </h3>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0">
             <Badge type="priority" value={caseData.priority} />
             <button
+              title="Delete Case"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDeleteModal(true);
+              }}
+              className="p-1.5 rounded-lg transition-colors cursor-pointer text-rose-500/80 hover:text-rose-600 hover:bg-rose-500/10 opacity-70 hover:opacity-100"
+            >
+              <Trash2 size={15} />
+            </button>
+            <button
+              title="More Actions"
               onClick={(e) => {
                 e.stopPropagation();
                 setContextPos({ x: e.clientX, y: e.clientY });
               }}
-              className={`p-1 rounded-lg transition-colors cursor-pointer ${
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                 isDark ? 'text-[#5c6b8a] hover:text-white hover:bg-[#1c273e]' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
