@@ -8,7 +8,7 @@ import Badge from '@/ui/Badge';
 import RadialGlowButton from '@/ui/RadialGlowButton';
 import Button from '@/ui/Button';
 import AIAudioPlayer from '@/components/AIAudioPlayer';
-import PDFReportTemplate from '@/components/PDFReportTemplate';
+import PDFReportTemplate, { printExecutivePDFReport } from '@/components/PDFReportTemplate';
 import { formatDate } from '@/utils/formatters';
 
 export default function DecisionIntelligenceReport({ report, onClose, onDelete }) {
@@ -132,7 +132,14 @@ export default function DecisionIntelligenceReport({ report, onClose, onDelete }
 
   // Print PDF handler
   const handlePrint = () => {
-    window.print();
+    printExecutivePDFReport({
+      report,
+      caseTitle,
+      summaryText,
+      decision,
+      riskScore,
+      confidence,
+    });
   };
 
   return (
