@@ -1,3 +1,5 @@
+process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || '128';
+
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -109,11 +111,15 @@ async function startServer() {
   try {
     await testConnection();
 
-    app.listen(PORT, '0.0.0.0', () => {
-      logger.info(`🚀 Verisight AI Server running on 0.0.0.0:${PORT}`);
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`🚀 Verisight AI High-Capacity Server running on 0.0.0.0:${PORT}`);
       logger.info(`📡 Environment: ${env.NODE_ENV}`);
       logger.info(`🔗 API: http://0.0.0.0:${PORT}/api`);
     });
+
+    server.keepAliveTimeout = 65000;
+    server.headersTimeout = 66000;
+    server.maxHeadersCount = 2000;
   } catch (error) {
     logger.error('Failed to start server:', error.message);
     process.exit(1);

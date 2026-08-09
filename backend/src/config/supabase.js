@@ -19,6 +19,14 @@ export const supabase = createClient(
       autoRefreshToken: false,
       persistSession: false,
     },
+    db: {
+      schema: 'public',
+    },
+    global: {
+      headers: {
+        'x-client-info': 'verisight-ai-backend-v1',
+      },
+    },
     realtime: {
       transport: WebSocket,
     },

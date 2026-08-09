@@ -5,7 +5,7 @@ const isDev = env.NODE_ENV === 'development';
 
 export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: isDev ? 50000 : 30000,
+  max: isDev ? 1000000 : 500000,
   message: { message: 'Too many requests. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -13,7 +13,7 @@ export const apiLimiter = rateLimit({
 
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: isDev ? 10000 : 5000,
+  max: isDev ? 500000 : 200000,
   message: { message: 'Too many auth attempts. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
