@@ -137,7 +137,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
   return (
     <div className="space-y-8 text-slate-900 dark:text-slate-100 max-w-5xl mx-auto print:text-black print:bg-white print:p-0">
       {/* HEADER BANNER — Section 13: Real-Time Workflow Summary */}
-      <div className="rounded-2xl bg-gradient-to-r from-sky-500/10 via-surface-900 to-indigo-500/10 border border-sky-500/30 p-6 backdrop-blur-md shadow-subtle-card print:border-none print:shadow-none">
+      <div className="rounded-2xl bg-gradient-to-r from-sky-500/10 via-white dark:via-[#111726] to-indigo-500/10 border border-sky-500/30 p-6 backdrop-blur-md shadow-subtle-card print:border-none print:shadow-none">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-500 dark:text-sky-400">
@@ -199,42 +199,42 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
 
       {/* SECTION 10: METRICS DASHBOARD (8 Metric Cards) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Overall Confidence</p>
           <p className="text-2xl font-black text-emerald-500 dark:text-emerald-400 mt-1">{confidence}%</p>
           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">High Precision</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Risk Score</p>
           <p className="text-2xl font-black text-sky-600 dark:text-sky-400 mt-1">{riskScore}%</p>
           <span className="text-[10px] text-sky-600 dark:text-sky-400 font-semibold">{riskMeta.severity} Risk</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Evidence Count</p>
           <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">{evidenceList.length} Items</p>
           <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">Cross-Verified</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Agents Completed</p>
           <p className="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1">6 / 6</p>
           <span className="text-[10px] text-purple-600 dark:text-purple-400 font-semibold">Sequential Flow</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Execution Time</p>
           <p className="text-2xl font-black text-slate-900 dark:text-white mt-1">1.49s</p>
           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Real-time Pipeline</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Decision Quality</p>
           <p className="text-2xl font-black text-emerald-500 dark:text-emerald-400 mt-1">{quality}%</p>
           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Enterprise Grade</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Reliability Score</p>
           <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">{reliability}%</p>
           <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">Validated</span>
         </div>
-        <div className="rounded-xl bg-surface-900 border border-surface-300 dark:border-white/10 p-4 shadow-subtle-card">
+        <div className="rounded-xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-4 shadow-subtle-card">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Completion Status</p>
           <p className="text-2xl font-black text-emerald-500 dark:text-emerald-400 mt-1 capitalize">{decision}</p>
           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Final Audit Logged</span>
@@ -242,7 +242,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 1: EXECUTIVE SUMMARY */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-3 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-3 shadow-subtle-card">
         <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400">
           <FileText size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">1. Executive Summary</h3>
@@ -255,7 +255,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 2: PROBLEM ANALYSIS */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
           <Target size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">2. Problem Analysis</h3>
@@ -301,7 +301,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 3: MULTI-AGENT EXECUTION TIMELINE */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
           <Layers size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">3. Multi-Agent Execution Timeline</h3>
@@ -322,7 +322,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 4: AI CONFIDENCE ANALYSIS (Animated Progress Bars) */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
           <Activity size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">4. AI Confidence & Quality Metrics</h3>
@@ -372,7 +372,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 5: RISK ASSESSMENT */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
           <AlertTriangle size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">5. Risk Assessment & Justification</h3>
@@ -408,7 +408,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 6: EVIDENCE SUMMARY */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400">
           <Layers size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">6. Evidence Summary</h3>
@@ -443,7 +443,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 7: DECISION REASONING */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
           <Brain size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">7. Decision Reasoning & Comparison</h3>
@@ -485,7 +485,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 8: RECOMMENDED ACTION PLAN ROADMAP */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-4 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-4 shadow-subtle-card">
         <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400">
           <Clock size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">8. Prioritized Action Plan Roadmap</h3>
@@ -534,7 +534,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 9: EXPLAINABILITY PANEL (XAI) */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-3 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-3 shadow-subtle-card">
         <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
           <HelpCircle size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">9. Explainability Panel (Plain English XAI)</h3>
@@ -545,7 +545,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 14: SMART AI RECOMMENDATIONS */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-300 dark:border-white/10 p-6 space-y-3 shadow-subtle-card">
+      <div className="rounded-2xl bg-white dark:bg-[#111726] border border-gray-200 dark:border-[#1e2942] p-6 space-y-3 shadow-subtle-card">
         <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
           <Zap size={20} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">14. Case-Specific Smart AI Recommendations</h3>
@@ -563,7 +563,7 @@ export default function DecisionIntelligenceReport({ report, onClose }) {
       </div>
 
       {/* SECTION 15: PROFESSIONAL EXECUTIVE CONCLUSION */}
-      <div className="rounded-2xl bg-gradient-to-r from-sky-500/10 via-surface-900 to-indigo-500/10 border border-sky-500/40 p-6 space-y-3 shadow-subtle-card">
+      <div className="rounded-2xl bg-gradient-to-r from-sky-500/10 via-white dark:via-[#111726] to-indigo-500/10 border border-sky-500/40 p-6 space-y-3 shadow-subtle-card">
         <div className="flex items-center gap-2 text-sky-600 dark:text-sky-300">
           <ShieldCheck size={22} />
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">15. Executive Conclusion</h3>

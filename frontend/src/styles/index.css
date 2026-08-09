@@ -19,11 +19,10 @@
     --surface-500: #475569;
     --surface-600: #334155;
     --surface-700: #1e293b;
-    --surface-800: #0f172a;
-    --surface-900: #0f172a;
-    --surface-950: #020617;
+    --surface-800: #ffffff;
+    --surface-900: #ffffff;
+    --surface-950: #f8fafc;
   }
-
 
   .dark {
     --bg-app: #080c14;
@@ -41,9 +40,9 @@
     --surface-500: #cbd5e1;
     --surface-600: #e2e8f0;
     --surface-700: #f1f5f9;
-    --surface-800: #ffffff;
-    --surface-900: #ffffff;
-    --surface-950: #ffffff;
+    --surface-800: #111726;
+    --surface-900: #111726;
+    --surface-950: #080c14;
   }
 
 
