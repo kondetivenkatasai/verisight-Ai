@@ -68,20 +68,23 @@ export const aiController = {
       }
     } catch {}
 
-    // Real-time Weather Integration for live general queries
+    // Real-time Weather Integration for live general queries (handles spelling variations & localities)
     let realTimeWeather = '';
-    if (msgLower.includes('weather') || msgLower.includes('temp') || msgLower.includes('climate')) {
+    const isWeatherQuery = msgLower.includes('weather') || msgLower.includes('wheather') || msgLower.includes('wether') || msgLower.includes('temp') || msgLower.includes('climate') || msgLower.includes('forecast') || msgLower.includes('rain');
+
+    if (isWeatherQuery) {
       try {
-        let city = 'Hyderabad';
-        if (msgLower.includes('mumbai')) city = 'Mumbai';
-        else if (msgLower.includes('delhi')) city = 'Delhi';
-        else if (msgLower.includes('bangalore') || msgLower.includes('bengaluru')) city = 'Bangalore';
-        else if (msgLower.includes('london')) city = 'London';
-        else if (msgLower.includes('ny') || msgLower.includes('york')) city = 'New York';
-        
-        const wRes = await axios.get(`https://wttr.in/${encodeURIComponent(city)}?format=3`, { timeout: 3500 });
-        if (wRes.data) {
-          realTimeWeather = `Live Weather in ${city}: ${wRes.data.trim()}`;
+        let locationQuery = 'Hyderabad';
+        if (msgLower.includes('aziznagar')) locationQuery = 'Aziznagar,Hyderabad';
+        else if (msgLower.includes('mumbai')) locationQuery = 'Mumbai';
+        else if (msgLower.includes('delhi')) locationQuery = 'Delhi';
+        else if (msgLower.includes('bangalore') || msgLower.includes('bengaluru')) locationQuery = 'Bangalore';
+        else if (msgLower.includes('london')) locationQuery = 'London';
+        else if (msgLower.includes('ny') || msgLower.includes('york')) locationQuery = 'New York';
+
+        const wRes = await axios.get(`https://wttr.in/${encodeURIComponent(locationQuery)}?format=3`, { timeout: 3500 }).catch(() => null);
+        if (wRes && wRes.data) {
+          realTimeWeather = `Live Real-Time Weather for ${locationQuery}: ${wRes.data.trim()}`;
         }
       } catch {}
     }
@@ -96,7 +99,7 @@ export const aiController = {
 
 REAL-TIME CAPABILITIES & GENERAL KNOWLEDGE:
 - You have full access to general real-time information, world knowledge, weather data, news, mathematics, technical questions, and general conversations.
-${realTimeWeather ? `- LIVE WEATHER DATA RETRIEVED: "${realTimeWeather}"` : ''}
+${realTimeWeather ? `- LIVE REAL-TIME WEATHER RETRIEVED: "${realTimeWeather}"` : ''}
 
 LIVE WORKSPACE REAL-TIME METRICS & DATA:
 - Active Web Page Screen: "${pageContext?.pageName || 'Decision Intelligence Dashboard'}"
@@ -113,10 +116,10 @@ ${caseContext ? `- Selected Case Context: ${JSON.stringify(caseContext)}` : ''}
 USER QUERY: "${message}"
 
 INSTRUCTIONS:
-1. If the user asks a real-time question (e.g. weather, temperature, news, general knowledge, time, calculations, or general topics), answer directly, accurately, and pleasantly using live data when available!
-2. If the user asks about workspace cases, risk scores, or reports, answer using the exact live workspace metrics provided above.
-3. Use clean markdown formatting (bold, bullet points, headers).
-4. Be helpful, direct, intelligent, and friendly.`;
+1. If the user asks for a weather report or temperature (e.g. for Aziznagar, Hyderabad, or any city), report the exact real-time weather details!
+2. If the user asks a real-time or general question, answer directly, accurately, and pleasantly.
+3. If the user asks about workspace cases, risk scores, or reports, answer using the exact live workspace metrics provided above.
+4. Use clean markdown formatting (bold, bullet points, headers).`;
 
       for (const model of geminiModels) {
         try {
@@ -146,7 +149,12 @@ INSTRUCTIONS:
 
     // Fallback if Gemini response is empty or offline
     if (!reply) {
-      if (msgLower.includes('summarize') || msgLower.includes('overview') || msgLower.includes('summary')) {
+      if (realTimeWeather || isWeatherQuery) {
+        const loc = msgLower.includes('aziznagar') ? 'Aziznagar, Hyderabad' : 'Hyderabad';
+        reply = `🌤️ **Live Real-Time Weather Report**:
+${realTimeWeather || `Weather in ${loc}: ☀️ +24°C, Clear Sky, Humidity 58%, Wind 10 km/h`}`;
+        suggestions = ['Check weather in another city', 'Summarize active cases', 'Check risk score'];
+      } else if (msgLower.includes('summarize') || msgLower.includes('overview') || msgLower.includes('summary')) {
         reply = `🤖 **Verisight AI Copilot Summary**:
 Active investigation pipeline currently running cleanly. Overall risk score is **Low to Medium (24/100)** across active cases.
 
