@@ -8,6 +8,7 @@ import Badge from '@/ui/Badge';
 import RadialGlowButton from '@/ui/RadialGlowButton';
 import Button from '@/ui/Button';
 import AIAudioPlayer from '@/components/AIAudioPlayer';
+import PDFReportTemplate from '@/components/PDFReportTemplate';
 import { formatDate } from '@/utils/formatters';
 
 export default function DecisionIntelligenceReport({ report, onClose, onDelete }) {
@@ -135,7 +136,21 @@ export default function DecisionIntelligenceReport({ report, onClose, onDelete }
   };
 
   return (
-    <div className="space-y-8 text-slate-900 dark:text-slate-100 max-w-5xl mx-auto print:text-black print:bg-white print:p-0">
+    <>
+      {/* Executive Printable PDF Template (Visible only when Printing to PDF) */}
+      <div className="hidden print:block">
+        <PDFReportTemplate
+          report={report}
+          caseTitle={caseTitle}
+          summaryText={summaryText}
+          decision={decision}
+          riskScore={riskScore}
+          confidence={confidence}
+        />
+      </div>
+
+      {/* Screen Web UI Container */}
+      <div className="space-y-8 text-slate-900 dark:text-slate-100 max-w-5xl mx-auto print:hidden">
       {/* HEADER BANNER — Section 13: Real-Time Workflow Summary */}
       <div className="rounded-2xl bg-gradient-to-r from-sky-500/10 via-white dark:via-[#111726] to-indigo-500/10 border border-sky-500/30 p-6 backdrop-blur-md shadow-subtle-card print:border-none print:shadow-none">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -591,6 +606,7 @@ export default function DecisionIntelligenceReport({ report, onClose, onDelete }
         </div>
       )}
     </div>
+    </>
   );
 }
 
