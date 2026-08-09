@@ -31,7 +31,7 @@ let customAgents = [
 export const aiController = {
   // Copilot Chat Query Handler with Google Gemini AI Integration
   copilotChat: asyncHandler(async (req, res) => {
-    const { message, caseContext } = req.body;
+    const { message, caseContext, pageContext } = req.body;
     const msgLower = (message || '').toLowerCase();
 
     let reply = '';
@@ -43,11 +43,20 @@ export const aiController = {
 
     if (apiKey) {
       const geminiModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
-      const promptText = `You are Verisight AI Copilot, a high-precision multi-agent decision intelligence assistant.
-User query: "${message}"
-${caseContext ? `Active Case Context: ${JSON.stringify(caseContext)}` : ''}
+      const promptText = `You are Verisight AI Copilot powered by Google Gemini, an intelligent multi-agent assistant for Verisight AI.
 
-Provide a helpful, structured, concise response with markdown styling, key insights, and actionable next steps.`;
+LIVE WEB PAGE SCREEN CONTEXT:
+- Active Page View: "${pageContext?.pageName || 'Decision Intelligence Workspace'}"
+- Route Path: "${pageContext?.route || '/dashboard'}"
+- Page Document Title: "${pageContext?.title || 'Verisight AI'}"
+${caseContext ? `- Selected Case Context: ${JSON.stringify(caseContext)}` : ''}
+
+USER QUERY: "${message}"
+
+INSTRUCTIONS:
+1. Provide a clear, helpful, well-structured response using markdown formatting (bold, bullet points, headers).
+2. Maintain active screen/web page awareness in your answer when relevant to what the user is currently viewing on screen.
+3. Be professional, direct, and concise.`;
 
       for (const model of geminiModels) {
         try {

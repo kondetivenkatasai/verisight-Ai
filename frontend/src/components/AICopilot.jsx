@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bot, Send, X, Sparkles, ChevronDown, Minimize2, Maximize2, RefreshCw } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/hooks/useAuth';
 import api from '@/services/api';
@@ -33,6 +34,8 @@ export default function AICopilot() {
     }
   }, [messages, isOpen]);
 
+  const location = useLocation();
+
   const handleSend = async (queryText) => {
     const textToSend = queryText || input;
     if (!textToSend.trim() || loading) return;
@@ -48,7 +51,16 @@ export default function AICopilot() {
     setLoading(true);
 
     try {
-      const res = await api.post('/ai/copilot', { message: textToSend });
+      const pageContext = {
+        route: location.pathname,
+        title: document.title || 'Verisight AI Workspace',
+        url: window.location.href,
+        pageName: location.pathname === '/' || location.pathname === '/dashboard'
+          ? 'Decision Intelligence Dashboard'
+          : location.pathname.replace('/', '').split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+      };
+
+      const res = await api.post('/ai/copilot', { message: textToSend, pageContext });
       const copilotMsg = {
         sender: 'copilot',
         text: res.data.reply,
