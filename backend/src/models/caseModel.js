@@ -80,6 +80,12 @@ export const caseModel = {
 
   async delete(id) {
     try {
+      // First delete associated reports
+      await supabase.from('reports').delete().eq('case_id', id);
+      // Delete agent workflow status
+      await supabase.from('agent_workflow_status').delete().eq('case_id', id);
+
+      // Now delete case
       const { error } = await supabase
         .from('cases')
         .delete()

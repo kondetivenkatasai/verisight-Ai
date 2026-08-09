@@ -1,5 +1,6 @@
 import supabase from '../config/supabase.js';
 import { v4 as uuidv4 } from 'uuid';
+import { caseModel } from './caseModel.js';
 
 const inMemoryReports = [];
 
@@ -69,17 +70,35 @@ export const reportModel = {
 
   async delete(id) {
     try {
+      // Find case_id linked to this report first
+      const { data: reportData } = await supabase
+        .from('reports')
+        .select('case_id')
+        .eq('id', id)
+        .single();
+
+      const caseId = reportData?.case_id;
+
       const { error } = await supabase
         .from('reports')
         .delete()
         .eq('id', id);
+
+      if (caseId) {
+        await caseModel.delete(caseId);
+      }
+
       if (!error) return true;
     } catch {
       // Fall through
     }
     const idx = inMemoryReports.findIndex((r) => r.id === id);
     if (idx !== -1) {
+      const caseId = inMemoryReports[idx].case_id;
       inMemoryReports.splice(idx, 1);
+      if (caseId) {
+        await caseModel.delete(caseId);
+      }
       return true;
     }
     return false;
