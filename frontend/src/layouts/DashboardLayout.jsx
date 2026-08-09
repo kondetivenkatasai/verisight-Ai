@@ -155,6 +155,11 @@ export default function DashboardLayout() {
                       <p className={`text-[10px] truncate ${isDark ? 'text-[#7b89a6]' : 'text-gray-500'}`}>
                         {user?.email || 'user@example.com'}
                       </p>
+                      {user?.dob && (
+                        <p className={`text-[10px] font-medium truncate mt-0.5 ${isDark ? 'text-blue-300' : 'text-purple-700'}`}>
+                          DOB: {user.dob}
+                        </p>
+                      )}
                       <span className={`text-[9px] font-bold uppercase tracking-wider block mt-0.5 ${isDark ? 'text-blue-400' : 'text-purple-600'}`}>
                         Decision Workspace
                       </span>
