@@ -75,7 +75,7 @@ export default function Dashboard() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"
       >
         {statsCards.map((stat) => (
           <StatsCard key={stat.title} {...stat} />
@@ -89,7 +89,7 @@ export default function Dashboard() {
         <h2 className={`text-xs font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-[#5c6b8a]' : 'text-gray-400'}`}>
           Quick Actions
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
           <button
             onClick={() => navigate('/create-case')}
             className={`flex items-center justify-between p-4 rounded-xl border transition-all text-left group cursor-pointer ${

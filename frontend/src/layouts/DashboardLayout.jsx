@@ -157,7 +157,7 @@ export default function DashboardLayout() {
     }`}>
       <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
-      <main className="ml-0 md:ml-64 min-h-screen w-full overflow-x-hidden">
+      <main className="flex-1 md:ml-64 min-h-screen min-w-0 max-w-full overflow-x-hidden">
         {/* Top Header Bar */}
         <header className={`sticky top-0 z-30 backdrop-blur-md px-4 sm:px-8 py-3.5 flex items-center justify-between border-b transition-colors duration-200 ${
           isDark
